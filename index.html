@@ -6,7 +6,7 @@
   <title>Ghost Janitor - 8-Bit Game Boy Arcade</title>
 
   <!-- PWA & Mobile Web App Meta Tags -->
-  <meta name="description" content="Retro 8-Bit Game Boy arcade puzzle game. Possess cleaning tools, tidy haunted rooms, and defeat rogue dust phantoms!">
+  <meta name="description" content="Retro 8-Bit Game Boy arcade puzzle game. Possess cleaning tools, tidy haunted multi-room mansions, and defeat rogue dust phantoms!">
   <meta name="theme-color" content="#231b38">
   <meta name="background-color" content="#0d0818">
   <meta name="mobile-web-app-capable" content="yes">
@@ -31,6 +31,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+
   <style>
     :root {
       --gb-body: #231b38;
@@ -41,10 +42,6 @@
       --gb-accent-cyan: #00f0ff;
       --gb-accent-green: #39ff14;
       --gb-accent-gold: #f6c90e;
-      --dpad-color: #120c1f;
-      --btn-a: #ff0055;
-      --btn-b: #9b5de5;
-      --rubber-btn: #3a2e54;
     }
 
     * {
@@ -76,7 +73,7 @@
     .gameboy-console {
       position: relative;
       background: linear-gradient(170deg, #2e214c 0%, #1a1230 65%, #120b22 100%);
-      border-radius: 24px 24px 36px 24px;
+      border-radius: 24px 24px 34px 24px;
       padding: 10px 14px 14px;
       box-shadow: 
         0 0 35px rgba(157, 78, 221, 0.35),
@@ -118,9 +115,9 @@
     }
 
     .gb-logo-brand {
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       color: #00f0ff;
-      letter-spacing: 1.5px;
+      letter-spacing: 1.2px;
       text-shadow: 0 0 8px rgba(0, 240, 255, 0.8), 0 0 15px #f72585;
       font-style: italic;
     }
@@ -228,7 +225,7 @@
     /* Compact Integrated HUD */
     .gb-hud {
       width: 100%;
-      background: rgba(10, 6, 20, 0.9);
+      background: rgba(10, 6, 20, 0.92);
       border: 1px solid #4a3473;
       border-radius: 6px;
       padding: 4px 8px;
@@ -236,7 +233,7 @@
       display: flex;
       flex-direction: column;
       gap: 3px;
-      font-size: 0.52rem;
+      font-size: 0.5rem;
     }
 
     .hud-row {
@@ -244,6 +241,22 @@
       justify-content: space-between;
       align-items: center;
       width: 100%;
+    }
+
+    .hud-left-stats {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hud-floor-badge {
+      font-size: 0.45rem;
+      color: #f6c90e;
+      background: #2b1842;
+      padding: 2px 5px;
+      border-radius: 3px;
+      border: 1px solid #8e44ad;
+      letter-spacing: 0.5px;
     }
 
     .hud-cleanliness {
@@ -255,20 +268,27 @@
     }
 
     .hud-stealth-pill {
-      font-size: 0.45rem;
+      font-size: 0.42rem;
       padding: 2px 6px;
       border-radius: 4px;
       background: #1e1438;
       border: 1px solid #00f0ff;
       color: #00f0ff;
       white-space: nowrap;
+      transition: all 0.2s ease;
     }
 
     .hud-stealth-pill.hidden {
-      border-color: #9d4edd;
-      color: #e0aaff;
-      background: #3c1361;
-      box-shadow: 0 0 6px rgba(157, 78, 221, 0.7);
+      border-color: #39ff14;
+      color: #39ff14;
+      background: #0f3d1f;
+      box-shadow: 0 0 8px rgba(57, 255, 20, 0.8);
+      animation: stealthGlow 1.2s infinite alternate;
+    }
+
+    @keyframes stealthGlow {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.04); }
     }
 
     .panic-wrap {
@@ -276,7 +296,7 @@
       align-items: center;
       gap: 5px;
       flex: 1;
-      max-width: 180px;
+      max-width: 170px;
     }
 
     .panic-bar-outer {
@@ -306,14 +326,15 @@
       100% { filter: brightness(1.6); }
     }
 
-    .hud-subtext {
-      font-size: 0.44rem;
-      color: #f6c90e;
+    .hud-room-tag {
+      font-size: 0.42rem;
+      color: #00f0ff;
       text-align: right;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      max-width: 180px;
+      max-width: 170px;
+      letter-spacing: 0.5px;
     }
 
     /* Screen Bezel & Canvas wrapper */
@@ -342,7 +363,7 @@
         90deg,
         rgba(255, 0, 0, 0.03),
         rgba(0, 255, 0, 0.01),
-        rgba(0, 0, 255, 0.03)
+        rgba(0, 255, 0, 0.03)
       );
       background-size: 100% 3px, 4px 100%;
       pointer-events: none;
@@ -380,7 +401,7 @@
     }
 
     /* ==========================================================================
-       GAME BOY CONTROLS SECTION (Ultra Compact, Arcade Styled)
+       PROPERLY DESIGNED ARCADE CONTROLS DECK (JOYSTICK + 3 BUTTONS)
        ========================================================================== */
     .gb-controls-deck {
       width: 100%;
@@ -388,244 +409,216 @@
       justify-content: space-between;
       align-items: center;
       padding-top: 10px;
-      gap: 8px;
+      gap: 10px;
     }
 
-    /* Cross D-Pad */
-    .dpad-wrapper {
+    /* VIRTUAL ANALOG JOYSTICK */
+    .joystick-zone {
       position: relative;
-      width: 116px;
-      height: 116px;
+      width: 120px;
+      height: 120px;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: radial-gradient(circle at center, #1b122c 0%, #0d0818 100%);
+      touch-action: none;
+    }
+
+    .joystick-base {
+      position: relative;
+      width: 112px;
+      height: 112px;
+      background: radial-gradient(circle at 40% 40%, #2a1b47 0%, #120b22 70%, #080410 100%);
       border-radius: 50%;
+      border: 3px solid #5a3c8c;
       box-shadow: 
-        inset 0 2px 4px rgba(255, 255, 255, 0.08),
-        0 4px 8px rgba(0, 0, 0, 0.7);
-      border: 1px solid #3c295c;
-      touch-action: none;
-    }
-
-    .dpad-cross {
-      position: relative;
-      width: 98px;
-      height: 98px;
-    }
-
-    .dpad-btn {
-      position: absolute;
-      background: linear-gradient(145deg, #372656, #1b122e);
-      border: 1.5px solid #5a3d8a;
-      color: #cfc2eb;
-      font-size: 0.7rem;
+        inset 0 3px 6px rgba(255, 255, 255, 0.15),
+        inset 0 -4px 8px rgba(0, 0, 0, 0.85),
+        0 6px 12px rgba(0, 0, 0, 0.9);
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 3px 0 #0d0718;
-      transition: all 0.05s ease;
       touch-action: none;
+      cursor: grab;
     }
 
-    .dpad-btn:active, .dpad-btn.active {
-      background: linear-gradient(145deg, #00f0ff, #7928ca);
-      color: #fff;
-      transform: translateY(2px);
-      box-shadow: 0 1px 0 #0d0718, 0 0 10px rgba(0, 240, 255, 0.6);
+    .joystick-base:active {
+      cursor: grabbing;
+    }
+
+    .joystick-ring-deco {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 1.5px dashed rgba(157, 78, 221, 0.4);
+      pointer-events: none;
+    }
+
+    .joystick-indicator {
+      position: absolute;
+      font-size: 0.55rem;
+      color: rgba(157, 78, 221, 0.65);
+      pointer-events: none;
+      transition: color 0.1s, transform 0.1s;
+    }
+    .joystick-indicator.up { top: 4px; }
+    .joystick-indicator.down { bottom: 4px; }
+    .joystick-indicator.left { left: 6px; }
+    .joystick-indicator.right { right: 6px; }
+
+    .joystick-indicator.lit {
+      color: #00f0ff;
+      text-shadow: 0 0 8px #00f0ff;
+      transform: scale(1.3);
+    }
+
+    .joystick-knob {
+      position: absolute;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #9d4edd 0%, #4a127a 60%, #1b072e 100%);
+      border: 2.5px solid #c77dff;
+      box-shadow: 
+        0 4px 10px rgba(0, 0, 0, 0.9),
+        0 0 14px rgba(157, 78, 221, 0.6),
+        inset 0 2px 5px rgba(255, 255, 255, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      will-change: transform;
+    }
+
+    .joystick-knob-core {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #00f0ff 0%, #7209b7 100%);
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .joystick-knob.active {
+      box-shadow: 
+        0 2px 6px rgba(0, 0, 0, 0.9),
+        0 0 20px rgba(0, 240, 255, 0.95),
+        inset 0 2px 5px rgba(255, 255, 255, 0.7);
       border-color: #00f0ff;
     }
 
-    .dpad-up {
-      top: 0;
-      left: 32px;
-      width: 34px;
-      height: 34px;
-      border-radius: 6px 6px 0 0;
-      border-bottom: none;
-    }
-
-    .dpad-down {
-      bottom: 0;
-      left: 32px;
-      width: 34px;
-      height: 34px;
-      border-radius: 0 0 6px 6px;
-      border-top: none;
-    }
-
-    .dpad-left {
-      left: 0;
-      top: 32px;
-      width: 34px;
-      height: 34px;
-      border-radius: 6px 0 0 6px;
-      border-right: none;
-    }
-
-    .dpad-right {
-      right: 0;
-      top: 32px;
-      width: 34px;
-      height: 34px;
-      border-radius: 0 6px 6px 0;
-      border-left: none;
-    }
-
-    .dpad-center {
-      position: absolute;
-      top: 32px;
-      left: 32px;
-      width: 34px;
-      height: 34px;
-      background: #25183f;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .dpad-center-disc {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #180f2c 0%, #0a0614 100%);
-      box-shadow: inset 0 1px 3px rgba(0,0,0,0.8);
-    }
-
-    /* Center Pill Buttons (SELECT & START) */
-    .gb-center-controls {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      margin-top: 10px;
-    }
-
-    .pill-buttons-row {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-    }
-
-    .pill-btn-group {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .pill-btn {
-      width: 34px;
-      height: 11px;
-      background: linear-gradient(180deg, #443263 0%, #1e1430 100%);
-      border: 1.5px solid #664796;
-      border-radius: 8px;
-      cursor: pointer;
-      transform: rotate(-25deg);
-      box-shadow: 0 2px 0 #0d0718;
-      transition: all 0.05s ease;
-      touch-action: none;
-    }
-
-    .pill-btn:active, .pill-btn.active {
-      transform: rotate(-25deg) translateY(1px);
-      box-shadow: 0 1px 0 #0d0718;
-      background: #9d4edd;
-    }
-
-    .pill-label {
-      font-size: 0.38rem;
-      color: #9d4edd;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-
-    .speaker-slits {
-      display: flex;
-      gap: 4px;
-      transform: rotate(-25deg);
-    }
-
-    .speaker-slit {
-      width: 4px;
-      height: 24px;
-      background: #11091f;
-      border-radius: 3px;
-      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.9);
-    }
-
-    /* Action Buttons (A & B) */
-    .action-plate {
-      position: relative;
-      background: linear-gradient(135deg, #1b122c 0%, #0e081a 100%);
-      padding: 6px 10px;
-      border-radius: 28px;
-      border: 1px solid #3c295c;
-      box-shadow: 
-        inset 0 2px 4px rgba(255, 255, 255, 0.08),
-        0 4px 8px rgba(0, 0, 0, 0.7);
+    /* 3 DEDICATED BUTTONS ARCADE DECK */
+    .gb-arcade-buttons-deck {
       display: flex;
       align-items: center;
       gap: 10px;
-      transform: rotate(-18deg);
-      touch-action: none;
+      background: linear-gradient(145deg, #1b122e 0%, #0d0818 100%);
+      padding: 8px 12px;
+      border-radius: 28px;
+      border: 1.5px solid #3c295c;
+      box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.08), 0 4px 10px rgba(0, 0, 0, 0.7);
     }
 
-    .action-btn-group {
+    .arcade-btn-col {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
-      transform: rotate(18deg);
+      gap: 5px;
     }
 
-    .arcade-action-btn {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      border: 2px solid;
-      font-family: 'Press Start 2P', monospace;
-      font-size: 0.75rem;
-      color: #fff;
+    .arcade-custom-btn {
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
+      font-family: 'Press Start 2P', monospace;
       cursor: pointer;
-      user-select: none;
-      transition: all 0.05s ease;
+      transition: all 0.08s ease;
       touch-action: none;
+      position: relative;
+      outline: none;
     }
 
-    .btn-b-style {
-      background: linear-gradient(145deg, #7b2cbf, #3c096c);
-      border-color: #c77dff;
-      box-shadow: 0 4px 0 #1e0538, 0 0 10px rgba(157, 78, 221, 0.4);
-    }
-
-    .btn-b-style:active, .btn-b-style.active {
-      transform: translateY(3px);
-      box-shadow: 0 1px 0 #1e0538, 0 0 16px rgba(157, 78, 221, 0.9);
-      background: #9d4edd;
-    }
-
-    .btn-a-style {
+    /* 1. POSSESS BUTTON */
+    .btn-possess-style {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
       background: linear-gradient(145deg, #f72585, #7209b7);
-      border-color: #ff70a6;
-      box-shadow: 0 4px 0 #3a001a, 0 0 12px rgba(247, 37, 133, 0.5);
+      border: 2px solid #ff70a6;
+      box-shadow: 0 4px 0 #3a001a, 0 0 14px rgba(247, 37, 133, 0.6);
+      color: #fff;
+      font-size: 0.44rem;
+      gap: 2px;
     }
 
-    .btn-a-style:active, .btn-a-style.active {
+    .btn-possess-style:active, .btn-possess-style.active {
       transform: translateY(3px);
-      box-shadow: 0 1px 0 #3a001a, 0 0 18px rgba(247, 37, 133, 0.95);
+      box-shadow: 0 1px 0 #3a001a, 0 0 22px rgba(247, 37, 133, 1);
       background: #ff0055;
     }
 
-    .action-sublabel {
+    .btn-possess-style.eject-mode {
+      background: linear-gradient(145deg, #39ff14, #0f7a28);
+      border-color: #a8ff78;
+      box-shadow: 0 4px 0 #053310, 0 0 16px rgba(57, 255, 20, 0.7);
+    }
+
+    .btn-possess-style.eject-mode:active, .btn-possess-style.eject-mode.active {
+      background: #39ff14;
+      box-shadow: 0 1px 0 #053310, 0 0 24px rgba(57, 255, 20, 1);
+    }
+
+    /* 2. START / RESTART BUTTON */
+    .btn-start-style {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #f6c90e, #d35400);
+      border: 2px solid #ffe066;
+      box-shadow: 0 4px 0 #4a1d00, 0 0 12px rgba(246, 201, 14, 0.5);
+      color: #fff;
+      font-size: 0.38rem;
+      gap: 2px;
+    }
+
+    .btn-start-style:active, .btn-start-style.active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #4a1d00, 0 0 20px rgba(246, 201, 14, 0.9);
+      background: #ffb703;
+    }
+
+    /* 3. MUSIC BUTTON */
+    .btn-music-style {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #00b4d8, #03045e);
+      border: 2px solid #90e0ef;
+      box-shadow: 0 4px 0 #021330, 0 0 12px rgba(0, 180, 216, 0.5);
+      color: #fff;
+      font-size: 0.38rem;
+      gap: 2px;
+    }
+
+    .btn-music-style:active, .btn-music-style.active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #021330, 0 0 20px rgba(0, 240, 255, 0.9);
+      background: #00f0ff;
+    }
+
+    .btn-music-style.muted {
+      background: linear-gradient(145deg, #495057, #212529);
+      border-color: #6c757d;
+      box-shadow: 0 4px 0 #111, 0 0 4px rgba(0, 0, 0, 0.5);
+      color: #888;
+    }
+
+    .btn-sub-label {
       font-size: 0.36rem;
       color: #cfc2eb;
       letter-spacing: 0.5px;
+      text-transform: uppercase;
     }
 
     /* Small Screen & Mobile Landscape Optimization */
@@ -652,42 +645,57 @@
       canvas#gameCanvas {
         max-width: min(44vw, 42vh);
       }
-      .dpad-wrapper {
-        width: 96px;
-        height: 96px;
+      .joystick-zone {
+        width: 100px;
+        height: 100px;
       }
-      .dpad-cross {
-        width: 84px;
-        height: 84px;
+      .joystick-base {
+        width: 92px;
+        height: 92px;
       }
-      .dpad-btn {
-        width: 28px;
-        height: 28px;
+      .joystick-knob {
+        width: 42px;
+        height: 42px;
       }
-      .dpad-up, .dpad-down { left: 28px; }
-      .dpad-left, .dpad-right { top: 28px; }
-      .dpad-center { top: 28px; left: 28px; width: 28px; height: 28px; }
-      .arcade-action-btn {
+      .btn-possess-style {
+        width: 46px;
+        height: 46px;
+        font-size: 0.38rem;
+      }
+      .btn-start-style, .btn-music-style {
         width: 38px;
         height: 38px;
-        font-size: 0.65rem;
+        font-size: 0.34rem;
       }
     }
 
-    @media (max-width: 375px) {
+    @media (max-width: 380px) {
       .gameboy-console {
         padding: 6px 8px 10px;
       }
-      .dpad-wrapper {
+      .joystick-zone {
         width: 104px;
         height: 104px;
       }
-      .arcade-action-btn {
+      .joystick-base {
+        width: 96px;
+        height: 96px;
+      }
+      .joystick-knob {
+        width: 44px;
+        height: 44px;
+      }
+      .gb-arcade-buttons-deck {
+        padding: 6px 8px;
+        gap: 6px;
+      }
+      .btn-possess-style {
+        width: 48px;
+        height: 48px;
+      }
+      .btn-start-style, .btn-music-style {
         width: 38px;
         height: 38px;
-      }
-      .pill-buttons-row {
-        gap: 6px;
       }
     }
   </style>
@@ -714,30 +722,33 @@
     <section class="gb-screen-bezel">
       <div class="bezel-top-deco">
         <div class="bezel-deco-line"></div>
-        <div class="bezel-title">DOT MATRIX COLOR SOUND</div>
+        <div class="bezel-title">DOT MATRIX CHIPTUNE SOUND</div>
         <div class="bezel-deco-line"></div>
       </div>
 
       <!-- Integrated HUD Inside Bezel -->
       <div class="gb-hud">
         <div class="hud-row">
-          <div class="hud-cleanliness">
-            <span>✨</span>
-            <span>CLEAN:</span>
-            <span id="scoreText" style="color: #39ff14; font-size: 0.62rem;">0 / 15</span>
+          <div class="hud-left-stats">
+            <span id="floorBadge" class="hud-floor-badge">FLOOR 1</span>
+            <div class="hud-cleanliness">
+              <span>✨</span>
+              <span>CLEAN:</span>
+              <span id="scoreText" style="color: #39ff14; font-size: 0.6rem;">0 / 25</span>
+            </div>
           </div>
           <div id="stealthBadge" class="hud-stealth-pill">GHOST FORM</div>
         </div>
 
         <div class="hud-row">
           <div class="panic-wrap">
-            <span style="color: #ff3366; font-size: 0.44rem;">PANIC:</span>
+            <span style="color: #ff3366; font-size: 0.42rem;">PANIC:</span>
             <div class="panic-bar-outer">
               <div id="panicBar" class="panic-bar-inner"></div>
             </div>
-            <span id="panicPercent" style="font-size: 0.44rem; color: #ff3366; width: 28px;">0%</span>
+            <span id="panicPercent" style="font-size: 0.42rem; color: #ff3366; width: 28px;">0%</span>
           </div>
-          <div id="statusTip" class="hud-subtext">PATROLLING ROOMS</div>
+          <div id="roomTag" class="hud-room-tag">📍 GRAND FOYER</div>
         </div>
       </div>
 
@@ -748,51 +759,49 @@
       </div>
     </section>
 
-    <!-- Game Boy Controller Deck -->
+    <!-- Game Boy Controller Deck: JOYSTICK + 3 BUTTONS (POSSESS, START, MUSIC) -->
     <footer class="gb-controls-deck">
-      <!-- Left: Cross D-Pad with sliding touch track -->
-      <div class="dpad-wrapper" id="dpadZone">
-        <div class="dpad-cross">
-          <button class="dpad-btn dpad-up" id="dpadUp" aria-label="Up">▲</button>
-          <button class="dpad-btn dpad-left" id="dpadLeft" aria-label="Left">◀</button>
-          <div class="dpad-center">
-            <div class="dpad-center-disc"></div>
+      <!-- Left: Smooth 360-degree Virtual Analog Joystick -->
+      <div class="joystick-zone" id="joystickZone">
+        <div class="joystick-base" id="joystickBase">
+          <div class="joystick-ring-deco"></div>
+          <span class="joystick-indicator up" id="joyArrowUp">▲</span>
+          <span class="joystick-indicator down" id="joyArrowDown">▼</span>
+          <span class="joystick-indicator left" id="joyArrowLeft">◀</span>
+          <span class="joystick-indicator right" id="joyArrowRight">▶</span>
+          <div class="joystick-knob" id="joystickKnob">
+            <div class="joystick-knob-core"></div>
           </div>
-          <button class="dpad-btn dpad-right" id="dpadRight" aria-label="Right">▶</button>
-          <button class="dpad-btn dpad-down" id="dpadDown" aria-label="Down">▼</button>
         </div>
       </div>
 
-      <!-- Center: SELECT / START & Speaker Grill -->
-      <div class="gb-center-controls">
-        <div class="pill-buttons-row">
-          <div class="pill-btn-group">
-            <button class="pill-btn" id="selectBtn" aria-label="Select SFX"></button>
-            <span class="pill-label" id="selectLabel">SFX ON</span>
-          </div>
-          <div class="pill-btn-group">
-            <button class="pill-btn" id="startBtn" aria-label="Start Reset"></button>
-            <span class="pill-label">START</span>
-          </div>
+      <!-- Right: 3 Dedicated Arcade Buttons -->
+      <div class="gb-arcade-buttons-deck">
+        <!-- Button 1: POSSESS / EJECT -->
+        <div class="arcade-btn-col">
+          <button class="arcade-custom-btn btn-possess-style" id="btnPossess" aria-label="Possess or Eject Furniture">
+            <span id="btnPossessIcon">👻</span>
+            <span id="btnPossessText" style="font-size: 0.38rem; margin-top: 2px;">POSSESS</span>
+          </button>
+          <span class="btn-sub-label">POSSESS</span>
         </div>
 
-        <div class="speaker-slits">
-          <div class="speaker-slit"></div>
-          <div class="speaker-slit"></div>
-          <div class="speaker-slit"></div>
-          <div class="speaker-slit"></div>
+        <!-- Button 2: START / RETRY / NEXT -->
+        <div class="arcade-btn-col">
+          <button class="arcade-custom-btn btn-start-style" id="btnStart" aria-label="Start or Restart Game">
+            <span>▶</span>
+            <span style="font-size: 0.34rem; margin-top: 2px;">START</span>
+          </button>
+          <span class="btn-sub-label">START</span>
         </div>
-      </div>
 
-      <!-- Right: Angled A & B Action Buttons -->
-      <div class="action-plate">
-        <div class="action-btn-group">
-          <button class="arcade-action-btn btn-b-style" id="btnB" aria-label="Button B Action">B</button>
-          <span class="action-sublabel">ACTION</span>
-        </div>
-        <div class="action-btn-group">
-          <button class="arcade-action-btn btn-a-style" id="btnA" aria-label="Button A Possess">A</button>
-          <span class="action-sublabel">POSSESS</span>
+        <!-- Button 3: MUSIC / SOUND TOGGLE -->
+        <div class="arcade-btn-col">
+          <button class="arcade-custom-btn btn-music-style" id="btnMusic" aria-label="Toggle 8-Bit Music and Sound">
+            <span id="musicIcon">🎵</span>
+            <span id="musicText" style="font-size: 0.34rem; margin-top: 2px;">BGM</span>
+          </button>
+          <span class="btn-sub-label" id="musicSubLabel">MUSIC</span>
         </div>
       </div>
     </footer>
@@ -800,13 +809,17 @@
 
   <script>
     /* ==========================================================================
-       8-BIT SOUND SYNTHESIZER (Web Audio API)
+       8-BIT RETRO CHIPTUNE SOUND SYNTHESIZER & BGM ENGINE (Web Audio API)
        ========================================================================== */
-    class RetroAudio {
+    class RetroAudioEngine {
       constructor() {
         this.ctx = null;
-        this.enabled = true;
+        this.musicEnabled = true;
+        this.sfxEnabled = true;
         this.lastAlertTime = 0;
+        this.bgmTimer = null;
+        this.bgmStep = 0;
+        this.tempo = 145; // BPM
       }
 
       init() {
@@ -821,8 +834,121 @@
         }
       }
 
+      startBGM() {
+        if (this.bgmTimer || !this.musicEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+
+        const stepTimeMs = (60 / this.tempo / 4) * 1000;
+        this.bgmStep = 0;
+        this.bgmTimer = setInterval(() => {
+          this.playBGMStep();
+        }, stepTimeMs);
+      }
+
+      stopBGM() {
+        if (this.bgmTimer) {
+          clearInterval(this.bgmTimer);
+          this.bgmTimer = null;
+        }
+      }
+
+      toggleMusic() {
+        this.musicEnabled = !this.musicEnabled;
+        if (this.musicEnabled) {
+          this.init();
+          this.startBGM();
+        } else {
+          this.stopBGM();
+        }
+        return this.musicEnabled;
+      }
+
+      playBGMStep() {
+        if (!this.musicEnabled || !this.ctx || this.ctx.state !== 'running') return;
+        const now = this.ctx.currentTime;
+        const step = this.bgmStep % 32;
+
+        // Chiptune Bassline (Triangle)
+        const bassNotes = [
+          110, 0, 110, 0,  130.81, 0, 110, 0,
+          98, 0, 98, 0,   123.47, 0, 98, 0,
+          87.31, 0, 87.31, 0, 110, 0, 87.31, 0,
+          98, 0, 110, 0,  123.47, 0, 130.81, 146.83
+        ];
+
+        const bassFreq = bassNotes[step];
+        if (bassFreq > 0) {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(bassFreq, now);
+          gain.gain.setValueAtTime(0.12, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.13);
+        }
+
+        // Spooky Lead Melody (Square Wave)
+        const leadNotes = [
+          440, 0, 523.25, 0,  659.25, 0, 587.33, 0,
+          440, 0, 392, 0,     440, 0, 0, 0,
+          349.23, 0, 440, 0,  523.25, 0, 440, 0,
+          392, 0, 440, 0,     493.88, 0, 523.25, 0
+        ];
+
+        const leadFreq = leadNotes[step];
+        if (leadFreq > 0) {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(leadFreq, now);
+          gain.gain.setValueAtTime(0.045, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.17);
+        }
+
+        // 8-bit Noise Hi-Hat / Snare rhythm
+        if (step % 4 === 2) {
+          this.playNoiseTick(0.04, 0.02);
+        }
+
+        this.bgmStep++;
+      }
+
+      playNoiseTick(dur, vol) {
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const bufferSize = this.ctx.sampleRate * dur;
+        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = Math.random() * 2 - 1;
+        }
+
+        const noise = this.ctx.createBufferSource();
+        noise.buffer = buffer;
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'highpass';
+        filter.frequency.setValueAtTime(4000, now);
+
+        const gain = this.ctx.createGain();
+        gain.gain.setValueAtTime(vol, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(this.ctx.destination);
+        noise.start(now);
+      }
+
       playSlimeClean() {
-        if (!this.enabled) return;
+        if (!this.sfxEnabled) return;
         this.init();
         if (!this.ctx) return;
 
@@ -831,9 +957,9 @@
         const gain = this.ctx.createGain();
         osc.type = 'triangle';
         
-        osc.frequency.setValueAtTime(160, now);
-        osc.frequency.exponentialRampToValueAtTime(880, now + 0.08);
-        osc.frequency.exponentialRampToValueAtTime(320, now + 0.16);
+        osc.frequency.setValueAtTime(180, now);
+        osc.frequency.exponentialRampToValueAtTime(920, now + 0.08);
+        osc.frequency.exponentialRampToValueAtTime(360, now + 0.16);
 
         gain.gain.setValueAtTime(0.3, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
@@ -846,20 +972,20 @@
         const chime = this.ctx.createOscillator();
         const chimeGain = this.ctx.createGain();
         chime.type = 'sine';
-        chime.frequency.setValueAtTime(1200, now + 0.05);
-        chime.frequency.exponentialRampToValueAtTime(1800, now + 0.15);
+        chime.frequency.setValueAtTime(1300, now + 0.04);
+        chime.frequency.exponentialRampToValueAtTime(2100, now + 0.16);
 
-        chimeGain.gain.setValueAtTime(0.15, now + 0.05);
+        chimeGain.gain.setValueAtTime(0.18, now + 0.04);
         chimeGain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
 
         chime.connect(chimeGain);
         chimeGain.connect(this.ctx.destination);
-        chime.start(now + 0.05);
+        chime.start(now + 0.04);
         chime.stop(now + 0.22);
       }
 
       playPossess() {
-        if (!this.enabled) return;
+        if (!this.sfxEnabled) return;
         this.init();
         if (!this.ctx) return;
 
@@ -867,20 +993,20 @@
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(220, now);
-        osc.frequency.exponentialRampToValueAtTime(660, now + 0.15);
+        osc.frequency.setValueAtTime(240, now);
+        osc.frequency.exponentialRampToValueAtTime(880, now + 0.18);
 
-        gain.gain.setValueAtTime(0.25, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.24);
 
         osc.connect(gain);
         gain.connect(this.ctx.destination);
         osc.start(now);
-        osc.stop(now + 0.2);
+        osc.stop(now + 0.24);
       }
 
       playUnpossess() {
-        if (!this.enabled) return;
+        if (!this.sfxEnabled) return;
         this.init();
         if (!this.ctx) return;
 
@@ -888,20 +1014,20 @@
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(660, now);
-        osc.frequency.exponentialRampToValueAtTime(220, now + 0.15);
+        osc.frequency.setValueAtTime(780, now);
+        osc.frequency.exponentialRampToValueAtTime(220, now + 0.18);
 
-        gain.gain.setValueAtTime(0.25, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.24);
 
         osc.connect(gain);
         gain.connect(this.ctx.destination);
         osc.start(now);
-        osc.stop(now + 0.2);
+        osc.stop(now + 0.24);
       }
 
       playPanicAlert() {
-        if (!this.enabled) return;
+        if (!this.sfxEnabled) return;
         this.init();
         if (!this.ctx) return;
 
@@ -912,8 +1038,8 @@
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(580, now);
-        osc.frequency.setValueAtTime(780, now + 0.08);
+        osc.frequency.setValueAtTime(620, now);
+        osc.frequency.setValueAtTime(840, now + 0.08);
 
         gain.gain.setValueAtTime(0.2, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
@@ -925,7 +1051,7 @@
       }
 
       playBump() {
-        if (!this.enabled) return;
+        if (!this.sfxEnabled) return;
         this.init();
         if (!this.ctx) return;
 
@@ -933,8 +1059,8 @@
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         osc.type = 'square';
-        osc.frequency.setValueAtTime(80, now);
-        osc.frequency.exponentialRampToValueAtTime(40, now + 0.08);
+        osc.frequency.setValueAtTime(85, now);
+        osc.frequency.exponentialRampToValueAtTime(45, now + 0.08);
 
         gain.gain.setValueAtTime(0.12, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
@@ -946,62 +1072,62 @@
       }
 
       playBusted() {
-        if (!this.enabled) return;
+        if (!this.sfxEnabled) return;
         this.init();
         if (!this.ctx) return;
 
         const now = this.ctx.currentTime;
-        const tones = [380, 320, 240, 160, 110];
+        const tones = [420, 350, 260, 180, 120];
         tones.forEach((freq, i) => {
           const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
           osc.type = 'sawtooth';
-          osc.frequency.setValueAtTime(freq, now + i * 0.12);
+          osc.frequency.setValueAtTime(freq, now + i * 0.11);
 
-          gain.gain.setValueAtTime(0.25, now + i * 0.12);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.12 + 0.18);
+          gain.gain.setValueAtTime(0.25, now + i * 0.11);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.11 + 0.18);
 
           osc.connect(gain);
           gain.connect(this.ctx.destination);
-          osc.start(now + i * 0.12);
-          osc.stop(now + i * 0.12 + 0.2);
+          osc.start(now + i * 0.11);
+          osc.stop(now + i * 0.11 + 0.2);
         });
       }
 
       playVictory() {
-        if (!this.enabled) return;
+        if (!this.sfxEnabled) return;
         this.init();
         if (!this.ctx) return;
 
-        const notes = [523.25, 659.25, 783.99, 1046.50, 880.00, 1046.50];
+        const notes = [523.25, 659.25, 783.99, 1046.50, 880.00, 1046.50, 1318.51];
         const now = this.ctx.currentTime;
 
         notes.forEach((freq, i) => {
           const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
           osc.type = 'square';
-          osc.frequency.setValueAtTime(freq, now + i * 0.1);
+          osc.frequency.setValueAtTime(freq, now + i * 0.09);
 
-          gain.gain.setValueAtTime(0.2, now + i * 0.1);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.1 + 0.18);
+          gain.gain.setValueAtTime(0.22, now + i * 0.09);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.09 + 0.2);
 
           osc.connect(gain);
           gain.connect(this.ctx.destination);
-          osc.start(now + i * 0.1);
-          osc.stop(now + i * 0.1 + 0.2);
+          osc.start(now + i * 0.09);
+          osc.stop(now + i * 0.09 + 0.22);
         });
       }
 
       playClick() {
-        if (!this.enabled) return;
+        if (!this.sfxEnabled) return;
         this.init();
         if (!this.ctx) return;
         const now = this.ctx.currentTime;
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(800, now);
-        osc.frequency.exponentialRampToValueAtTime(400, now + 0.04);
+        osc.frequency.setValueAtTime(880, now);
+        osc.frequency.exponentialRampToValueAtTime(440, now + 0.04);
         gain.gain.setValueAtTime(0.1, now);
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
         osc.connect(gain);
@@ -1011,62 +1137,205 @@
       }
     }
 
-    const audio = new RetroAudio();
+    const audio = new RetroAudioEngine();
 
     /* ==========================================================================
-       GAME CONSTANTS & MAP TEMPLATE
+       MANSION LEVELS ARCHITECTURE (Bigger Mansion, Multi-Room Expansive Layouts)
        ========================================================================== */
-    const GRID_SIZE = 16;
-    const CANVAS_SIZE = 512;
-    const TILE_SIZE = CANVAS_SIZE / GRID_SIZE; // 32px per tile
-    const TOTAL_SLIMES = 15;
-    const TOTAL_FURNITURE = 5;
+    const TILE_SIZE = 32;
+    const CANVAS_VIEWPORT_SIZE = 512;
 
     const TILE = {
       FLOOR: 0,
       WALL: 1,
-      PILLAR: 2,
+      PILLAR: 2
     };
 
-    // 16x16 Mansion Grid layout with interconnected corridors & rooms
-    const MANSION_MAP_TEMPLATE = [
-      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-      [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-      [1, 0, 2, 0, 0, 1, 0, 2, 2, 0, 1, 0, 0, 2, 0, 1],
-      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-      [1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1],
-      [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-      [1, 0, 2, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 2, 0, 1],
-      [1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1],
-      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-      [1, 0, 2, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 2, 0, 1],
-      [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-      [1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1],
-      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-      [1, 0, 2, 0, 0, 1, 0, 2, 2, 0, 1, 0, 0, 2, 0, 1],
-      [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    // LEVEL DEFINITIONS
+    const LEVELS = [
+      {
+        id: 1,
+        name: "GROUND FLOOR MANOR",
+        totalSlimes: 25,
+        totalFurniture: 8,
+        cols: 24,
+        rows: 24,
+        spawnX: 4.5,
+        spawnY: 4.5,
+        rooms: [
+          { name: "Grand Foyer", x1: 1, y1: 1, x2: 7, y2: 7 },
+          { name: "Living Parlor", x1: 8, y1: 1, x2: 15, y2: 7 },
+          { name: "Conservatory", x1: 16, y1: 1, x2: 22, y2: 7 },
+          { name: "Dining Hall", x1: 1, y1: 8, x2: 8, y2: 15 },
+          { name: "Grand Hallway", x1: 9, y1: 8, x2: 14, y2: 15 },
+          { name: "Kitchen & Pantry", x1: 15, y1: 8, x2: 22, y2: 15 },
+          { name: "Wine Cellar", x1: 1, y1: 16, x2: 10, y2: 22 },
+          { name: "Library Annex", x1: 12, y1: 16, x2: 22, y2: 22 }
+        ],
+        patrolWaypoints: [
+          { x: 4, y: 4, name: "Grand Foyer" },
+          { x: 12, y: 4, name: "Living Parlor" },
+          { x: 19, y: 4, name: "Conservatory" },
+          { x: 19, y: 12, name: "Kitchen" },
+          { x: 11, y: 11, name: "Grand Hallway" },
+          { x: 4, y: 12, name: "Dining Hall" },
+          { x: 5, y: 19, name: "Wine Cellar" },
+          { x: 17, y: 19, name: "Library Annex" }
+        ],
+        npcs: [
+          { speed: 72, radius: 12, visionLength: 150, visionAngle: Math.PI / 5.2, name: "Homeowner" }
+        ]
+      },
+      {
+        id: 2,
+        name: "GRAND ARCHIVES & OBSERVATORY",
+        totalSlimes: 35,
+        totalFurniture: 10,
+        cols: 26,
+        rows: 26,
+        spawnX: 4.5,
+        spawnY: 4.5,
+        rooms: [
+          { name: "Ancient Archives", x1: 1, y1: 1, x2: 8, y2: 8 },
+          { name: "Curio Gallery", x1: 9, y1: 1, x2: 16, y2: 8 },
+          { name: "Stargazer Observatory", x1: 17, y1: 1, x2: 24, y2: 8 },
+          { name: "Scriptorium", x1: 1, y1: 9, x2: 7, y2: 16 },
+          { name: "Central Rotunda", x1: 8, y1: 9, x2: 17, y2: 16 },
+          { name: "Alchemist Lab", x1: 18, y1: 9, x2: 24, y2: 16 },
+          { name: "Clocktower Wing", x1: 1, y1: 17, x2: 11, y2: 24 },
+          { name: "Rare Books Chamber", x1: 13, y1: 17, x2: 24, y2: 24 }
+        ],
+        patrolWaypoints: [
+          { x: 4, y: 4, name: "Ancient Archives" },
+          { x: 13, y: 4, name: "Curio Gallery" },
+          { x: 21, y: 4, name: "Stargazer Observatory" },
+          { x: 21, y: 12, name: "Alchemist Lab" },
+          { x: 12, y: 12, name: "Central Rotunda" },
+          { x: 4, y: 12, name: "Scriptorium" },
+          { x: 6, y: 20, name: "Clocktower Wing" },
+          { x: 18, y: 20, name: "Rare Books Chamber" }
+        ],
+        npcs: [
+          { speed: 76, radius: 12, visionLength: 155, visionAngle: Math.PI / 5.0, name: "Head Butler" },
+          { speed: 68, radius: 12, visionLength: 140, visionAngle: Math.PI / 5.5, name: "Night Watchman" }
+        ]
+      },
+      {
+        id: 3,
+        name: "PHANTOM BALLROOM & MASTER SUITE",
+        totalSlimes: 45,
+        totalFurniture: 12,
+        cols: 28,
+        rows: 28,
+        spawnX: 5.5,
+        spawnY: 5.5,
+        rooms: [
+          { name: "Royal Ballroom", x1: 1, y1: 1, x2: 13, y2: 9 },
+          { name: "Musicians Balcony", x1: 14, y1: 1, x2: 26, y2: 9 },
+          { name: "Trophy Gallery", x1: 1, y1: 10, x2: 8, y2: 18 },
+          { name: "Grand Chandelier Foyer", x1: 9, y1: 10, x2: 18, y2: 18 },
+          { name: "Haunted Master Suite", x1: 19, y1: 10, x2: 26, y2: 18 },
+          { name: "Vault & Secret Passages", x1: 1, y1: 19, x2: 12, y2: 26 },
+          { name: "Crypt Sanctuary", x1: 14, y1: 19, x2: 26, y2: 26 }
+        ],
+        patrolWaypoints: [
+          { x: 7, y: 5, name: "Royal Ballroom" },
+          { x: 20, y: 5, name: "Musicians Balcony" },
+          { x: 22, y: 14, name: "Haunted Master Suite" },
+          { x: 13, y: 14, name: "Grand Chandelier Foyer" },
+          { x: 4, y: 14, name: "Trophy Gallery" },
+          { x: 6, y: 22, name: "Vault" },
+          { x: 20, y: 22, name: "Crypt Sanctuary" }
+        ],
+        npcs: [
+          { speed: 82, radius: 12, visionLength: 165, visionAngle: Math.PI / 4.8, name: "Mansion Owner" },
+          { speed: 78, radius: 12, visionLength: 150, visionAngle: Math.PI / 5.2, name: "Spectral Detective" }
+        ]
+      }
     ];
 
-    // Key mansion patrol rooms / checkpoints
-    const MANSION_PATROL_WAYPOINTS = [
-      { x: 3, y: 1, name: "North-West Room" },
-      { x: 12, y: 1, name: "North-East Room" },
-      { x: 7, y: 3, name: "North Hallway" },
-      { x: 2, y: 8, name: "West Corridor" },
-      { x: 8, y: 8, name: "Central Foyer" },
-      { x: 13, y: 8, name: "East Corridor" },
-      { x: 7, y: 12, name: "South Hallway" },
-      { x: 3, y: 14, name: "Cellar Wing" },
-      { x: 12, y: 14, name: "Library Wing" }
-    ];
+    /* Generate Procedural Multi-Room Grid for Level */
+    function generateLevelMap(level) {
+      const grid = [];
+      const cols = level.cols;
+      const rows = level.rows;
+
+      // Fill with floor
+      for (let y = 0; y < rows; y++) {
+        const row = [];
+        for (let x = 0; x < cols; x++) {
+          if (x === 0 || x === cols - 1 || y === 0 || y === rows - 1) {
+            row.push(TILE.WALL);
+          } else {
+            row.push(TILE.FLOOR);
+          }
+        }
+        grid.push(row);
+      }
+
+      // Add room partitions
+      level.rooms.forEach(room => {
+        for (let y = room.y1; y <= room.y2; y++) {
+          if (room.x1 > 0 && room.x1 < cols - 1) grid[y][room.x1] = TILE.WALL;
+          if (room.x2 > 0 && room.x2 < cols - 1) grid[y][room.x2] = TILE.WALL;
+        }
+        for (let x = room.x1; x <= room.x2; x++) {
+          if (room.y1 > 0 && room.y1 < rows - 1) grid[room.y1][x] = TILE.WALL;
+          if (room.y2 > 0 && room.y2 < rows - 1) grid[room.y2][x] = TILE.WALL;
+        }
+      });
+
+      // Punch wide doorways (2-3 tiles wide) between all adjacent rooms
+      level.rooms.forEach(room => {
+        const midX = Math.floor((room.x1 + room.x2) / 2);
+        const midY = Math.floor((room.y1 + room.y2) / 2);
+
+        if (room.y1 > 0) {
+          grid[room.y1][midX] = TILE.FLOOR;
+          if (midX + 1 < cols - 1) grid[room.y1][midX + 1] = TILE.FLOOR;
+          if (midX - 1 > 0) grid[room.y1][midX - 1] = TILE.FLOOR;
+        }
+        if (room.y2 < rows - 1) {
+          grid[room.y2][midX] = TILE.FLOOR;
+          if (midX + 1 < cols - 1) grid[room.y2][midX + 1] = TILE.FLOOR;
+          if (midX - 1 > 0) grid[room.y2][midX - 1] = TILE.FLOOR;
+        }
+        if (room.x1 > 0) {
+          grid[midY][room.x1] = TILE.FLOOR;
+          if (midY + 1 < rows - 1) grid[midY + 1][room.x1] = TILE.FLOOR;
+          if (midY - 1 > 0) grid[midY - 1][room.x1] = TILE.FLOOR;
+        }
+        if (room.x2 < cols - 1) {
+          grid[midY][room.x2] = TILE.FLOOR;
+          if (midY + 1 < rows - 1) grid[midY + 1][room.x2] = TILE.FLOOR;
+          if (midY - 1 > 0) grid[midY - 1][room.x2] = TILE.FLOOR;
+        }
+      });
+
+      // Ensure spawn tile and surroundings are completely clear
+      const sx = Math.floor(level.spawnX);
+      const sy = Math.floor(level.spawnY);
+      for (let dy = -1; dy <= 1; dy++) {
+        for (let dx = -1; dx <= 1; dx++) {
+          if (sy + dy > 0 && sy + dy < rows - 1 && sx + dx > 0 && sx + dx < cols - 1) {
+            grid[sy + dy][sx + dx] = TILE.FLOOR;
+          }
+        }
+      }
+
+      return grid;
+    }
 
     /* ==========================================================================
-       GAME STATE
+       GAME STATE & GLOBAL VARIABLES
        ========================================================================== */
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
     ctx.imageSmoothingEnabled = false;
+
+    let currentLevelIndex = 0;
+    let currentLevel = LEVELS[0];
+    let levelMap = generateLevelMap(currentLevel);
 
     let score = 0;
     let panicMeter = 0; // 0 to 100%
@@ -1074,28 +1343,31 @@
     let furnitureList = [];
     let particles = [];
     let floatingTexts = [];
+    let npcs = [];
     let shakeIntensity = 0;
     let shakeDuration = 0;
     let gameOver = false;
     let busted = false;
+    let levelCleared = false;
     let gameTime = 0;
     let closestFurniture = null;
 
-    // Keys state
-    const keys = {
-      up: false,
-      down: false,
-      left: false,
-      right: false,
-      space: false
+    // Smooth Camera Tracking Viewport
+    const camera = {
+      x: 0,
+      y: 0,
+      targetX: 0,
+      targetY: 0
     };
 
     // Ghost Janitor Player
     const player = {
-      x: 1.5 * TILE_SIZE,
-      y: 1.5 * TILE_SIZE,
+      x: 4.5 * TILE_SIZE,
+      y: 4.5 * TILE_SIZE,
+      vx: 0,
+      vy: 0,
       radius: 11,
-      baseSpeed: 130,
+      baseSpeed: 140,
       direction: 'down',
       isMoving: false,
       isPossessing: false,
@@ -1106,36 +1378,18 @@
       lastBumpSound: 0
     };
 
-    // Human Homeowner NPC with Multi-Path Patrol AI
-    const homeowner = {
-      x: 8.5 * TILE_SIZE,
-      y: 8.5 * TILE_SIZE,
-      radius: 11,
-      speed: 68,
-      direction: 'down',
-      visionAngleFacing: Math.PI / 2,
-      targetVisionAngle: Math.PI / 2,
-      visionLength: 140,
-      visionAngle: Math.PI / 5.5,
-      walkFrame: 0,
-      
-      // Dynamic Path Navigation
-      currentPath: [],
-      pathIndex: 0,
-      currentWaypointIdx: 0,
-      state: 'patrolling',
-      inspectTimer: 0,
-      inspectPhase: 0
-    };
+    // Keys & Virtual Joystick Input State
+    const inputVector = { x: 0, y: 0, active: false };
+    const keyboardKeys = { up: false, down: false, left: false, right: false };
 
     /* ==========================================================================
-       PATHFINDING (BFS on 16x16 Grid)
+       PATHFINDING (BFS on Expanded Grid)
        ========================================================================== */
     function isWalkable(gridX, gridY) {
-      if (gridX < 0 || gridX >= GRID_SIZE || gridY < 0 || gridY >= GRID_SIZE) {
+      if (gridX < 0 || gridX >= currentLevel.cols || gridY < 0 || gridY >= currentLevel.rows) {
         return false;
       }
-      return MANSION_MAP_TEMPLATE[gridY][gridX] === TILE.FLOOR;
+      return levelMap[gridY][gridX] === TILE.FLOOR;
     }
 
     function checkWallCollision(px, py, radius) {
@@ -1170,7 +1424,9 @@
       const visited = new Set();
       visited.add(`${startX},${startY}`);
 
-      while (queue.length > 0) {
+      let stepsLimit = 1200;
+
+      while (queue.length > 0 && stepsLimit-- > 0) {
         const current = queue.shift();
         
         if (current.x === targetX && current.y === targetY) {
@@ -1209,105 +1465,176 @@
       }
     }
 
-    function pickNextPatrolDestination() {
-      let nextIdx = Math.floor(Math.random() * MANSION_PATROL_WAYPOINTS.length);
-      while (nextIdx === homeowner.currentWaypointIdx) {
-        nextIdx = Math.floor(Math.random() * MANSION_PATROL_WAYPOINTS.length);
+    function getCurrentRoomName(px, py) {
+      const gx = Math.floor(px / TILE_SIZE);
+      const gy = Math.floor(py / TILE_SIZE);
+
+      for (const room of currentLevel.rooms) {
+        if (gx >= room.x1 && gx <= room.x2 && gy >= room.y1 && gy <= room.y2) {
+          return room.name;
+        }
       }
-      homeowner.currentWaypointIdx = nextIdx;
-      const targetWp = MANSION_PATROL_WAYPOINTS[nextIdx];
+      return "Haunted Hallway";
+    }
 
-      const curGridX = Math.floor(homeowner.x / TILE_SIZE);
-      const curGridY = Math.floor(homeowner.y / TILE_SIZE);
+    function pickNextNPCDestination(npc) {
+      let nextIdx = Math.floor(Math.random() * currentLevel.patrolWaypoints.length);
+      while (nextIdx === npc.currentWaypointIdx && currentLevel.patrolWaypoints.length > 1) {
+        nextIdx = Math.floor(Math.random() * currentLevel.patrolWaypoints.length);
+      }
+      npc.currentWaypointIdx = nextIdx;
+      const targetWp = currentLevel.patrolWaypoints[nextIdx];
 
-      homeowner.currentPath = findBFSPath(curGridX, curGridY, targetWp.x, targetWp.y);
-      homeowner.pathIndex = 0;
-      homeowner.state = 'patrolling';
+      const curGridX = Math.floor(npc.x / TILE_SIZE);
+      const curGridY = Math.floor(npc.y / TILE_SIZE);
+
+      npc.currentPath = findBFSPath(curGridX, curGridY, targetWp.x, targetWp.y);
+      npc.pathIndex = 0;
+      npc.state = 'patrolling';
     }
 
     /* ==========================================================================
        INITIALIZATION & SPAWNING
        ========================================================================== */
-    function initGame() {
+    function loadLevel(levelIdx) {
+      currentLevelIndex = (levelIdx + LEVELS.length) % LEVELS.length;
+      currentLevel = LEVELS[currentLevelIndex];
+      levelMap = generateLevelMap(currentLevel);
+
       score = 0;
       panicMeter = 0;
       slimes = [];
       furnitureList = [];
       particles = [];
       floatingTexts = [];
+      npcs = [];
       shakeIntensity = 0;
       shakeDuration = 0;
       gameOver = false;
       busted = false;
+      levelCleared = false;
 
-      // Reset Player
-      player.x = 1.5 * TILE_SIZE;
-      player.y = 1.5 * TILE_SIZE;
+      // Reset Player inside starting Foyer
+      player.x = currentLevel.spawnX * TILE_SIZE;
+      player.y = currentLevel.spawnY * TILE_SIZE;
       player.direction = 'down';
       player.isPossessing = false;
       player.possessedFurniture = null;
 
-      // Reset Homeowner NPC
-      homeowner.x = 8.5 * TILE_SIZE;
-      homeowner.y = 8.5 * TILE_SIZE;
-      homeowner.direction = 'down';
-      homeowner.visionAngleFacing = Math.PI / 2;
-      homeowner.targetVisionAngle = Math.PI / 2;
-      homeowner.currentWaypointIdx = 4;
-      pickNextPatrolDestination();
-
-      // Find empty walkable tiles
+      // Find all empty walkable tiles away from spawn
       const emptyTiles = [];
-      for (let y = 0; y < GRID_SIZE; y++) {
-        for (let x = 0; x < GRID_SIZE; x++) {
-          if (MANSION_MAP_TEMPLATE[y][x] === TILE.FLOOR) {
-            if (!(x <= 2 && y <= 2) && !(x >= 7 && x <= 9 && y >= 7 && y <= 9)) {
+      for (let y = 1; y < currentLevel.rows - 1; y++) {
+        for (let x = 1; x < currentLevel.cols - 1; x++) {
+          if (levelMap[y][x] === TILE.FLOOR) {
+            const dx = x - currentLevel.spawnX;
+            const dy = y - currentLevel.spawnY;
+            if (dx * dx + dy * dy > 8) {
               emptyTiles.push({ x, y });
             }
           }
         }
       }
 
-      // Shuffle tiles
+      // Shuffle empty tiles
       for (let i = emptyTiles.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [emptyTiles[i], emptyTiles[j]] = [emptyTiles[j], emptyTiles[i]];
       }
 
-      // Spawn 5 Furniture Items
-      const furnitureTypes = ['chair', 'lamp', 'armchair', 'clock', 'table'];
-      for (let i = 0; i < TOTAL_FURNITURE; i++) {
+      // Spawn Furniture Items
+      const furnitureTypes = ['armchair', 'clock', 'table', 'lamp', 'chair', 'mirror_cabinet', 'piano'];
+      for (let i = 0; i < currentLevel.totalFurniture; i++) {
+        if (emptyTiles.length === 0) break;
         const tile = emptyTiles.pop();
         furnitureList.push({
           id: i,
           type: furnitureTypes[i % furnitureTypes.length],
           x: (tile.x + 0.5) * TILE_SIZE,
           y: (tile.y + 0.5) * TILE_SIZE,
-          radius: 12,
+          radius: 14,
           isPossessed: false
         });
       }
 
-      // Spawn 15 Slime Spills
-      const slimeCount = Math.min(TOTAL_SLIMES, emptyTiles.length);
+      // Spawn Multi-Type Slime Spills (Standard Green, Mega Cyan, Sparkle Purple)
+      const slimeCount = Math.min(currentLevel.totalSlimes, emptyTiles.length);
       for (let i = 0; i < slimeCount; i++) {
         const tile = emptyTiles.pop();
+        const slimeTypeRoll = Math.random();
+        let sType = 'green';
+        let sRadius = 10;
+        let sPoints = 1;
+        let sColor = '#39ff14';
+
+        if (slimeTypeRoll > 0.75) {
+          sType = 'purple';
+          sRadius = 11;
+          sPoints = 1;
+          sColor = '#f72585';
+        } else if (slimeTypeRoll > 0.55) {
+          sType = 'cyan';
+          sRadius = 13;
+          sPoints = 2;
+          sColor = '#00f0ff';
+        }
+
         slimes.push({
           id: i,
+          type: sType,
+          points: sPoints,
           x: (tile.x + 0.5) * TILE_SIZE,
           y: (tile.y + 0.5) * TILE_SIZE,
-          radius: 10,
+          radius: sRadius,
+          color: sColor,
           bubblePhase: Math.random() * Math.PI * 2,
-          bubbleSpeed: 2 + Math.random() * 3
+          bubbleSpeed: 2.2 + Math.random() * 3
         });
       }
+
+      // Initialize Patrolling NPCs for this floor
+      currentLevel.npcs.forEach((npcDef, i) => {
+        const startWpIdx = (i * 3 + 2) % currentLevel.patrolWaypoints.length;
+        const wp = currentLevel.patrolWaypoints[startWpIdx];
+        const npc = {
+          id: i,
+          name: npcDef.name,
+          x: (wp.x + 0.5) * TILE_SIZE,
+          y: (wp.y + 0.5) * TILE_SIZE,
+          radius: npcDef.radius,
+          speed: npcDef.speed,
+          direction: 'down',
+          visionAngleFacing: Math.PI / 2,
+          targetVisionAngle: Math.PI / 2,
+          visionLength: npcDef.visionLength,
+          visionAngle: npcDef.visionAngle,
+          walkFrame: 0,
+          currentPath: [],
+          pathIndex: 0,
+          currentWaypointIdx: startWpIdx,
+          state: 'patrolling',
+          inspectTimer: 0,
+          inspectPhase: 0
+        };
+        pickNextNPCDestination(npc);
+        npcs.push(npc);
+      });
+
+      // Center camera on player
+      camera.x = player.x - CANVAS_VIEWPORT_SIZE / 2;
+      camera.y = player.y - CANVAS_VIEWPORT_SIZE / 2;
 
       updateUI();
     }
 
+    function initGame() {
+      loadLevel(0);
+      audio.startBGM();
+    }
+
     function updateUI() {
-      // Score
-      document.getElementById('scoreText').textContent = `${score} / ${TOTAL_SLIMES}`;
+      // Floor & Clean Score
+      document.getElementById('floorBadge').textContent = `FLOOR ${currentLevel.id}`;
+      document.getElementById('scoreText').textContent = `${score} / ${currentLevel.totalSlimes}`;
       
       // Panic Bar
       const panicPercent = Math.min(100, Math.max(0, Math.floor(panicMeter)));
@@ -1329,50 +1656,63 @@
         panicAlert.style.opacity = '0';
       }
 
-      // Stealth State Badge
+      // Stealth State Badge & Possess Button Text
       const stealthBadge = document.getElementById('stealthBadge');
+      const btnPossess = document.getElementById('btnPossess');
+      const btnPossessText = document.getElementById('btnPossessText');
+      const btnPossessIcon = document.getElementById('btnPossessIcon');
+
       if (player.isPossessing && player.possessedFurniture) {
         stealthBadge.textContent = `HIDDEN: ${player.possessedFurniture.type.toUpperCase()}`;
         stealthBadge.className = 'hud-stealth-pill hidden';
+        btnPossess.classList.add('eject-mode');
+        btnPossessText.textContent = 'EJECT';
+        btnPossessIcon.textContent = '⚡';
       } else {
         stealthBadge.textContent = 'GHOST FORM';
         stealthBadge.className = 'hud-stealth-pill';
+        btnPossess.classList.remove('eject-mode');
+        btnPossessText.textContent = 'POSSESS';
+        btnPossessIcon.textContent = '👻';
       }
 
-      // Status Prompt
-      const statusTip = document.getElementById('statusTip');
+      // Room Name Tag
+      const currentRoom = getCurrentRoomName(player.x, player.y);
+      document.getElementById('roomTag').textContent = `📍 ${currentRoom.toUpperCase()}`;
 
-      if (busted) {
-        statusTip.textContent = 'BUSTED! PRESS [A] / START';
-        statusTip.style.color = '#ff0055';
-      } else if (score >= TOTAL_SLIMES) {
-        statusTip.textContent = 'MANSION CLEAN! PLAY AGAIN';
-        statusTip.style.color = '#39ff14';
-      } else if (player.isPossessing) {
-        statusTip.textContent = 'STEALTH: HIDDEN (HALF SPEED)';
-        statusTip.style.color = '#00f0ff';
-      } else if (closestFurniture) {
-        statusTip.textContent = `NEAR ${closestFurniture.type.toUpperCase()}: PRESS [A]`;
-        statusTip.style.color = '#e0aaff';
+      // Music Button UI
+      const btnMusic = document.getElementById('btnMusic');
+      const musicIcon = document.getElementById('musicIcon');
+      const musicText = document.getElementById('musicText');
+      if (audio.musicEnabled) {
+        btnMusic.classList.remove('muted');
+        musicIcon.textContent = '🎵';
+        musicText.textContent = 'BGM ON';
       } else {
-        const destName = MANSION_PATROL_WAYPOINTS[homeowner.currentWaypointIdx].name;
-        statusTip.textContent = `NPC IN: ${destName.toUpperCase()}`;
-        statusTip.style.color = '#f6c90e';
+        btnMusic.classList.add('muted');
+        musicIcon.textContent = '🔇';
+        musicText.textContent = 'MUTED';
       }
     }
 
     /* ==========================================================================
-       POSSESSION MECHANIC
+       FIXED & ENHANCED FURNITURE POSSESSION MECHANIC
        ========================================================================== */
     function togglePossession() {
       audio.init();
-      if (navigator.vibrate) navigator.vibrate(12);
+      if (navigator.vibrate) navigator.vibrate(14);
 
-      if (busted || (gameOver && score >= TOTAL_SLIMES)) {
-        initGame();
+      if (busted) {
+        loadLevel(currentLevelIndex);
         return;
       }
 
+      if (levelCleared) {
+        loadLevel(currentLevelIndex + 1);
+        return;
+      }
+
+      // 1. UNPOSSESS / EJECT
       if (player.isPossessing) {
         const furn = player.possessedFurniture;
         if (furn) {
@@ -1388,60 +1728,88 @@
         floatingTexts.push({
           text: "EJECTED!",
           x: player.x,
-          y: player.y - 12,
-          life: 0.7,
+          y: player.y - 14,
+          life: 0.8,
           color: "#00f0ff"
         });
-      } else if (closestFurniture) {
-        player.isPossessing = true;
-        player.possessedFurniture = closestFurniture;
-        closestFurniture.isPossessed = true;
+      } 
+      // 2. POSSESS NEAREST FURNITURE (Intelligent 48px Proximity Fallback)
+      else {
+        let targetFurn = closestFurniture;
         
-        player.x = closestFurniture.x;
-        player.y = closestFurniture.y;
+        // Search if not cached
+        if (!targetFurn) {
+          let minDist = 48;
+          furnitureList.forEach(furn => {
+            const d = Math.hypot(player.x - furn.x, player.y - furn.y);
+            if (d < minDist) {
+              targetFurn = furn;
+              minDist = d;
+            }
+          });
+        }
 
-        audio.playPossess();
-        spawnPoofParticles(player.x, player.y, '#00f0ff');
-        floatingTexts.push({
-          text: `POSSESSED!`,
-          x: player.x,
-          y: player.y - 12,
-          life: 0.8,
-          color: "#e0aaff"
-        });
+        if (targetFurn) {
+          player.isPossessing = true;
+          player.possessedFurniture = targetFurn;
+          targetFurn.isPossessed = true;
+          player.x = targetFurn.x;
+          player.y = targetFurn.y;
+
+          audio.playPossess();
+          spawnPoofParticles(player.x, player.y, '#39ff14');
+          floatingTexts.push({
+            text: `POSSESSED ${targetFurn.type.toUpperCase()}!`,
+            x: player.x,
+            y: player.y - 14,
+            life: 0.9,
+            color: "#39ff14"
+          });
+        } else {
+          floatingTexts.push({
+            text: "GET NEAR FURNITURE!",
+            x: player.x,
+            y: player.y - 14,
+            life: 0.6,
+            color: "#f6c90e"
+          });
+        }
       }
 
       updateUI();
     }
 
     /* ==========================================================================
-       VISION CONE & DETECTION MATH
+       NPC VISION CONE DETECTION (STEALTH CHECK)
        ========================================================================== */
-    function isPlayerInVisionCone() {
+    function isPlayerSpottedByAnyNPC() {
       if (player.isPossessing) {
         return false;
       }
 
-      const dx = player.x - homeowner.x;
-      const dy = player.y - homeowner.y;
-      const dist = Math.hypot(dx, dy);
+      for (const npc of npcs) {
+        const dx = player.x - npc.x;
+        const dy = player.y - npc.y;
+        const dist = Math.hypot(dx, dy);
 
-      if (dist > homeowner.visionLength) {
-        return false;
+        if (dist <= npc.visionLength) {
+          const npcAngle = npc.visionAngleFacing;
+          const angleToPlayer = Math.atan2(dy, dx);
+          
+          let diff = angleToPlayer - npcAngle;
+          while (diff < -Math.PI) diff += Math.PI * 2;
+          while (diff > Math.PI) diff -= Math.PI * 2;
+
+          if (Math.abs(diff) <= npc.visionAngle) {
+            return true;
+          }
+        }
       }
-
-      const hAngle = homeowner.visionAngleFacing;
-      const angleToPlayer = Math.atan2(dy, dx);
-      
-      let diff = angleToPlayer - hAngle;
-      while (diff < -Math.PI) diff += Math.PI * 2;
-      while (diff > Math.PI) diff -= Math.PI * 2;
-
-      return Math.abs(diff) <= homeowner.visionAngle;
+      return false;
     }
 
     /* ==========================================================================
-       PARTICLES & EFFECTS
+       PARTICLES & VISUAL EFFECTS
        ========================================================================== */
     function triggerScreenShake(intensity = 6, duration = 0.22) {
       shakeIntensity = intensity;
@@ -1449,63 +1817,50 @@
     }
 
     function spawnPoofParticles(x, y, color) {
-      for (let i = 0; i < 14; i++) {
-        const angle = (Math.PI * 2 * i) / 14 + (Math.random() - 0.5) * 0.4;
-        const speed = 25 + Math.random() * 50;
+      for (let i = 0; i < 16; i++) {
+        const angle = (Math.PI * 2 * i) / 16 + (Math.random() - 0.5) * 0.4;
+        const speed = 30 + Math.random() * 60;
         particles.push({
           x: x,
           y: y,
           vx: Math.cos(angle) * speed,
           vy: Math.sin(angle) * speed,
-          size: 2.5 + Math.random() * 3,
+          size: 2.5 + Math.random() * 3.5,
           color: color,
-          life: 0.4 + Math.random() * 0.25,
-          maxLife: 0.65
-        });
-      }
-    }
-
-    function spawnSlimeParticles(x, y) {
-      const count = 18;
-      for (let i = 0; i < count; i++) {
-        const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.5;
-        const speed = 40 + Math.random() * 80;
-        particles.push({
-          x: x,
-          y: y,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed,
-          size: 2 + Math.random() * 3.5,
-          color: Math.random() > 0.3 ? '#39ff14' : (Math.random() > 0.5 ? '#2ecc71' : '#a8ff78'),
           life: 0.4 + Math.random() * 0.3,
           maxLife: 0.7
         });
       }
+    }
 
-      for (let i = 0; i < 8; i++) {
+    function spawnSlimeParticles(x, y, color, points) {
+      const count = 20;
+      for (let i = 0; i < count; i++) {
+        const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.5;
+        const speed = 45 + Math.random() * 90;
         particles.push({
-          x: x + (Math.random() - 0.5) * 16,
-          y: y + (Math.random() - 0.5) * 16,
-          vx: (Math.random() - 0.5) * 20,
-          vy: -30 - Math.random() * 40,
-          size: 2 + Math.random() * 2,
-          color: '#00f0ff',
-          life: 0.5 + Math.random() * 0.4,
-          maxLife: 0.9
+          x: x,
+          y: y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          size: 2.5 + Math.random() * 4,
+          color: color,
+          life: 0.4 + Math.random() * 0.35,
+          maxLife: 0.75
         });
       }
 
       floatingTexts.push({
-        text: "+1 CLEAN!",
+        text: `+${points} CLEAN!`,
         x: x,
-        y: y - 10,
-        life: 0.8,
-        color: "#39ff14"
+        y: y - 12,
+        life: 0.85,
+        color: color
       });
     }
 
     /* ==========================================================================
-       MAIN UPDATE LOOP
+       MAIN GAME LOOP & UPDATE SYSTEM
        ========================================================================== */
     let lastTimestamp = performance.now();
 
@@ -1520,94 +1875,108 @@
         }
       }
 
-      if (busted || (gameOver && score >= TOTAL_SLIMES)) {
+      if (busted || levelCleared) {
         return;
       }
 
-      // 1. UPDATE HOMEOWNER NPC MULTI-PATH PATROL AI
-      if (homeowner.state === 'patrolling') {
-        if (homeowner.currentPath && homeowner.pathIndex < homeowner.currentPath.length) {
-          const nextStep = homeowner.currentPath[homeowner.pathIndex];
-          const targetX = (nextStep.x + 0.5) * TILE_SIZE;
-          const targetY = (nextStep.y + 0.5) * TILE_SIZE;
+      // 1. UPDATE MULTI-NPC PATROL AI
+      npcs.forEach(npc => {
+        if (npc.state === 'patrolling') {
+          if (npc.currentPath && npc.pathIndex < npc.currentPath.length) {
+            const nextStep = npc.currentPath[npc.pathIndex];
+            const targetX = (nextStep.x + 0.5) * TILE_SIZE;
+            const targetY = (nextStep.y + 0.5) * TILE_SIZE;
 
-          const dx = targetX - homeowner.x;
-          const dy = targetY - homeowner.y;
-          const dist = Math.hypot(dx, dy);
+            const dx = targetX - npc.x;
+            const dy = targetY - npc.y;
+            const dist = Math.hypot(dx, dy);
 
-          homeowner.direction = nextStep.dir;
-          homeowner.targetVisionAngle = getAngleForDirection(nextStep.dir);
+            npc.direction = nextStep.dir;
+            npc.targetVisionAngle = getAngleForDirection(nextStep.dir);
 
-          const stepDist = homeowner.speed * dt;
-          if (dist <= stepDist) {
-            homeowner.x = targetX;
-            homeowner.y = targetY;
-            homeowner.pathIndex++;
+            const stepDist = npc.speed * dt;
+            if (dist <= stepDist) {
+              npc.x = targetX;
+              npc.y = targetY;
+              npc.pathIndex++;
+            } else {
+              npc.x += (dx / dist) * stepDist;
+              npc.y += (dy / dist) * stepDist;
+            }
+
+            npc.walkFrame += dt * 7.5;
           } else {
-            homeowner.x += (dx / dist) * stepDist;
-            homeowner.y += (dy / dist) * stepDist;
+            npc.state = 'inspecting';
+            npc.inspectTimer = 1.4 + Math.random() * 1.2;
+            npc.inspectPhase = 0;
           }
+        } else if (npc.state === 'inspecting') {
+          npc.inspectTimer -= dt;
+          npc.inspectPhase += dt * 3.2;
 
-          homeowner.walkFrame += dt * 7;
-        } else {
-          homeowner.state = 'inspecting';
-          homeowner.inspectTimer = 1.6 + Math.random() * 1.2;
-          homeowner.inspectPhase = 0;
+          const baseAngle = getAngleForDirection(npc.direction);
+          npc.targetVisionAngle = baseAngle + Math.sin(npc.inspectPhase) * 0.9;
+
+          if (npc.inspectTimer <= 0) {
+            pickNextNPCDestination(npc);
+          }
         }
-      } else if (homeowner.state === 'inspecting') {
-        homeowner.inspectTimer -= dt;
-        homeowner.inspectPhase += dt * 3;
 
-        const baseAngle = getAngleForDirection(homeowner.direction);
-        homeowner.targetVisionAngle = baseAngle + Math.sin(homeowner.inspectPhase) * 0.9;
+        // Smoothly interpolate Vision Cone Facing Angle
+        let angleDiff = npc.targetVisionAngle - npc.visionAngleFacing;
+        while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
+        while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
+        npc.visionAngleFacing += angleDiff * Math.min(1, 10 * dt);
+      });
 
-        if (homeowner.inspectTimer <= 0) {
-          pickNextPatrolDestination();
-        }
-      }
+      // 2. CHECK NPC FLASHLIGHT VISION & PANIC METER
+      const spotted = isPlayerSpottedByAnyNPC();
 
-      // Smoothly interpolate Vision Cone Facing Angle
-      let angleDiff = homeowner.targetVisionAngle - homeowner.visionAngleFacing;
-      while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
-      while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
-      homeowner.visionAngleFacing += angleDiff * Math.min(1, 10 * dt);
-
-      // 2. CHECK VISION CONE & PANIC METER
-      const inSight = isPlayerInVisionCone();
-
-      if (inSight) {
-        panicMeter += 65 * dt;
+      if (spotted) {
+        panicMeter += 70 * dt;
         audio.playPanicAlert();
-        triggerScreenShake(3, 0.1);
+        triggerScreenShake(3.5, 0.1);
 
         if (panicMeter >= 100) {
           panicMeter = 100;
           busted = true;
           audio.playBusted();
-          triggerScreenShake(12, 0.6);
+          triggerScreenShake(14, 0.6);
         }
       } else {
         if (panicMeter > 0) {
-          panicMeter = Math.max(0, panicMeter - 28 * dt);
+          panicMeter = Math.max(0, panicMeter - 26 * dt);
         }
       }
 
-      // 3. PLAYER MOVEMENT
-      const currentSpeed = player.isPossessing ? (player.baseSpeed * 0.5) : player.baseSpeed;
+      // 3. COMBINE JOYSTICK & KEYBOARD INPUT FOR 360-DEGREE MOVEMENT
       let moveX = 0;
       let moveY = 0;
 
-      if (keys.up) { moveY -= 1; player.direction = 'up'; }
-      if (keys.down) { moveY += 1; player.direction = 'down'; }
-      if (keys.left) { moveX -= 1; player.direction = 'left'; }
-      if (keys.right) { moveX += 1; player.direction = 'right'; }
+      if (inputVector.active) {
+        moveX = inputVector.x;
+        moveY = inputVector.y;
+      } else {
+        if (keyboardKeys.up) moveY -= 1;
+        if (keyboardKeys.down) moveY += 1;
+        if (keyboardKeys.left) moveX -= 1;
+        if (keyboardKeys.right) moveX += 1;
+      }
 
-      player.isMoving = (moveX !== 0 || moveY !== 0);
+      const inputLength = Math.hypot(moveX, moveY);
+      player.isMoving = (inputLength > 0.05);
+
+      const currentSpeed = player.isPossessing ? (player.baseSpeed * 0.65) : player.baseSpeed;
 
       if (player.isMoving) {
-        const length = Math.hypot(moveX, moveY);
-        const normX = (moveX / length) * currentSpeed * dt;
-        const normY = (moveY / length) * currentSpeed * dt;
+        const normX = (moveX / (inputLength > 1 ? inputLength : 1)) * currentSpeed * dt;
+        const normY = (moveY / (inputLength > 1 ? inputLength : 1)) * currentSpeed * dt;
+
+        if (Math.abs(moveX) > Math.abs(moveY)) {
+          player.direction = moveX > 0 ? 'right' : 'left';
+        } else {
+          player.direction = moveY > 0 ? 'down' : 'up';
+        }
 
         const targetX = player.x + normX;
         if (!checkWallCollision(targetX, player.y, player.radius)) {
@@ -1630,14 +1999,16 @@
         player.mopAngle = 0;
       }
 
+      // Sync Possessed Furniture Location
       if (player.isPossessing && player.possessedFurniture) {
         player.possessedFurniture.x = player.x;
         player.possessedFurniture.y = player.y;
       }
 
+      // Update Nearest Furniture for Interaction Prompts (48px radius)
       closestFurniture = null;
       if (!player.isPossessing) {
-        let minDist = 34;
+        let minDist = 48;
         furnitureList.forEach(furn => {
           const d = Math.hypot(player.x - furn.x, player.y - furn.y);
           if (d < minDist) {
@@ -1650,27 +2021,43 @@
       player.floatOffset = Math.sin(gameTime * 4) * 3;
       player.tailFrame = Math.floor((gameTime * 8) % 4);
 
-      // 4. CLEANING SLIME
+      // 4. CLEANING SLIME SPOTS
       for (let i = slimes.length - 1; i >= 0; i--) {
         const slime = slimes[i];
         const dist = Math.hypot(player.x - slime.x, player.y - slime.y);
         
-        if (dist < player.radius + slime.radius) {
-          slimes.splice(i, 1);
-          score++;
-          
+        if (dist < player.radius + slime.radius + (player.isPossessing ? 6 : 2)) {
+          score += slime.points;
           triggerScreenShake(7, 0.25);
-          spawnSlimeParticles(slime.x, slime.y);
+          spawnSlimeParticles(slime.x, slime.y, slime.color, slime.points);
           audio.playSlimeClean();
+          slimes.splice(i, 1);
 
-          if (score >= TOTAL_SLIMES && !gameOver) {
-            gameOver = true;
+          // Check Level Completion
+          if (score >= currentLevel.totalSlimes && !levelCleared) {
+            levelCleared = true;
             audio.playVictory();
+            triggerScreenShake(10, 0.4);
           }
         }
       }
 
-      // 5. PARTICLES & TEXTS
+      // 5. UPDATE SMOOTH CAMERA VIEWPORT TRACKING
+      const mapPixelWidth = currentLevel.cols * TILE_SIZE;
+      const mapPixelHeight = currentLevel.rows * TILE_SIZE;
+
+      camera.targetX = player.x - CANVAS_VIEWPORT_SIZE / 2;
+      camera.targetY = player.y - CANVAS_VIEWPORT_SIZE / 2;
+
+      // Clamp camera to map bounds
+      camera.targetX = Math.max(0, Math.min(camera.targetX, mapPixelWidth - CANVAS_VIEWPORT_SIZE));
+      camera.targetY = Math.max(0, Math.min(camera.targetY, mapPixelHeight - CANVAS_VIEWPORT_SIZE));
+
+      // Smooth camera interpolation
+      camera.x += (camera.targetX - camera.x) * Math.min(1, 10 * dt);
+      camera.y += (camera.targetY - camera.y) * Math.min(1, 10 * dt);
+
+      // 6. PARTICLES & FLOATING TEXTS
       for (let i = particles.length - 1; i >= 0; i--) {
         const p = particles[i];
         p.x += p.vx * dt;
@@ -1690,14 +2077,19 @@
     }
 
     /* ==========================================================================
-       RENDER FUNCTIONS (8-Bit Pixel Graphics)
+       RENDER SYSTEM (8-Bit Retro Graphics with Camera Viewport)
        ========================================================================== */
     function drawMap() {
-      for (let y = 0; y < GRID_SIZE; y++) {
-        for (let x = 0; x < GRID_SIZE; x++) {
-          const tile = MANSION_MAP_TEMPLATE[y][x];
-          const px = x * TILE_SIZE;
-          const py = y * TILE_SIZE;
+      const startCol = Math.max(0, Math.floor(camera.x / TILE_SIZE));
+      const endCol = Math.min(currentLevel.cols - 1, Math.ceil((camera.x + CANVAS_VIEWPORT_SIZE) / TILE_SIZE));
+      const startRow = Math.max(0, Math.floor(camera.y / TILE_SIZE));
+      const endRow = Math.min(currentLevel.rows - 1, Math.ceil((camera.y + CANVAS_VIEWPORT_SIZE) / TILE_SIZE));
+
+      for (let y = startRow; y <= endRow; y++) {
+        for (let x = startCol; x <= endCol; x++) {
+          const tile = levelMap[y][x];
+          const px = Math.floor(x * TILE_SIZE - camera.x);
+          const py = Math.floor(y * TILE_SIZE - camera.y);
 
           if (tile === TILE.WALL) {
             ctx.fillStyle = '#261447';
@@ -1744,59 +2136,106 @@
           }
         }
       }
+
+      // Draw Room Labels on Ground
+      currentLevel.rooms.forEach(room => {
+        const rx = ((room.x1 + room.x2) / 2 + 0.5) * TILE_SIZE - camera.x;
+        const ry = (room.y1 + 1.2) * TILE_SIZE - camera.y;
+        if (rx >= -100 && rx <= CANVAS_VIEWPORT_SIZE + 100 && ry >= -50 && ry <= CANVAS_VIEWPORT_SIZE + 50) {
+          ctx.save();
+          ctx.font = '7px "Press Start 2P", monospace';
+          ctx.fillStyle = 'rgba(157, 78, 221, 0.35)';
+          ctx.textAlign = 'center';
+          ctx.fillText(room.name.toUpperCase(), Math.floor(rx), Math.floor(ry));
+          ctx.restore();
+        }
+      });
     }
 
     function drawSlimes() {
       slimes.forEach(slime => {
-        const pulse = Math.sin(gameTime * slime.bubbleSpeed + slime.bubblePhase) * 1.5;
+        const sx = slime.x - camera.x;
+        const sy = slime.y - camera.y;
+
+        if (sx < -30 || sx > CANVAS_VIEWPORT_SIZE + 30 || sy < -30 || sy > CANVAS_VIEWPORT_SIZE + 30) {
+          return;
+        }
+
+        const pulse = Math.sin(gameTime * slime.bubbleSpeed + slime.bubblePhase) * 1.6;
         const r = slime.radius + pulse;
 
-        ctx.fillStyle = 'rgba(46, 204, 113, 0.2)';
+        // Outer Ecto Glow
+        ctx.fillStyle = slime.type === 'purple' ? 'rgba(247, 37, 133, 0.22)' : (slime.type === 'cyan' ? 'rgba(0, 240, 255, 0.25)' : 'rgba(46, 204, 113, 0.22)');
         ctx.beginPath();
-        ctx.arc(slime.x, slime.y, r + 4, 0, Math.PI * 2);
+        ctx.arc(sx, sy, r + 4, 0, Math.PI * 2);
         ctx.fill();
 
-        ctx.fillStyle = '#27ae60';
+        ctx.fillStyle = slime.type === 'purple' ? '#b5179e' : (slime.type === 'cyan' ? '#0077b6' : '#27ae60');
         ctx.beginPath();
-        ctx.arc(slime.x, slime.y, r, 0, Math.PI * 2);
+        ctx.arc(sx, sy, r, 0, Math.PI * 2);
         ctx.fill();
 
-        ctx.fillStyle = '#2ecc71';
+        ctx.fillStyle = slime.color;
         ctx.beginPath();
-        ctx.arc(slime.x - 1, slime.y - 1, r * 0.75, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.fillStyle = '#a8ff78';
-        ctx.beginPath();
-        ctx.arc(slime.x - r * 0.35, slime.y - r * 0.35, r * 0.28, 0, Math.PI * 2);
+        ctx.arc(sx - 1, sy - 1, r * 0.75, 0, Math.PI * 2);
         ctx.fill();
 
         ctx.fillStyle = '#ffffff';
-        ctx.fillRect(Math.floor(slime.x - r * 0.4), Math.floor(slime.y - r * 0.4), 2, 2);
+        ctx.beginPath();
+        ctx.arc(sx - r * 0.35, sy - r * 0.35, r * 0.28, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillRect(Math.floor(sx - r * 0.4), Math.floor(sy - r * 0.4), 2, 2);
       });
     }
 
     function drawFurnitureItem(furn) {
-      const x = furn.x;
-      const y = furn.y;
+      const x = furn.x - camera.x;
+      const y = furn.y - camera.y;
 
+      if (x < -40 || x > CANVAS_VIEWPORT_SIZE + 40 || y < -40 || y > CANVAS_VIEWPORT_SIZE + 40) {
+        return;
+      }
+
+      // Proximity Indicator & Floating POSSESS Prompt
       if (furn === closestFurniture && !player.isPossessing) {
-        ctx.strokeStyle = '#00f0ff';
-        ctx.lineWidth = 1.5;
+        ctx.save();
+        ctx.strokeStyle = '#39ff14';
+        ctx.lineWidth = 2;
         ctx.setLineDash([4, 3]);
-        ctx.strokeRect(x - 14, y - 14, 28, 28);
+        ctx.strokeRect(x - 18, y - 18, 36, 36);
         ctx.setLineDash([]);
+
+        // Interactive Prompt Badge
+        const bob = Math.sin(gameTime * 6) * 3;
+        ctx.fillStyle = 'rgba(10, 5, 24, 0.9)';
+        ctx.strokeStyle = '#39ff14';
+        ctx.lineWidth = 1;
+        ctx.fillRect(x - 30, y - 28 + bob, 60, 12);
+        ctx.strokeRect(x - 30, y - 28 + bob, 60, 12);
+
+        ctx.font = '6px "Press Start 2P", monospace';
+        ctx.fillStyle = '#39ff14';
+        ctx.textAlign = 'center';
+        ctx.fillText('[POSSESS]', x, y - 20 + bob);
+        ctx.restore();
       }
 
       ctx.save();
       ctx.translate(Math.floor(x), Math.floor(y));
 
+      // Possessed Ectoplasmic Aura & Ghost Float
       if (furn.isPossessed) {
-        const floatY = Math.sin(gameTime * 6) * 2;
+        const floatY = Math.sin(gameTime * 6) * 3;
         ctx.translate(0, floatY);
 
-        ctx.shadowColor = '#00f0ff';
-        ctx.shadowBlur = 10;
+        ctx.shadowColor = '#39ff14';
+        ctx.shadowBlur = 14;
+
+        // Glowing Ectoplasm Shield
+        ctx.fillStyle = 'rgba(57, 255, 20, 0.2)';
+        ctx.beginPath();
+        ctx.arc(0, 0, 20, 0, Math.PI * 2);
+        ctx.fill();
       }
 
       switch (furn.type) {
@@ -1829,48 +2268,72 @@
 
         case 'armchair':
           ctx.fillStyle = '#6c1d45';
-          ctx.fillRect(-11, -8, 22, 16);
+          ctx.fillRect(-12, -9, 24, 18);
           ctx.fillStyle = '#9b2242';
-          ctx.fillRect(-8, -5, 16, 11);
+          ctx.fillRect(-9, -6, 18, 13);
           ctx.fillStyle = '#4a1230';
-          ctx.fillRect(-12, -4, 4, 12);
-          ctx.fillRect(8, -4, 4, 12);
+          ctx.fillRect(-13, -5, 4, 13);
+          ctx.fillRect(9, -5, 4, 13);
           break;
 
         case 'clock':
           ctx.fillStyle = '#5d4037';
-          ctx.fillRect(-7, -12, 14, 24);
+          ctx.fillRect(-8, -14, 16, 28);
           ctx.fillStyle = '#fff8e1';
           ctx.beginPath();
-          ctx.arc(0, -6, 5, 0, Math.PI * 2);
+          ctx.arc(0, -7, 6, 0, Math.PI * 2);
           ctx.fill();
           ctx.fillStyle = '#212121';
-          ctx.fillRect(0, -6, 1, -4);
-          ctx.fillRect(0, -6, 3, 1);
+          ctx.fillRect(0, -7, 1, -5);
+          ctx.fillRect(0, -7, 4, 1);
           ctx.fillStyle = '#fbc02d';
           const pend = Math.sin(gameTime * 4) * 3;
           ctx.beginPath();
-          ctx.arc(pend, 5, 2.5, 0, Math.PI * 2);
+          ctx.arc(pend, 6, 2.5, 0, Math.PI * 2);
           ctx.fill();
           break;
 
         case 'table':
           ctx.fillStyle = '#5c3a21';
-          ctx.fillRect(-12, -7, 24, 14);
+          ctx.fillRect(-14, -8, 28, 16);
           ctx.fillStyle = '#7a4e2d';
-          ctx.fillRect(-10, -5, 20, 10);
+          ctx.fillRect(-12, -6, 24, 12);
           ctx.fillStyle = '#3d2514';
-          ctx.fillRect(-10, 5, 3, 5);
-          ctx.fillRect(7, 5, 3, 5);
-          ctx.fillRect(-10, -10, 3, 4);
-          ctx.fillRect(7, -10, 3, 4);
+          ctx.fillRect(-12, 6, 4, 6);
+          ctx.fillRect(8, 6, 4, 6);
+          ctx.fillRect(-12, -12, 4, 5);
+          ctx.fillRect(8, -12, 4, 5);
+          break;
+
+        case 'mirror_cabinet':
+          ctx.fillStyle = '#3d2618';
+          ctx.fillRect(-12, -14, 24, 28);
+          ctx.fillStyle = '#00f0ff';
+          ctx.fillRect(-9, -11, 18, 22);
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+          ctx.fillRect(-7, -9, 4, 18);
+          break;
+
+        case 'piano':
+          ctx.fillStyle = '#111';
+          ctx.fillRect(-16, -10, 32, 20);
+          ctx.fillStyle = '#fff';
+          ctx.fillRect(-14, 2, 28, 6);
+          ctx.fillStyle = '#000';
+          for (let k = -12; k <= 10; k += 4) {
+            ctx.fillRect(k, 2, 2.5, 4);
+          }
           break;
       }
 
+      // Possessed Glowing Ghost Eyes
       if (furn.isPossessed) {
         ctx.fillStyle = '#00f0ff';
-        ctx.fillRect(-3, -3, 2, 2);
-        ctx.fillRect(2, -3, 2, 2);
+        ctx.fillRect(-4, -4, 3, 3);
+        ctx.fillRect(2, -4, 3, 3);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(-3, -3, 1, 1);
+        ctx.fillRect(3, -3, 1, 1);
       }
 
       ctx.restore();
@@ -1881,13 +2344,13 @@
         return;
       }
 
-      ctx.save();
-      const drawX = Math.floor(player.x);
-      const drawY = Math.floor(player.y + player.floatOffset);
+      const drawX = Math.floor(player.x - camera.x);
+      const drawY = Math.floor(player.y + player.floatOffset - camera.y);
 
-      ctx.fillStyle = 'rgba(0, 240, 255, 0.15)';
+      ctx.save();
+      ctx.fillStyle = 'rgba(0, 240, 255, 0.18)';
       ctx.beginPath();
-      ctx.arc(drawX, drawY, 14, 0, Math.PI * 2);
+      ctx.arc(drawX, drawY, 15, 0, Math.PI * 2);
       ctx.fill();
 
       ctx.fillStyle = '#d8f3dc';
@@ -1923,13 +2386,14 @@
       ctx.fillRect(drawX - 4 + eyeOffsetX, drawY - 3 + eyeOffsetY, 1, 1);
       ctx.fillRect(drawX + 3 + eyeOffsetX, drawY - 3 + eyeOffsetY, 1, 1);
 
+      // Janitor Cap
       ctx.fillStyle = '#39ff14';
       ctx.fillRect(drawX - 6, drawY - 10, 12, 3);
       ctx.fillRect(drawX - 4, drawY - 13, 8, 3);
       ctx.fillStyle = '#222';
       ctx.fillRect(drawX + (player.direction === 'left' ? -7 : 1), drawY - 10, 6, 1.5);
 
-      // Draw Janitor Mop
+      // Janitor Mop
       ctx.save();
       ctx.translate(drawX + 7, drawY + 2);
       ctx.rotate(player.mopAngle);
@@ -1950,21 +2414,25 @@
       ctx.restore();
     }
 
-    function drawHomeownerNPC() {
-      const hx = Math.floor(homeowner.x);
-      const hy = Math.floor(homeowner.y);
+    function drawPatrollingNPC(npc) {
+      const hx = Math.floor(npc.x - camera.x);
+      const hy = Math.floor(npc.y - camera.y);
 
-      // Draw Flashlight Vision Cone
+      if (hx < -180 || hx > CANVAS_VIEWPORT_SIZE + 180 || hy < -180 || hy > CANVAS_VIEWPORT_SIZE + 180) {
+        return;
+      }
+
+      // Flashlight Vision Cone
       ctx.save();
-      const vFacing = homeowner.visionAngleFacing;
-      const vAngle = homeowner.visionAngle;
-      const vLen = homeowner.visionLength;
+      const vFacing = npc.visionAngleFacing;
+      const vAngle = npc.visionAngle;
+      const vLen = npc.visionLength;
 
       const leftAngle = vFacing - vAngle;
       const rightAngle = vFacing + vAngle;
 
       const coneGrad = ctx.createRadialGradient(hx, hy, 4, hx, hy, vLen);
-      coneGrad.addColorStop(0, 'rgba(255, 240, 150, 0.45)');
+      coneGrad.addColorStop(0, 'rgba(255, 240, 150, 0.48)');
       coneGrad.addColorStop(0.7, 'rgba(255, 230, 100, 0.22)');
       coneGrad.addColorStop(1, 'rgba(255, 200, 50, 0)');
 
@@ -1975,7 +2443,7 @@
       ctx.closePath();
       ctx.fill();
 
-      ctx.strokeStyle = 'rgba(255, 240, 150, 0.4)';
+      ctx.strokeStyle = 'rgba(255, 240, 150, 0.45)';
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(hx, hy);
@@ -1983,22 +2451,21 @@
       ctx.moveTo(hx, hy);
       ctx.lineTo(hx + Math.cos(rightAngle) * vLen, hy + Math.sin(rightAngle) * vLen);
       ctx.stroke();
-
       ctx.restore();
 
-      // Draw Homeowner Body
+      // NPC Body
       ctx.save();
       ctx.translate(hx, hy);
 
-      const legBob = Math.sin(homeowner.walkFrame) * 2.5;
+      const legBob = Math.sin(npc.walkFrame) * 2.5;
 
       ctx.fillStyle = '#2c3e50';
       ctx.fillRect(-5, 4 + (legBob > 0 ? legBob : 0), 4, 7);
       ctx.fillRect(1, 4 + (legBob < 0 ? -legBob : 0), 4, 7);
 
-      ctx.fillStyle = '#8e44ad';
+      ctx.fillStyle = npc.id === 0 ? '#8e44ad' : '#2980b9';
       ctx.fillRect(-7, -5, 14, 10);
-      ctx.fillStyle = '#9b59b6';
+      ctx.fillStyle = npc.id === 0 ? '#9b59b6' : '#3498db';
       ctx.fillRect(-5, -4, 10, 8);
 
       ctx.fillStyle = '#f1c27d';
@@ -2011,10 +2478,10 @@
 
       let eyeX = 0;
       let eyeY = 0;
-      if (homeowner.direction === 'left') eyeX = -2;
-      if (homeowner.direction === 'right') eyeX = 2;
-      if (homeowner.direction === 'up') eyeY = -2;
-      if (homeowner.direction === 'down') eyeY = 1;
+      if (npc.direction === 'left') eyeX = -2;
+      if (npc.direction === 'right') eyeX = 2;
+      if (npc.direction === 'up') eyeY = -2;
+      if (npc.direction === 'down') eyeY = 1;
 
       ctx.fillStyle = '#000';
       ctx.fillRect(-3 + eyeX, -10 + eyeY, 1.5, 2);
@@ -2022,8 +2489,8 @@
 
       // Flashlight In Hand
       ctx.fillStyle = '#34495e';
-      const flashDirX = Math.cos(homeowner.visionAngleFacing);
-      const flashDirY = Math.sin(homeowner.visionAngleFacing);
+      const flashDirX = Math.cos(npc.visionAngleFacing);
+      const flashDirY = Math.sin(npc.visionAngleFacing);
       ctx.fillRect(flashDirX * 6 - 2, flashDirY * 6 - 2, 4, 4);
 
       ctx.restore();
@@ -2031,99 +2498,108 @@
 
     function drawParticles() {
       particles.forEach(p => {
+        const px = p.x - camera.x;
+        const py = p.y - camera.y;
+        if (px < -10 || px > CANVAS_VIEWPORT_SIZE + 10 || py < -10 || py > CANVAS_VIEWPORT_SIZE + 10) return;
+
         const alpha = Math.max(0, p.life / p.maxLife);
         ctx.fillStyle = p.color;
         ctx.globalAlpha = alpha;
-        ctx.fillRect(Math.floor(p.x - p.size / 2), Math.floor(p.y - p.size / 2), Math.floor(p.size), Math.floor(p.size));
+        ctx.fillRect(Math.floor(px - p.size / 2), Math.floor(py - p.size / 2), Math.floor(p.size), Math.floor(p.size));
       });
       ctx.globalAlpha = 1.0;
     }
 
     function drawFloatingTexts() {
       floatingTexts.forEach(ft => {
+        const fx = ft.x - camera.x;
+        const fy = ft.y - camera.y;
         ctx.save();
         ctx.font = '8px "Press Start 2P", monospace';
         ctx.fillStyle = ft.color;
         ctx.shadowColor = '#000';
         ctx.shadowBlur = 4;
         ctx.textAlign = 'center';
-        ctx.fillText(ft.text, Math.floor(ft.x), Math.floor(ft.y));
+        ctx.fillText(ft.text, Math.floor(fx), Math.floor(fy));
         ctx.restore();
       });
     }
 
     function drawOverlays() {
       if (busted) {
-        ctx.fillStyle = 'rgba(25, 0, 10, 0.9)';
-        ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+        ctx.fillStyle = 'rgba(25, 0, 10, 0.92)';
+        ctx.fillRect(0, 0, CANVAS_VIEWPORT_SIZE, CANVAS_VIEWPORT_SIZE);
 
         ctx.textAlign = 'center';
         const pulse = 1 + Math.sin(gameTime * 6) * 0.06;
         ctx.save();
-        ctx.translate(CANVAS_SIZE / 2, 170);
+        ctx.translate(CANVAS_VIEWPORT_SIZE / 2, 160);
         ctx.scale(pulse, pulse);
         
         ctx.font = '22px "Press Start 2P", monospace';
         ctx.fillStyle = '#ff0055';
         ctx.shadowColor = '#ff0055';
-        ctx.shadowBlur = 12;
+        ctx.shadowBlur = 14;
         ctx.fillText('BUSTED!', 0, 0);
         ctx.restore();
 
-        ctx.font = '10px "Press Start 2P", monospace';
+        ctx.font = '9px "Press Start 2P", monospace';
         ctx.fillStyle = '#f6c90e';
         ctx.shadowColor = '#000';
         ctx.shadowBlur = 4;
-        ctx.fillText('THE HOMEOWNER SPOTTED YOU!', CANVAS_SIZE / 2, 220);
+        ctx.fillText('THE RESIDENTS SPOTTED YOU!', CANVAS_VIEWPORT_SIZE / 2, 210);
 
         ctx.fillStyle = '#00f0ff';
         ctx.font = '8px "Press Start 2P", monospace';
-        ctx.fillText('HIDE INSIDE FURNITURE WITH [A] BUTTON', CANVAS_SIZE / 2, 265);
-        ctx.fillText('CLEANED: ' + score + ' / ' + TOTAL_SLIMES + ' SPILLS', CANVAS_SIZE / 2, 290);
+        ctx.fillText('HIDE INSIDE FURNITURE WITH [POSSESS]', CANVAS_VIEWPORT_SIZE / 2, 255);
+        ctx.fillText('FLOOR CLEANED: ' + score + ' / ' + currentLevel.totalSlimes, CANVAS_VIEWPORT_SIZE / 2, 280);
 
         const blink = Math.floor(gameTime * 2.5) % 2 === 0;
         if (blink) {
           ctx.fillStyle = '#ffffff';
           ctx.font = '9px "Press Start 2P", monospace';
-          ctx.fillText('TAP [A] / [START] TO RETRY', CANVAS_SIZE / 2, 350);
+          ctx.fillText('TAP [START] / [POSSESS] TO RETRY', CANVAS_VIEWPORT_SIZE / 2, 345);
         }
         return;
       }
 
-      if (gameOver && score >= TOTAL_SLIMES) {
-        ctx.fillStyle = 'rgba(10, 5, 24, 0.88)';
-        ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+      if (levelCleared) {
+        ctx.fillStyle = 'rgba(10, 5, 24, 0.92)';
+        ctx.fillRect(0, 0, CANVAS_VIEWPORT_SIZE, CANVAS_VIEWPORT_SIZE);
 
         ctx.textAlign = 'center';
         const pulse = 1 + Math.sin(gameTime * 5) * 0.05;
         ctx.save();
-        ctx.translate(CANVAS_SIZE / 2, 170);
+        ctx.translate(CANVAS_VIEWPORT_SIZE / 2, 155);
         ctx.scale(pulse, pulse);
         
         ctx.font = '16px "Press Start 2P", monospace';
         ctx.fillStyle = '#f6c90e';
         ctx.shadowColor = '#f6c90e';
-        ctx.shadowBlur = 10;
-        ctx.fillText('MANSION CLEANSED!', 0, 0);
+        ctx.shadowBlur = 12;
+        ctx.fillText('FLOOR CLEANSED!', 0, 0);
         ctx.restore();
 
         ctx.font = '10px "Press Start 2P", monospace';
         ctx.fillStyle = '#39ff14';
         ctx.shadowColor = '#39ff14';
         ctx.shadowBlur = 6;
-        ctx.fillText('RANK: STEALTH GHOST JANITOR', CANVAS_SIZE / 2, 220);
+        ctx.fillText(`FLOOR ${currentLevel.id} COMPLETE ✨`, CANVAS_VIEWPORT_SIZE / 2, 205);
 
         ctx.fillStyle = '#ffffff';
         ctx.font = '8px "Press Start 2P", monospace';
         ctx.shadowBlur = 0;
-        ctx.fillText('ALL 15 ECTOPLASM SPILLS REMOVED', CANVAS_SIZE / 2, 260);
-        ctx.fillText('HOMEOWNER NEVER SAW A THING ✨', CANVAS_SIZE / 2, 285);
+        ctx.fillText(`ALL ${currentLevel.totalSlimes} ECTOPLASM SPILLS REMOVED`, CANVAS_VIEWPORT_SIZE / 2, 245);
+        ctx.fillText('PERFECT STEALTH SANITATION!', CANVAS_VIEWPORT_SIZE / 2, 270);
+
+        const isLastLevel = currentLevelIndex >= LEVELS.length - 1;
+        const nextPrompt = isLastLevel ? 'TAP [START] TO REPLAY ALL FLOORS' : `TAP [START] FOR FLOOR ${currentLevel.id + 1}`;
 
         const blink = Math.floor(gameTime * 2.5) % 2 === 0;
         if (blink) {
           ctx.fillStyle = '#00f0ff';
           ctx.font = '9px "Press Start 2P", monospace';
-          ctx.fillText('TAP [A] / [START] TO PLAY', CANVAS_SIZE / 2, 350);
+          ctx.fillText(nextPrompt, CANVAS_VIEWPORT_SIZE / 2, 340);
         }
       }
     }
@@ -2141,7 +2617,7 @@
       drawSlimes();
       furnitureList.forEach(furn => drawFurnitureItem(furn));
       drawGhostJanitor();
-      drawHomeownerNPC();
+      npcs.forEach(npc => drawPatrollingNPC(npc));
       drawParticles();
       drawFloatingTexts();
       drawOverlays();
@@ -2150,7 +2626,7 @@
     }
 
     /* ==========================================================================
-       ANIMATION LOOP & INPUT CONTROLS
+       MAIN ANIMATION LOOP
        ========================================================================== */
     function gameLoop(timestamp) {
       const dt = Math.min((timestamp - lastTimestamp) / 1000, 0.1);
@@ -2162,153 +2638,183 @@
       requestAnimationFrame(gameLoop);
     }
 
+    /* ==========================================================================
+       ROBUST VIRTUAL ANALOG JOYSTICK CONTROLLER SYSTEM
+       ========================================================================== */
+    const joystickBase = document.getElementById('joystickBase');
+    const joystickZone = document.getElementById('joystickZone');
+    const joystickKnob = document.getElementById('joystickKnob');
+    const joyArrowUp = document.getElementById('joyArrowUp');
+    const joyArrowDown = document.getElementById('joyArrowDown');
+    const joyArrowLeft = document.getElementById('joyArrowLeft');
+    const joyArrowRight = document.getElementById('joyArrowRight');
+
+    let isJoystickActive = false;
+    const MAX_JOYSTICK_RADIUS = 30; // max displacement in pixels
+    const JOYSTICK_DEADZONE = 4;
+
+    function updateJoystickVisuals(dx, dy) {
+      joystickKnob.style.transform = `translate(${dx}px, ${dy}px)`;
+      
+      const dist = Math.hypot(dx, dy);
+      if (dist < JOYSTICK_DEADZONE) {
+        joystickKnob.classList.remove('active');
+        joyArrowUp.classList.remove('lit');
+        joyArrowDown.classList.remove('lit');
+        joyArrowLeft.classList.remove('lit');
+        joyArrowRight.classList.remove('lit');
+      } else {
+        joystickKnob.classList.add('active');
+        joyArrowUp.classList.toggle('lit', dy < -8);
+        joyArrowDown.classList.toggle('lit', dy > 8);
+        joyArrowLeft.classList.toggle('lit', dx < -8);
+        joyArrowRight.classList.toggle('lit', dx > 8);
+      }
+    }
+
+    function processJoystickCoords(clientX, clientY) {
+      const rect = joystickBase.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+
+      let dx = clientX - centerX;
+      let dy = clientY - centerY;
+      const distance = Math.hypot(dx, dy);
+
+      let clampedX = dx;
+      let clampedY = dy;
+      if (distance > MAX_JOYSTICK_RADIUS) {
+        clampedX = (dx / distance) * MAX_JOYSTICK_RADIUS;
+        clampedY = (dy / distance) * MAX_JOYSTICK_RADIUS;
+      }
+
+      updateJoystickVisuals(clampedX, clampedY);
+
+      if (distance < JOYSTICK_DEADZONE) {
+        inputVector.x = 0;
+        inputVector.y = 0;
+        inputVector.active = false;
+      } else {
+        inputVector.x = clampedX / MAX_JOYSTICK_RADIUS;
+        inputVector.y = clampedY / MAX_JOYSTICK_RADIUS;
+        inputVector.active = true;
+      }
+    }
+
+    function stopJoystick() {
+      isJoystickActive = false;
+      inputVector.x = 0;
+      inputVector.y = 0;
+      inputVector.active = false;
+      updateJoystickVisuals(0, 0);
+    }
+
+    // Pointer Events for Global Tracking
+    joystickZone.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      audio.init();
+      isJoystickActive = true;
+      processJoystickCoords(e.clientX, e.clientY);
+      if (navigator.vibrate) navigator.vibrate(8);
+    }, { passive: false });
+
+    window.addEventListener('pointermove', (e) => {
+      if (!isJoystickActive) return;
+      processJoystickCoords(e.clientX, e.clientY);
+    });
+
+    window.addEventListener('pointerup', (e) => {
+      if (isJoystickActive) {
+        stopJoystick();
+      }
+    });
+
+    window.addEventListener('pointercancel', (e) => {
+      if (isJoystickActive) {
+        stopJoystick();
+      }
+    });
+
+    // Touch Event Fallbacks
+    joystickZone.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      audio.init();
+      if (e.touches.length > 0) {
+        isJoystickActive = true;
+        processJoystickCoords(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    }, { passive: false });
+
+    window.addEventListener('touchmove', (e) => {
+      if (!isJoystickActive) return;
+      if (e.touches.length > 0) {
+        processJoystickCoords(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    }, { passive: false });
+
+    window.addEventListener('touchend', (e) => {
+      if (isJoystickActive) {
+        stopJoystick();
+      }
+    });
+
+    /* ==========================================================================
+       KEYBOARD CONTROLS (WASD / ARROWS / SHORTCUTS)
+       ========================================================================== */
     function handleKeyDown(e) {
       audio.init();
 
-      if (['ArrowUp', 'KeyW'].includes(e.code)) { keys.up = true; updateDpadVisuals(); e.preventDefault(); }
-      if (['ArrowDown', 'KeyS'].includes(e.code)) { keys.down = true; updateDpadVisuals(); e.preventDefault(); }
-      if (['ArrowLeft', 'KeyA'].includes(e.code)) { keys.left = true; updateDpadVisuals(); e.preventDefault(); }
-      if (['ArrowRight', 'KeyD'].includes(e.code)) { keys.right = true; updateDpadVisuals(); e.preventDefault(); }
+      if (['ArrowUp', 'KeyW'].includes(e.code)) { keyboardKeys.up = true; joyArrowUp.classList.add('lit'); e.preventDefault(); }
+      if (['ArrowDown', 'KeyS'].includes(e.code)) { keyboardKeys.down = true; joyArrowDown.classList.add('lit'); e.preventDefault(); }
+      if (['ArrowLeft', 'KeyA'].includes(e.code)) { keyboardKeys.left = true; joyArrowLeft.classList.add('lit'); e.preventDefault(); }
+      if (['ArrowRight', 'KeyD'].includes(e.code)) { keyboardKeys.right = true; joyArrowRight.classList.add('lit'); e.preventDefault(); }
 
+      // Button 1: POSSESS (Space / KeyJ / KeyZ)
       if (e.code === 'Space' || e.code === 'KeyJ' || e.code === 'KeyZ') {
         e.preventDefault();
-        document.getElementById('btnA')?.classList.add('active');
+        document.getElementById('btnPossess')?.classList.add('active');
         togglePossession();
       }
 
-      if (e.code === 'KeyK' || e.code === 'KeyX') {
-        e.preventDefault();
-        document.getElementById('btnB')?.classList.add('active');
-        togglePossession();
-      }
-
+      // Button 2: START (Enter / KeyR)
       if (e.code === 'Enter' || e.code === 'KeyR') {
-        document.getElementById('startBtn')?.classList.add('active');
-        if (busted || gameOver) initGame();
+        e.preventDefault();
+        document.getElementById('btnStart')?.classList.add('active');
+        handleStartButton();
       }
 
+      // Button 3: MUSIC (KeyM)
       if (e.code === 'KeyM') {
-        toggleSound();
+        e.preventDefault();
+        document.getElementById('btnMusic')?.classList.add('active');
+        handleMusicButton();
       }
     }
 
     function handleKeyUp(e) {
-      if (['ArrowUp', 'KeyW'].includes(e.code)) { keys.up = false; updateDpadVisuals(); }
-      if (['ArrowDown', 'KeyS'].includes(e.code)) { keys.down = false; updateDpadVisuals(); }
-      if (['ArrowLeft', 'KeyA'].includes(e.code)) { keys.left = false; updateDpadVisuals(); }
-      if (['ArrowRight', 'KeyD'].includes(e.code)) { keys.right = false; updateDpadVisuals(); }
+      if (['ArrowUp', 'KeyW'].includes(e.code)) { keyboardKeys.up = false; joyArrowUp.classList.remove('lit'); }
+      if (['ArrowDown', 'KeyS'].includes(e.code)) { keyboardKeys.down = false; joyArrowDown.classList.remove('lit'); }
+      if (['ArrowLeft', 'KeyA'].includes(e.code)) { keyboardKeys.left = false; joyArrowLeft.classList.remove('lit'); }
+      if (['ArrowRight', 'KeyD'].includes(e.code)) { keyboardKeys.right = false; joyArrowRight.classList.remove('lit'); }
 
       if (e.code === 'Space' || e.code === 'KeyJ' || e.code === 'KeyZ') {
-        document.getElementById('btnA')?.classList.remove('active');
-      }
-      if (e.code === 'KeyK' || e.code === 'KeyX') {
-        document.getElementById('btnB')?.classList.remove('active');
+        document.getElementById('btnPossess')?.classList.remove('active');
       }
       if (e.code === 'Enter' || e.code === 'KeyR') {
-        document.getElementById('startBtn')?.classList.remove('active');
+        document.getElementById('btnStart')?.classList.remove('active');
+      }
+      if (e.code === 'KeyM') {
+        document.getElementById('btnMusic')?.classList.remove('active');
       }
     }
 
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
 
-    function updateDpadVisuals() {
-      document.getElementById('dpadUp')?.classList.toggle('active', keys.up);
-      document.getElementById('dpadDown')?.classList.toggle('active', keys.down);
-      document.getElementById('dpadLeft')?.classList.toggle('active', keys.left);
-      document.getElementById('dpadRight')?.classList.toggle('active', keys.right);
-    }
-
     /* ==========================================================================
-       MOBILE TOUCH & POINTER D-PAD CONTROLLER
+       3 DEDICATED BUTTON HANDLERS (POSSESS, START, MUSIC)
        ========================================================================== */
-    const dpadZone = document.getElementById('dpadZone');
-    let isDpadTouching = false;
-
-    function handleDpadPointer(clientX, clientY) {
-      const rect = dpadZone.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      
-      const dx = clientX - centerX;
-      const dy = clientY - centerY;
-      const dist = Math.hypot(dx, dy);
-
-      if (dist < 10) {
-        keys.up = false;
-        keys.down = false;
-        keys.left = false;
-        keys.right = false;
-      } else {
-        const angle = Math.atan2(dy, dx); // radians -PI to PI
-        const deg = (angle * 180 / Math.PI + 360) % 360;
-
-        keys.right = (deg >= 337.5 || deg < 22.5) || (deg >= 22.5 && deg < 67.5) || (deg >= 292.5 && deg < 337.5);
-        keys.down = (deg >= 22.5 && deg < 157.5);
-        keys.left = (deg >= 112.5 && deg < 247.5);
-        keys.up = (deg >= 202.5 && deg < 337.5);
-      }
-      updateDpadVisuals();
-    }
-
-    function resetDpad() {
-      isDpadTouching = false;
-      keys.up = false;
-      keys.down = false;
-      keys.left = false;
-      keys.right = false;
-      updateDpadVisuals();
-    }
-
-    dpadZone.addEventListener('pointerdown', (e) => {
-      e.preventDefault();
-      audio.init();
-      isDpadTouching = true;
-      dpadZone.setPointerCapture?.(e.pointerId);
-      handleDpadPointer(e.clientX, e.clientY);
-      if (navigator.vibrate) navigator.vibrate(8);
-    }, { passive: false });
-
-    dpadZone.addEventListener('pointermove', (e) => {
-      if (!isDpadTouching) return;
-      e.preventDefault();
-      handleDpadPointer(e.clientX, e.clientY);
-    }, { passive: false });
-
-    dpadZone.addEventListener('pointerup', (e) => {
-      e.preventDefault();
-      resetDpad();
-    }, { passive: false });
-
-    dpadZone.addEventListener('pointercancel', (e) => {
-      resetDpad();
-    });
-
-    // Touch event fallback for mobile devices
-    dpadZone.addEventListener('touchstart', (e) => {
-      e.preventDefault();
-      audio.init();
-      if (e.touches.length > 0) {
-        handleDpadPointer(e.touches[0].clientX, e.touches[0].clientY);
-      }
-    }, { passive: false });
-
-    dpadZone.addEventListener('touchmove', (e) => {
-      e.preventDefault();
-      if (e.touches.length > 0) {
-        handleDpadPointer(e.touches[0].clientX, e.touches[0].clientY);
-      }
-    }, { passive: false });
-
-    dpadZone.addEventListener('touchend', (e) => {
-      e.preventDefault();
-      resetDpad();
-    }, { passive: false });
-
-    /* ==========================================================================
-       ACTION & FUNCTION BUTTON HANDLERS
-       ========================================================================== */
-    function bindButton(btnId, onDown, onUp) {
+    function bindArcadeButton(btnId, onClick) {
       const el = document.getElementById(btnId);
       if (!el) return;
 
@@ -2316,14 +2822,13 @@
         e.preventDefault();
         audio.init();
         el.classList.add('active');
-        if (navigator.vibrate) navigator.vibrate(10);
-        if (onDown) onDown();
+        if (navigator.vibrate) navigator.vibrate(12);
+        onClick();
       };
 
       const release = (e) => {
         e.preventDefault();
         el.classList.remove('active');
-        if (onUp) onUp();
       };
 
       el.addEventListener('pointerdown', press);
@@ -2333,36 +2838,37 @@
       el.addEventListener('touchend', release, { passive: false });
     }
 
-    // Button A (Possess / Eject / Retry)
-    bindButton('btnA', () => {
+    // 1. POSSESS Button
+    bindArcadeButton('btnPossess', () => {
       togglePossession();
     });
 
-    // Button B (Eject / Action)
-    bindButton('btnB', () => {
-      togglePossession();
-    });
-
-    // START Button (Reset / Restart Game)
-    bindButton('startBtn', () => {
+    // 2. START Button
+    function handleStartButton() {
       audio.playClick();
-      initGame();
-    });
-
-    // SELECT Button (Sound Toggle)
-    function toggleSound() {
-      audio.init();
-      audio.enabled = !audio.enabled;
-      audio.playClick();
-      const selectLabel = document.getElementById('selectLabel');
-      if (selectLabel) {
-        selectLabel.textContent = audio.enabled ? 'SFX ON' : 'SFX OFF';
-        selectLabel.style.color = audio.enabled ? '#9d4edd' : '#666';
+      if (busted) {
+        loadLevel(currentLevelIndex);
+      } else if (levelCleared) {
+        loadLevel(currentLevelIndex + 1);
+      } else {
+        initGame();
       }
     }
 
-    bindButton('selectBtn', () => {
-      toggleSound();
+    bindArcadeButton('btnStart', () => {
+      handleStartButton();
+    });
+
+    // 3. MUSIC Button
+    function handleMusicButton() {
+      audio.init();
+      audio.toggleMusic();
+      audio.playClick();
+      updateUI();
+    }
+
+    bindArcadeButton('btnMusic', () => {
+      handleMusicButton();
     });
 
     // Start initial game
@@ -2380,7 +2886,6 @@
         navigator.serviceWorker.register('./sw.js', { scope: './' })
           .then((reg) => {
             console.log('[PWA] Service Worker registered successfully! Scope:', reg.scope);
-            
             reg.onupdatefound = () => {
               const installingWorker = reg.installing;
               if (installingWorker) {

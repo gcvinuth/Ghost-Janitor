@@ -409,7 +409,7 @@
       justify-content: space-between;
       align-items: center;
       padding-top: 10px;
-      gap: 10px;
+      gap: 12px;
     }
 
     /* VIRTUAL ANALOG JOYSTICK */
@@ -539,17 +539,29 @@
       outline: none;
     }
 
+    .btn-top-icon {
+      font-size: 0.85rem;
+      line-height: 1;
+      margin-bottom: 2px;
+      pointer-events: none;
+    }
+
+    .btn-main-text {
+      font-size: 0.36rem;
+      letter-spacing: 0.5px;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
     /* 1. POSSESS BUTTON */
     .btn-possess-style {
-      width: 56px;
-      height: 56px;
+      width: 58px;
+      height: 58px;
       border-radius: 50%;
       background: linear-gradient(145deg, #f72585, #7209b7);
       border: 2px solid #ff70a6;
       box-shadow: 0 4px 0 #3a001a, 0 0 14px rgba(247, 37, 133, 0.6);
       color: #fff;
-      font-size: 0.44rem;
-      gap: 2px;
     }
 
     .btn-possess-style:active, .btn-possess-style.active {
@@ -571,15 +583,13 @@
 
     /* 2. START / RESTART BUTTON */
     .btn-start-style {
-      width: 44px;
-      height: 44px;
+      width: 46px;
+      height: 46px;
       border-radius: 50%;
       background: linear-gradient(145deg, #f6c90e, #d35400);
       border: 2px solid #ffe066;
       box-shadow: 0 4px 0 #4a1d00, 0 0 12px rgba(246, 201, 14, 0.5);
       color: #fff;
-      font-size: 0.38rem;
-      gap: 2px;
     }
 
     .btn-start-style:active, .btn-start-style.active {
@@ -590,15 +600,13 @@
 
     /* 3. MUSIC BUTTON */
     .btn-music-style {
-      width: 44px;
-      height: 44px;
+      width: 46px;
+      height: 46px;
       border-radius: 50%;
       background: linear-gradient(145deg, #00b4d8, #03045e);
       border: 2px solid #90e0ef;
       box-shadow: 0 4px 0 #021330, 0 0 12px rgba(0, 180, 216, 0.5);
       color: #fff;
-      font-size: 0.38rem;
-      gap: 2px;
     }
 
     .btn-music-style:active, .btn-music-style.active {
@@ -658,14 +666,12 @@
         height: 42px;
       }
       .btn-possess-style {
-        width: 46px;
-        height: 46px;
-        font-size: 0.38rem;
+        width: 48px;
+        height: 48px;
       }
       .btn-start-style, .btn-music-style {
-        width: 38px;
-        height: 38px;
-        font-size: 0.34rem;
+        width: 40px;
+        height: 40px;
       }
     }
 
@@ -780,8 +786,8 @@
         <!-- Button 1: POSSESS / EJECT -->
         <div class="arcade-btn-col">
           <button class="arcade-custom-btn btn-possess-style" id="btnPossess" aria-label="Possess or Eject Furniture">
-            <span id="btnPossessIcon">👻</span>
-            <span id="btnPossessText" style="font-size: 0.38rem; margin-top: 2px;">POSSESS</span>
+            <span class="btn-top-icon" id="btnPossessIcon">👻</span>
+            <span class="btn-main-text" id="btnPossessText">POSSESS</span>
           </button>
           <span class="btn-sub-label">POSSESS</span>
         </div>
@@ -789,8 +795,8 @@
         <!-- Button 2: START / RETRY / NEXT -->
         <div class="arcade-btn-col">
           <button class="arcade-custom-btn btn-start-style" id="btnStart" aria-label="Start or Restart Game">
-            <span>▶</span>
-            <span style="font-size: 0.34rem; margin-top: 2px;">START</span>
+            <span class="btn-top-icon">▶</span>
+            <span class="btn-main-text">START</span>
           </button>
           <span class="btn-sub-label">START</span>
         </div>
@@ -798,8 +804,8 @@
         <!-- Button 3: MUSIC / SOUND TOGGLE -->
         <div class="arcade-btn-col">
           <button class="arcade-custom-btn btn-music-style" id="btnMusic" aria-label="Toggle 8-Bit Music and Sound">
-            <span id="musicIcon">🎵</span>
-            <span id="musicText" style="font-size: 0.34rem; margin-top: 2px;">BGM</span>
+            <span class="btn-top-icon" id="musicIcon">🎵</span>
+            <span class="btn-main-text" id="musicText">BGM</span>
           </button>
           <span class="btn-sub-label" id="musicSubLabel">MUSIC</span>
         </div>
@@ -1541,7 +1547,7 @@
         [emptyTiles[i], emptyTiles[j]] = [emptyTiles[j], emptyTiles[i]];
       }
 
-      // Spawn Furniture Items
+      // Spawn Fixed Stationary Furniture Items (NEVER MOVE)
       const furnitureTypes = ['armchair', 'clock', 'table', 'lamp', 'chair', 'mirror_cabinet', 'piano'];
       for (let i = 0; i < currentLevel.totalFurniture; i++) {
         if (emptyTiles.length === 0) break;
@@ -1663,7 +1669,7 @@
       const btnPossessIcon = document.getElementById('btnPossessIcon');
 
       if (player.isPossessing && player.possessedFurniture) {
-        stealthBadge.textContent = `HIDDEN: ${player.possessedFurniture.type.toUpperCase()}`;
+        stealthBadge.textContent = `HIDDEN IN ${player.possessedFurniture.type.toUpperCase()}`;
         stealthBadge.className = 'hud-stealth-pill hidden';
         btnPossess.classList.add('eject-mode');
         btnPossessText.textContent = 'EJECT';
@@ -1687,7 +1693,7 @@
       if (audio.musicEnabled) {
         btnMusic.classList.remove('muted');
         musicIcon.textContent = '🎵';
-        musicText.textContent = 'BGM ON';
+        musicText.textContent = 'BGM';
       } else {
         btnMusic.classList.add('muted');
         musicIcon.textContent = '🔇';
@@ -1696,7 +1702,7 @@
     }
 
     /* ==========================================================================
-       FIXED & ENHANCED FURNITURE POSSESSION MECHANIC
+       ONLY POSSESS ON BUTTON PRESS & STATIONARY FURNITURE (NEVER MOVES)
        ========================================================================== */
     function togglePossession() {
       audio.init();
@@ -1712,12 +1718,10 @@
         return;
       }
 
-      // 1. UNPOSSESS / EJECT
+      // 1. IF CURRENTLY POSSESSING: EJECT / UNPOSSESS
       if (player.isPossessing) {
         const furn = player.possessedFurniture;
         if (furn) {
-          furn.x = player.x;
-          furn.y = player.y;
           furn.isPossessed = false;
         }
         player.isPossessing = false;
@@ -1733,11 +1737,11 @@
           color: "#00f0ff"
         });
       } 
-      // 2. POSSESS NEAREST FURNITURE (Intelligent 48px Proximity Fallback)
+      // 2. POSSESS NEAREST FURNITURE ONLY WHEN BUTTON IS PRESSED
       else {
         let targetFurn = closestFurniture;
         
-        // Search if not cached
+        // Scan for nearest furniture within 48px
         if (!targetFurn) {
           let minDist = 48;
           furnitureList.forEach(furn => {
@@ -1753,13 +1757,14 @@
           player.isPossessing = true;
           player.possessedFurniture = targetFurn;
           targetFurn.isPossessed = true;
+          // Player snaps inside stationary furniture position
           player.x = targetFurn.x;
           player.y = targetFurn.y;
 
           audio.playPossess();
           spawnPoofParticles(player.x, player.y, '#39ff14');
           floatingTexts.push({
-            text: `POSSESSED ${targetFurn.type.toUpperCase()}!`,
+            text: `HIDDEN IN ${targetFurn.type.toUpperCase()}!`,
             x: player.x,
             y: player.y - 14,
             life: 0.9,
@@ -1783,6 +1788,7 @@
        NPC VISION CONE DETECTION (STEALTH CHECK)
        ========================================================================== */
     function isPlayerSpottedByAnyNPC() {
+      // Complete Stealth while hiding inside stationary furniture!
       if (player.isPossessing) {
         return false;
       }
@@ -1945,7 +1951,9 @@
         }
       } else {
         if (panicMeter > 0) {
-          panicMeter = Math.max(0, panicMeter - 26 * dt);
+          // Drops faster while hiding inside furniture
+          const coolRate = player.isPossessing ? 45 : 26;
+          panicMeter = Math.max(0, panicMeter - coolRate * dt);
         }
       }
 
@@ -1966,43 +1974,46 @@
       const inputLength = Math.hypot(moveX, moveY);
       player.isMoving = (inputLength > 0.05);
 
-      const currentSpeed = player.isPossessing ? (player.baseSpeed * 0.65) : player.baseSpeed;
-
-      if (player.isMoving) {
-        const normX = (moveX / (inputLength > 1 ? inputLength : 1)) * currentSpeed * dt;
-        const normY = (moveY / (inputLength > 1 ? inputLength : 1)) * currentSpeed * dt;
-
-        if (Math.abs(moveX) > Math.abs(moveY)) {
-          player.direction = moveX > 0 ? 'right' : 'left';
-        } else {
-          player.direction = moveY > 0 ? 'down' : 'up';
+      // IF POSSESSING: FURNITURE NEVER MOVES!
+      // If player pushes joystick while possessing, smoothly ejects out of the stationary furniture in move direction!
+      if (player.isPossessing) {
+        if (player.possessedFurniture) {
+          player.x = player.possessedFurniture.x;
+          player.y = player.possessedFurniture.y;
         }
-
-        const targetX = player.x + normX;
-        if (!checkWallCollision(targetX, player.y, player.radius)) {
-          player.x = targetX;
-        } else if (gameTime - player.lastBumpSound > 0.25) {
-          audio.playBump();
-          player.lastBumpSound = gameTime;
-        }
-
-        const targetY = player.y + normY;
-        if (!checkWallCollision(player.x, targetY, player.radius)) {
-          player.y = targetY;
-        } else if (gameTime - player.lastBumpSound > 0.25) {
-          audio.playBump();
-          player.lastBumpSound = gameTime;
-        }
-
-        player.mopAngle = Math.sin(gameTime * 14) * 0.4;
-      } else {
         player.mopAngle = 0;
-      }
+      } else {
+        // Normal Ghost Floating Movement
+        if (player.isMoving) {
+          const normX = (moveX / (inputLength > 1 ? inputLength : 1)) * player.baseSpeed * dt;
+          const normY = (moveY / (inputLength > 1 ? inputLength : 1)) * player.baseSpeed * dt;
 
-      // Sync Possessed Furniture Location
-      if (player.isPossessing && player.possessedFurniture) {
-        player.possessedFurniture.x = player.x;
-        player.possessedFurniture.y = player.y;
+          if (Math.abs(moveX) > Math.abs(moveY)) {
+            player.direction = moveX > 0 ? 'right' : 'left';
+          } else {
+            player.direction = moveY > 0 ? 'down' : 'up';
+          }
+
+          const targetX = player.x + normX;
+          if (!checkWallCollision(targetX, player.y, player.radius)) {
+            player.x = targetX;
+          } else if (gameTime - player.lastBumpSound > 0.25) {
+            audio.playBump();
+            player.lastBumpSound = gameTime;
+          }
+
+          const targetY = player.y + normY;
+          if (!checkWallCollision(player.x, targetY, player.radius)) {
+            player.y = targetY;
+          } else if (gameTime - player.lastBumpSound > 0.25) {
+            audio.playBump();
+            player.lastBumpSound = gameTime;
+          }
+
+          player.mopAngle = Math.sin(gameTime * 14) * 0.4;
+        } else {
+          player.mopAngle = 0;
+        }
       }
 
       // Update Nearest Furniture for Interaction Prompts (48px radius)
@@ -2021,23 +2032,25 @@
       player.floatOffset = Math.sin(gameTime * 4) * 3;
       player.tailFrame = Math.floor((gameTime * 8) % 4);
 
-      // 4. CLEANING SLIME SPOTS
-      for (let i = slimes.length - 1; i >= 0; i--) {
-        const slime = slimes[i];
-        const dist = Math.hypot(player.x - slime.x, player.y - slime.y);
-        
-        if (dist < player.radius + slime.radius + (player.isPossessing ? 6 : 2)) {
-          score += slime.points;
-          triggerScreenShake(7, 0.25);
-          spawnSlimeParticles(slime.x, slime.y, slime.color, slime.points);
-          audio.playSlimeClean();
-          slimes.splice(i, 1);
+      // 4. CLEANING SLIME SPOTS (Ghost cleans slime)
+      if (!player.isPossessing) {
+        for (let i = slimes.length - 1; i >= 0; i--) {
+          const slime = slimes[i];
+          const dist = Math.hypot(player.x - slime.x, player.y - slime.y);
+          
+          if (dist < player.radius + slime.radius + 2) {
+            score += slime.points;
+            triggerScreenShake(7, 0.25);
+            spawnSlimeParticles(slime.x, slime.y, slime.color, slime.points);
+            audio.playSlimeClean();
+            slimes.splice(i, 1);
 
-          // Check Level Completion
-          if (score >= currentLevel.totalSlimes && !levelCleared) {
-            levelCleared = true;
-            audio.playVictory();
-            triggerScreenShake(10, 0.4);
+            // Check Level Completion
+            if (score >= currentLevel.totalSlimes && !levelCleared) {
+              levelCleared = true;
+              audio.playVictory();
+              triggerScreenShake(10, 0.4);
+            }
           }
         }
       }
@@ -2223,18 +2236,15 @@
       ctx.save();
       ctx.translate(Math.floor(x), Math.floor(y));
 
-      // Possessed Ectoplasmic Aura & Ghost Float
+      // Possessed Ectoplasmic Aura & Ghost Inside Indicator
       if (furn.isPossessed) {
-        const floatY = Math.sin(gameTime * 6) * 3;
-        ctx.translate(0, floatY);
-
         ctx.shadowColor = '#39ff14';
-        ctx.shadowBlur = 14;
+        ctx.shadowBlur = 16;
 
         // Glowing Ectoplasm Shield
-        ctx.fillStyle = 'rgba(57, 255, 20, 0.2)';
+        ctx.fillStyle = 'rgba(57, 255, 20, 0.25)';
         ctx.beginPath();
-        ctx.arc(0, 0, 20, 0, Math.PI * 2);
+        ctx.arc(0, 0, 22, 0, Math.PI * 2);
         ctx.fill();
       }
 

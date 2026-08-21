@@ -1704,9 +1704,11 @@
     /* ==========================================================================
        ONLY POSSESS ON BUTTON PRESS & STATIONARY FURNITURE (NEVER MOVES)
        ========================================================================== */
-    function togglePossession() {
+    function togglePossession(targetOverride = null) {
       audio.init();
-      if (navigator.vibrate) navigator.vibrate(14);
+      if (navigator.vibrate) {
+        try { navigator.vibrate(14); } catch (_) {}
+      }
 
       if (busted) {
         loadLevel(currentLevelIndex);
@@ -1737,13 +1739,13 @@
           color: "#00f0ff"
         });
       } 
-      // 2. POSSESS NEAREST FURNITURE ONLY WHEN BUTTON IS PRESSED
+      // 2. POSSESS NEAREST FURNITURE ONLY WHEN BUTTON IS PRESSED OR TAPPED
       else {
-        let targetFurn = closestFurniture;
+        let targetFurn = targetOverride || closestFurniture;
         
-        // Scan for nearest furniture within 48px
+        // Scan for nearest furniture within 64px (~2 tiles)
         if (!targetFurn) {
-          let minDist = 48;
+          let minDist = 64;
           furnitureList.forEach(furn => {
             const d = Math.hypot(player.x - furn.x, player.y - furn.y);
             if (d < minDist) {
@@ -2016,10 +2018,10 @@
         }
       }
 
-      // Update Nearest Furniture for Interaction Prompts (48px radius)
+      // Update Nearest Furniture for Interaction Prompts (60px radius ~ 1.9 tiles)
       closestFurniture = null;
       if (!player.isPossessing) {
-        let minDist = 48;
+        let minDist = 60;
         furnitureList.forEach(furn => {
           const d = Math.hypot(player.x - furn.x, player.y - furn.y);
           if (d < minDist) {
@@ -2649,7 +2651,7 @@
     }
 
     /* ==========================================================================
-       ROBUST VIRTUAL ANALOG JOYSTICK CONTROLLER SYSTEM
+       ROBUST VIRTUAL ANALOG JOYSTICK CONTROLLER SYSTEM (MULTI-TOUCH SAFE)
        ========================================================================== */
     const joystickBase = document.getElementById('joystickBase');
     const joystickZone = document.getElementById('joystickZone');
@@ -2660,6 +2662,8 @@
     const joyArrowRight = document.getElementById('joyArrowRight');
 
     let isJoystickActive = false;
+    let joystickPointerId = null;
+    let joystickTouchId = null;
     const MAX_JOYSTICK_RADIUS = 30; // max displacement in pixels
     const JOYSTICK_DEADZONE = 4;
 
@@ -2713,60 +2717,162 @@
 
     function stopJoystick() {
       isJoystickActive = false;
+      joystickPointerId = null;
+      joystickTouchId = null;
       inputVector.x = 0;
       inputVector.y = 0;
       inputVector.active = false;
       updateJoystickVisuals(0, 0);
     }
 
-    // Pointer Events for Global Tracking
-    joystickZone.addEventListener('pointerdown', (e) => {
-      e.preventDefault();
-      audio.init();
-      isJoystickActive = true;
-      processJoystickCoords(e.clientX, e.clientY);
-      if (navigator.vibrate) navigator.vibrate(8);
-    }, { passive: false });
-
-    window.addEventListener('pointermove', (e) => {
-      if (!isJoystickActive) return;
-      processJoystickCoords(e.clientX, e.clientY);
-    });
-
-    window.addEventListener('pointerup', (e) => {
-      if (isJoystickActive) {
-        stopJoystick();
-      }
-    });
-
-    window.addEventListener('pointercancel', (e) => {
-      if (isJoystickActive) {
-        stopJoystick();
-      }
-    });
-
-    // Touch Event Fallbacks
-    joystickZone.addEventListener('touchstart', (e) => {
-      e.preventDefault();
-      audio.init();
-      if (e.touches.length > 0) {
+    // Pointer Events for modern devices (with multi-touch pointerId isolation)
+    if (window.PointerEvent) {
+      joystickZone.addEventListener('pointerdown', (e) => {
+        if (e.cancelable) e.preventDefault();
+        audio.init();
         isJoystickActive = true;
-        processJoystickCoords(e.touches[0].clientX, e.touches[0].clientY);
-      }
-    }, { passive: false });
+        joystickPointerId = e.pointerId;
+        try {
+          joystickZone.setPointerCapture(e.pointerId);
+        } catch (_) {}
+        processJoystickCoords(e.clientX, e.clientY);
+        if (navigator.vibrate) {
+          try { navigator.vibrate(8); } catch (_) {}
+        }
+      }, { passive: false });
 
-    window.addEventListener('touchmove', (e) => {
-      if (!isJoystickActive) return;
-      if (e.touches.length > 0) {
-        processJoystickCoords(e.touches[0].clientX, e.touches[0].clientY);
-      }
-    }, { passive: false });
+      window.addEventListener('pointermove', (e) => {
+        if (!isJoystickActive || e.pointerId !== joystickPointerId) return;
+        processJoystickCoords(e.clientX, e.clientY);
+      }, { passive: false });
 
-    window.addEventListener('touchend', (e) => {
-      if (isJoystickActive) {
-        stopJoystick();
+      const handlePointerEnd = (e) => {
+        if (isJoystickActive && e.pointerId === joystickPointerId) {
+          try {
+            joystickZone.releasePointerCapture(e.pointerId);
+          } catch (_) {}
+          stopJoystick();
+        }
+      };
+
+      window.addEventListener('pointerup', handlePointerEnd, { passive: false });
+      window.addEventListener('pointercancel', handlePointerEnd, { passive: false });
+    } else {
+      // Touch fallback for older browsers
+      joystickZone.addEventListener('touchstart', (e) => {
+        if (e.cancelable) e.preventDefault();
+        audio.init();
+        if (e.changedTouches.length > 0) {
+          const t = e.changedTouches[0];
+          joystickTouchId = t.identifier;
+          isJoystickActive = true;
+          processJoystickCoords(t.clientX, t.clientY);
+          if (navigator.vibrate) {
+            try { navigator.vibrate(8); } catch (_) {}
+          }
+        }
+      }, { passive: false });
+
+      window.addEventListener('touchmove', (e) => {
+        if (!isJoystickActive || joystickTouchId === null) return;
+        for (let i = 0; i < e.touches.length; i++) {
+          if (e.touches[i].identifier === joystickTouchId) {
+            processJoystickCoords(e.touches[i].clientX, e.touches[i].clientY);
+            break;
+          }
+        }
+      }, { passive: false });
+
+      const handleTouchEnd = (e) => {
+        if (!isJoystickActive || joystickTouchId === null) return;
+        for (let i = 0; i < e.changedTouches.length; i++) {
+          if (e.changedTouches[i].identifier === joystickTouchId) {
+            stopJoystick();
+            break;
+          }
+        }
+      };
+
+      window.addEventListener('touchend', handleTouchEnd, { passive: false });
+      window.addEventListener('touchcancel', handleTouchEnd, { passive: false });
+    }
+
+    /* ==========================================================================
+       DIRECT SCREEN / CANVAS TAP TO POSSESS & INTERACT (MOBILE FRIENDLY)
+       ========================================================================== */
+    function handleCanvasTap(clientX, clientY) {
+      audio.init();
+      if (busted) {
+        loadLevel(currentLevelIndex);
+        return;
       }
-    });
+      if (levelCleared) {
+        loadLevel(currentLevelIndex + 1);
+        return;
+      }
+
+      const rect = canvas.getBoundingClientRect();
+      if (rect.width <= 0 || rect.height <= 0) return;
+
+      const scaleX = CANVAS_VIEWPORT_SIZE / rect.width;
+      const scaleY = CANVAS_VIEWPORT_SIZE / rect.height;
+      const canvasX = (clientX - rect.left) * scaleX;
+      const canvasY = (clientY - rect.top) * scaleY;
+      const worldX = canvasX + camera.x;
+      const worldY = canvasY + camera.y;
+
+      // If possessing, tap ejects immediately
+      if (player.isPossessing) {
+        togglePossession();
+        return;
+      }
+
+      // Check if tapped near a furniture item (within 40px of tap) or player is near furniture
+      let tappedFurn = null;
+      let minTapDist = 40;
+      furnitureList.forEach(furn => {
+        const d = Math.hypot(worldX - furn.x, worldY - furn.y);
+        if (d < minTapDist) {
+          tappedFurn = furn;
+          minTapDist = d;
+        }
+      });
+
+      if (tappedFurn) {
+        const distToPlayer = Math.hypot(player.x - tappedFurn.x, player.y - tappedFurn.y);
+        if (distToPlayer <= 72) {
+          togglePossession(tappedFurn);
+          return;
+        }
+      }
+
+      // If user tapped anywhere on screen while near furniture, trigger possess
+      if (closestFurniture) {
+        togglePossession(closestFurniture);
+      }
+    }
+
+    let lastCanvasTapTime = 0;
+    const canvasEl = document.getElementById('gameCanvas');
+    if (canvasEl) {
+      const onCanvasTrigger = (e) => {
+        if (e.cancelable) e.preventDefault();
+        const now = performance.now();
+        if (now - lastCanvasTapTime < 220) return;
+        lastCanvasTapTime = now;
+
+        const clientX = e.clientX ?? (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+        const clientY = e.clientY ?? (e.touches && e.touches[0] ? e.touches[0].clientY : 0);
+        handleCanvasTap(clientX, clientY);
+      };
+
+      if (window.PointerEvent) {
+        canvasEl.addEventListener('pointerdown', onCanvasTrigger, { passive: false });
+      } else {
+        canvasEl.addEventListener('touchstart', onCanvasTrigger, { passive: false });
+        canvasEl.addEventListener('click', onCanvasTrigger);
+      }
+    }
 
     /* ==========================================================================
        KEYBOARD CONTROLS (WASD / ARROWS / SHORTCUTS)
@@ -2822,30 +2928,47 @@
     window.addEventListener('keyup', handleKeyUp);
 
     /* ==========================================================================
-       3 DEDICATED BUTTON HANDLERS (POSSESS, START, MUSIC)
+       DEDICATED ARCADE BUTTON HANDLERS (DEBOUNCED & MULTI-TOUCH SAFE)
        ========================================================================== */
     function bindArcadeButton(btnId, onClick) {
       const el = document.getElementById(btnId);
       if (!el) return;
 
-      const press = (e) => {
-        e.preventDefault();
+      let lastTrigger = 0;
+      const trigger = (e) => {
+        if (e) {
+          if (e.cancelable) e.preventDefault();
+          e.stopPropagation();
+        }
+        const now = performance.now();
+        if (now - lastTrigger < 200) return; // Debounce duplicate pointer/touch events
+        lastTrigger = now;
+
         audio.init();
         el.classList.add('active');
-        if (navigator.vibrate) navigator.vibrate(12);
+        if (navigator.vibrate) {
+          try { navigator.vibrate(14); } catch (_) {}
+        }
         onClick();
       };
 
       const release = (e) => {
-        e.preventDefault();
+        if (e && e.cancelable) e.preventDefault();
         el.classList.remove('active');
       };
 
-      el.addEventListener('pointerdown', press);
-      el.addEventListener('pointerup', release);
-      el.addEventListener('pointerleave', release);
-      el.addEventListener('touchstart', press, { passive: false });
-      el.addEventListener('touchend', release, { passive: false });
+      if (window.PointerEvent) {
+        el.addEventListener('pointerdown', trigger, { passive: false });
+        el.addEventListener('pointerup', release, { passive: false });
+        el.addEventListener('pointercancel', release, { passive: false });
+        el.addEventListener('pointerleave', release, { passive: false });
+      } else {
+        el.addEventListener('touchstart', trigger, { passive: false });
+        el.addEventListener('touchend', release, { passive: false });
+        el.addEventListener('touchcancel', release, { passive: false });
+        el.addEventListener('mousedown', trigger);
+        el.addEventListener('mouseup', release);
+      }
     }
 
     // 1. POSSESS Button

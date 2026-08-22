@@ -42,6 +42,7 @@
       --gb-accent-cyan: #00f0ff;
       --gb-accent-green: #39ff14;
       --gb-accent-gold: #f6c90e;
+      --gb-accent-orange: #ff7700;
     }
 
     * {
@@ -85,7 +86,7 @@
       flex-direction: column;
       align-items: center;
       width: 100%;
-      max-width: 480px;
+      max-width: 490px;
       max-height: 98dvh;
       margin: auto;
     }
@@ -99,6 +100,7 @@
       padding: 2px 6px 4px;
       border-bottom: 2px solid #3c2a63;
       margin-bottom: 4px;
+      gap: 6px;
     }
 
     .gb-grooves {
@@ -107,7 +109,7 @@
     }
 
     .gb-groove-line {
-      width: 16px;
+      width: 14px;
       height: 3px;
       background: #140d24;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -115,15 +117,22 @@
     }
 
     .gb-logo-brand {
-      font-size: 0.58rem;
+      font-size: 0.52rem;
       color: #00f0ff;
-      letter-spacing: 1.2px;
+      letter-spacing: 1px;
       text-shadow: 0 0 8px rgba(0, 240, 255, 0.8), 0 0 15px #f72585;
       font-style: italic;
+      white-space: nowrap;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
 
     .hud-pts-badge {
-      font-size: 0.42rem;
+      font-size: 0.40rem;
       color: #f6c90e;
       background: #201335;
       border: 1px solid #f6c90e;
@@ -132,15 +141,36 @@
       display: flex;
       align-items: center;
       gap: 3px;
+      white-space: nowrap;
+    }
+
+    .header-btn {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.36rem;
+      background: #2c1a4d;
+      color: #00f0ff;
+      border: 1px solid #00f0ff;
+      border-radius: 4px;
+      padding: 2px 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      transition: all 0.15s;
+    }
+    .header-btn:hover {
+      background: #00f0ff;
+      color: #000;
+      box-shadow: 0 0 8px #00f0ff;
     }
 
     .pwa-install-btn {
       display: none;
       align-items: center;
       gap: 4px;
-      padding: 3px 6px;
+      padding: 2px 5px;
       font-family: 'Press Start 2P', monospace;
-      font-size: 0.36rem;
+      font-size: 0.34rem;
       background: linear-gradient(135deg, #f72585, #7209b7);
       color: #fff;
       border: 1px solid #ff70a6;
@@ -148,7 +178,6 @@
       cursor: pointer;
       box-shadow: 0 0 8px rgba(247, 37, 133, 0.6);
       animation: pulseInstall 2s infinite ease-in-out;
-      touch-action: manipulation;
     }
     @keyframes pulseInstall {
       0%, 100% { transform: scale(1); box-shadow: 0 0 6px rgba(247, 37, 133, 0.5); }
@@ -158,11 +187,11 @@
     .power-led-group {
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
     }
 
     .power-led-label {
-      font-size: 0.38rem;
+      font-size: 0.34rem;
       color: #8c72b0;
       letter-spacing: 0.5px;
     }
@@ -220,7 +249,7 @@
     }
 
     .bezel-title {
-      font-size: 0.38rem;
+      font-size: 0.36rem;
       color: #9d4edd;
       margin: 0 6px;
       letter-spacing: 1px;
@@ -232,12 +261,12 @@
       background: rgba(10, 6, 20, 0.92);
       border: 1px solid #4a3473;
       border-radius: 6px;
-      padding: 4px 6px;
+      padding: 3px 6px;
       margin-bottom: 4px;
       display: flex;
       flex-direction: column;
       gap: 3px;
-      font-size: 0.48rem;
+      font-size: 0.44rem;
     }
 
     .hud-row {
@@ -250,17 +279,18 @@
     .hud-left-stats {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
 
     .hud-floor-badge {
-      font-size: 0.42rem;
+      font-size: 0.40rem;
       color: #f6c90e;
       background: #2b1842;
       padding: 2px 4px;
       border-radius: 3px;
       border: 1px solid #8e44ad;
       letter-spacing: 0.5px;
+      white-space: nowrap;
     }
 
     .hud-cleanliness {
@@ -269,10 +299,11 @@
       display: flex;
       align-items: center;
       gap: 3px;
+      font-size: 0.44rem;
     }
 
     .hud-stealth-pill {
-      font-size: 0.38rem;
+      font-size: 0.36rem;
       padding: 2px 5px;
       border-radius: 4px;
       background: #1e1438;
@@ -300,368 +331,354 @@
       box-shadow: 0 0 8px rgba(247, 37, 133, 0.8);
     }
 
+    @keyframes stealthGlow {
+      from { box-shadow: 0 0 4px rgba(57, 255, 20, 0.5); }
+      to { box-shadow: 0 0 12px rgba(57, 255, 20, 0.95); }
+    }
+
     .hud-time-pill {
       font-size: 0.38rem;
       padding: 2px 5px;
-      border-radius: 3px;
-      background: #331500;
-      border: 1px solid #ff7700;
-      color: #ffaa00;
+      border-radius: 4px;
+      background: #3a1500;
+      border: 1px solid #f6c90e;
+      color: #f6c90e;
       display: none;
+      font-weight: bold;
     }
-
     .hud-time-pill.urgent {
-      background: #4a000f;
+      background: #500010;
       border-color: #ff0055;
       color: #ff0055;
-      animation: pulseInspect 0.5s infinite alternate;
-    }
-
-    @keyframes pulseInspect {
-      0% { opacity: 0.8; }
-      100% { opacity: 1; }
-    }
-
-    @keyframes stealthGlow {
-      0% { transform: scale(1); }
-      100% { transform: scale(1.04); }
+      animation: blinkLed 0.3s infinite alternate;
     }
 
     .panic-wrap {
       display: flex;
       align-items: center;
       gap: 4px;
-      flex: 1;
-      max-width: 150px;
     }
 
     .panic-bar-outer {
-      flex: 1;
-      height: 8px;
-      background: #180d26;
-      border: 1px solid #ff0055;
+      width: 70px;
+      height: 7px;
+      background: #140d24;
+      border: 1px solid #ff3366;
       border-radius: 3px;
       overflow: hidden;
       position: relative;
     }
 
     .panic-bar-inner {
-      height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, #ffcc00, #ff0055);
+      height: 100%;
+      background: linear-gradient(90deg, #ffcc00, #ff3366);
       transition: width 0.1s linear;
-      box-shadow: 0 0 8px #ff0055;
+      box-shadow: 0 0 6px #ff3366;
     }
 
     .panic-bar-inner.warning {
-      animation: panicPulse 0.3s infinite alternate;
+      animation: pulsePanicBar 0.3s infinite alternate;
     }
 
-    @keyframes panicPulse {
-      0% { filter: brightness(1); }
-      100% { filter: brightness(1.6); }
+    @keyframes pulsePanicBar {
+      from { filter: brightness(1); }
+      to { filter: brightness(1.5); }
     }
 
     .hud-room-tag {
-      font-size: 0.38rem;
-      color: #00f0ff;
-      text-align: right;
+      font-size: 0.34rem;
+      color: #a89bb9;
+      background: #1a102c;
+      padding: 2px 5px;
+      border-radius: 3px;
+      border: 1px solid #3c2a63;
+      white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      white-space: nowrap;
-      max-width: 160px;
-      letter-spacing: 0.5px;
+      max-width: 180px;
     }
 
-    /* Screen Bezel & Canvas wrapper */
+    /* Screen Area Canvas with CRT scanlines */
     .screen-container {
       position: relative;
-      background: #000;
-      border: 2px solid #2e1d4d;
-      border-radius: 4px;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       width: 100%;
+      aspect-ratio: 1 / 1;
+      background: #080410;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 2px solid #231640;
       box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.95);
     }
 
-    .screen-container::before {
-      content: " ";
-      position: absolute;
-      top: 0; left: 0; bottom: 0; right: 0;
-      background: linear-gradient(
-        rgba(18, 16, 16, 0) 50%, 
-        rgba(0, 0, 0, 0.32) 50%
-      ), linear-gradient(
-        90deg,
-        rgba(255, 0, 0, 0.03),
-        rgba(0, 255, 0, 0.01),
-        rgba(0, 255, 0, 0.03)
-      );
-      background-size: 100% 3px, 4px 100%;
-      pointer-events: none;
-      z-index: 10;
-    }
-
-    .screen-container::after {
-      content: " ";
-      position: absolute;
-      top: 0; left: 0; bottom: 0; right: 0;
-      background: radial-gradient(circle at center, transparent 70%, rgba(0, 0, 0, 0.65) 100%);
-      pointer-events: none;
-      z-index: 11;
-    }
-
-    .panic-alert-overlay {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      box-shadow: inset 0 0 50px rgba(255, 0, 85, 0.85);
-      opacity: 0;
-      pointer-events: none;
-      z-index: 12;
-      transition: opacity 0.15s ease-in-out;
-    }
-
-    canvas#gameCanvas {
+    canvas {
       display: block;
       width: 100%;
-      max-width: min(88vw, 360px, 42vh);
-      aspect-ratio: 1 / 1;
-      height: auto;
-      background-color: #0d091a;
+      height: 100%;
       image-rendering: pixelated;
       image-rendering: crisp-edges;
     }
 
-    /* CONTROLS DECK: JOYSTICK + ARCADE BUTTONS */
-    .gb-controls-deck {
-      width: 100%;
+    .screen-container::after {
+      content: " ";
+      display: block;
+      position: absolute;
+      top: 0; left: 0; bottom: 0; right: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+      background-size: 100% 4px;
+      z-index: 10;
+      pointer-events: none;
+      opacity: 0.45;
+    }
+
+    .panic-alert-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(circle, transparent 40%, rgba(255, 0, 85, 0.5) 100%);
+      z-index: 8;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    /* ==========================================================================
+       LOBBY (MAIN MENU) & FLOOR SELECT STYLES
+       ========================================================================== */
+    .lobby-modal {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(circle at center, #1b0f33 0%, #0a0518 100%);
+      z-index: 60;
+      display: flex;
+      flex-direction: column;
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 2px solid #9d4edd;
+      box-shadow: inset 0 0 35px rgba(157, 78, 221, 0.45);
+      overflow-y: auto;
+      transition: opacity 0.25s ease;
+    }
+
+    .lobby-modal.closed {
+      display: none;
+    }
+
+    .lobby-title-wrap {
+      text-align: center;
+      margin-bottom: 6px;
+      position: relative;
+    }
+
+    .lobby-title-glow {
+      font-size: 0.68rem;
+      color: #00f0ff;
+      text-shadow: 0 0 10px #00f0ff, 0 0 20px #f72585;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .lobby-subtitle {
+      font-size: 0.34rem;
+      color: #f6c90e;
+      letter-spacing: 0.8px;
+      margin-top: 2px;
+    }
+
+    .lobby-stats-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-top: 6px;
-      gap: 8px;
+      background: #140c26;
+      border: 1px solid #3c2a63;
+      border-radius: 4px;
+      padding: 4px 8px;
+      margin-bottom: 6px;
+      font-size: 0.38rem;
     }
 
-    /* JOYSTICK */
-    .joystick-zone {
-      position: relative;
-      width: 112px;
-      height: 112px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      touch-action: none;
-    }
-
-    .joystick-base {
-      position: relative;
-      width: 104px;
-      height: 104px;
-      background: radial-gradient(circle at 40% 40%, #2a1b47 0%, #120b22 70%, #080410 100%);
-      border-radius: 50%;
-      border: 3px solid #5a3c8c;
-      box-shadow: 
-        inset 0 3px 6px rgba(255, 255, 255, 0.15),
-        inset 0 -4px 8px rgba(0, 0, 0, 0.85),
-        0 6px 12px rgba(0, 0, 0, 0.9);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      touch-action: none;
-      cursor: grab;
-    }
-
-    .joystick-ring-deco {
-      position: absolute;
-      width: 76px;
-      height: 76px;
-      border-radius: 50%;
-      border: 1.5px dashed rgba(157, 78, 221, 0.4);
-      pointer-events: none;
-    }
-
-    .joystick-indicator {
-      position: absolute;
-      font-size: 0.5rem;
-      color: rgba(157, 78, 221, 0.65);
-      pointer-events: none;
-      transition: color 0.1s, transform 0.1s;
-    }
-    .joystick-indicator.up { top: 4px; }
-    .joystick-indicator.down { bottom: 4px; }
-    .joystick-indicator.left { left: 5px; }
-    .joystick-indicator.right { right: 5px; }
-
-    .joystick-indicator.lit {
+    .lobby-section-header {
+      font-size: 0.42rem;
       color: #00f0ff;
-      text-shadow: 0 0 8px #00f0ff;
-      transform: scale(1.3);
-    }
-
-    .joystick-knob {
-      position: absolute;
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #9d4edd 0%, #4a127a 60%, #1b072e 100%);
-      border: 2px solid #b872ff;
-      box-shadow: 
-        0 5px 10px rgba(0, 0, 0, 0.9),
-        0 0 12px rgba(157, 78, 221, 0.7),
-        inset 0 2px 4px rgba(255, 255, 255, 0.4),
-        inset 0 -3px 6px rgba(0, 0, 0, 0.8);
-      pointer-events: none;
-      transition: transform 0.05s ease-out;
+      margin-bottom: 4px;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
     }
 
-    .joystick-knob-core {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: radial-gradient(circle, #00f0ff 0%, #7209b7 100%);
-      border: 1px solid #00f0ff;
-      box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.8);
-    }
-
-    .joystick-knob.active {
-      box-shadow: 
-        0 2px 6px rgba(0, 0, 0, 0.9),
-        0 0 20px rgba(0, 240, 255, 0.95),
-        inset 0 2px 5px rgba(255, 255, 255, 0.7);
-      border-color: #00f0ff;
-    }
-
-    /* 4 ARCADE BUTTONS DECK */
-    .gb-arcade-buttons-deck {
+    .floor-select-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 6px 8px;
-      background: linear-gradient(145deg, #1b122e 0%, #0d0818 100%);
-      padding: 6px 8px;
-      border-radius: 20px;
-      border: 1.5px solid #3c295c;
-      box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.08), 0 4px 10px rgba(0, 0, 0, 0.7);
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
+      margin-bottom: 8px;
     }
 
-    .arcade-btn-col {
+    .floor-card {
+      background: #150d28;
+      border: 1.5px solid #3c2a63;
+      border-radius: 6px;
+      padding: 5px 6px;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 2px;
-    }
-
-    .arcade-custom-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Press Start 2P', monospace;
+      gap: 3px;
       cursor: pointer;
-      transition: all 0.08s ease;
-      touch-action: none;
+      transition: all 0.15s ease;
       position: relative;
-      outline: none;
+      text-align: left;
     }
 
-    .btn-top-icon {
-      font-size: 0.75rem;
-      line-height: 1;
-      margin-bottom: 2px;
-      pointer-events: none;
+    .floor-card:hover {
+      border-color: #00f0ff;
+      background: #22143d;
+      transform: scale(1.02);
     }
 
-    .btn-main-text {
-      font-size: 0.32rem;
-      letter-spacing: 0.5px;
-      pointer-events: none;
-      white-space: nowrap;
+    .floor-card.selected {
+      border-color: #39ff14;
+      background: #182b20;
+      box-shadow: 0 0 12px rgba(57, 255, 20, 0.5);
     }
 
-    /* 1. POSSESS BUTTON */
-    .btn-possess-style {
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      background: linear-gradient(145deg, #f72585, #7209b7);
-      border: 2px solid #ff70a6;
-      box-shadow: 0 3px 0 #3a001a, 0 0 12px rgba(247, 37, 133, 0.6);
+    .floor-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .floor-num-badge {
+      font-size: 0.36rem;
+      padding: 1px 4px;
+      background: #2b1842;
+      border: 1px solid #9d4edd;
+      border-radius: 3px;
+      color: #f6c90e;
+    }
+    .floor-card.selected .floor-num-badge {
+      border-color: #39ff14;
+      color: #39ff14;
+    }
+
+    .floor-theme-icon {
+      font-size: 0.70rem;
+    }
+
+    .floor-card-title {
+      font-size: 0.38rem;
+      color: #ffffff;
+      line-height: 1.25;
+      font-weight: bold;
+    }
+
+    .floor-card-hazard {
+      font-size: 0.30rem;
+      color: #ffaa00;
+      line-height: 1.2;
+    }
+
+    .floor-card-npc {
+      font-size: 0.30rem;
+      color: #a89bb9;
+      line-height: 1.2;
+    }
+
+    .floor-card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 2px;
+      font-size: 0.30rem;
+      color: #39ff14;
+    }
+
+    .lobby-btn-row {
+      display: flex;
+      gap: 6px;
+      margin-top: auto;
+    }
+
+    .lobby-play-btn {
+      flex: 1.6;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.46rem;
+      padding: 8px;
+      background: linear-gradient(135deg, #39ff14, #0f7a28);
+      color: #000;
+      border: 2px solid #a8ff78;
+      border-radius: 5px;
+      cursor: pointer;
+      text-align: center;
+      font-weight: bold;
+      box-shadow: 0 0 10px rgba(57, 255, 20, 0.6);
+      transition: all 0.15s;
+    }
+    .lobby-play-btn:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 16px rgba(57, 255, 20, 0.9);
+    }
+
+    .lobby-aux-btn {
+      flex: 1;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.38rem;
+      padding: 8px 4px;
+      background: linear-gradient(135deg, #9d4edd, #4a0e78);
       color: #fff;
+      border: 1.5px solid #cc88ff;
+      border-radius: 5px;
+      cursor: pointer;
+      text-align: center;
+      font-weight: bold;
+      transition: all 0.15s;
     }
-    .btn-possess-style:active, .btn-possess-style.active {
-      transform: translateY(2px);
-      box-shadow: 0 1px 0 #3a001a, 0 0 18px rgba(247, 37, 133, 1);
-      background: #ff0055;
-    }
-    .btn-possess-style.eject-mode {
-      background: linear-gradient(145deg, #39ff14, #0f7a28);
-      border-color: #a8ff78;
-      box-shadow: 0 3px 0 #053310, 0 0 14px rgba(57, 255, 20, 0.7);
-    }
-
-    /* 2. TRAP DECOY BUTTON */
-    .btn-trap-style {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: linear-gradient(145deg, #e67e22, #b94a00);
-      border: 2px solid #ffaa44;
-      box-shadow: 0 3px 0 #3a1500, 0 0 10px rgba(230, 126, 34, 0.5);
-      color: #fff;
-    }
-    .btn-trap-style:active, .btn-trap-style.active {
-      transform: translateY(2px);
-      box-shadow: 0 1px 0 #3a1500, 0 0 16px rgba(230, 126, 34, 0.9);
-      background: #ff9900;
-    }
-
-    /* 3. SHOP / START BUTTON */
-    .btn-shop-style {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: linear-gradient(145deg, #9d4edd, #4a0e78);
-      border: 2px solid #cc88ff;
-      box-shadow: 0 3px 0 #24053d, 0 0 10px rgba(157, 78, 221, 0.5);
-      color: #fff;
-    }
-    .btn-shop-style:active, .btn-shop-style.active {
-      transform: translateY(2px);
-      box-shadow: 0 1px 0 #24053d, 0 0 16px rgba(157, 78, 221, 0.9);
+    .lobby-aux-btn:hover {
       background: #b055ff;
+      transform: scale(1.03);
     }
 
-    /* 4. MUSIC / SOUND TOGGLE BUTTON */
-    .btn-music-style {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: linear-gradient(145deg, #00f0ff, #0077b6);
-      border: 2px solid #80f7ff;
-      box-shadow: 0 3px 0 #00375b, 0 0 10px rgba(0, 240, 255, 0.5);
-      color: #fff;
+    /* HOW TO PLAY MODAL */
+    .guide-modal {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(10, 5, 22, 0.97);
+      z-index: 70;
+      display: none;
+      flex-direction: column;
+      padding: 10px;
+      border-radius: 6px;
+      border: 2px solid #00f0ff;
+      overflow-y: auto;
     }
-    .btn-music-style:active, .btn-music-style.active {
-      transform: translateY(2px);
-      box-shadow: 0 1px 0 #00375b, 0 0 16px rgba(0, 240, 255, 0.9);
-      background: #48cae4;
+    .guide-modal.open {
+      display: flex;
     }
-    .btn-music-style.muted {
-      background: linear-gradient(145deg, #555, #222);
-      border-color: #888;
-      box-shadow: 0 3px 0 #111;
-      opacity: 0.6;
+    .guide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #3c2a63;
+      padding-bottom: 4px;
+      margin-bottom: 8px;
     }
-
-    .btn-sub-label {
-      font-size: 0.32rem;
-      color: #8c72b0;
-      letter-spacing: 0.5px;
+    .guide-content {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 0.34rem;
+      line-height: 1.4;
+      color: #d8f3dc;
+    }
+    .guide-card {
+      background: #180f2d;
+      border: 1px solid #3c2a63;
+      border-radius: 4px;
+      padding: 6px;
+    }
+    .guide-card-title {
+      color: #f6c90e;
+      font-size: 0.38rem;
+      margin-bottom: 3px;
     }
 
     /* UNDERWORLD SHOP MODAL OVERLAY */
@@ -669,10 +686,10 @@
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
       background: rgba(13, 8, 24, 0.96);
-      z-index: 50;
+      z-index: 65;
       display: none;
       flex-direction: column;
-      padding: 12px;
+      padding: 10px;
       border-radius: 6px;
       border: 2px solid #9d4edd;
       box-shadow: inset 0 0 30px rgba(157, 78, 221, 0.4);
@@ -688,12 +705,12 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 2px solid #4a3473;
-      padding-bottom: 6px;
-      margin-bottom: 8px;
+      padding-bottom: 4px;
+      margin-bottom: 6px;
     }
 
     .shop-title {
-      font-size: 0.55rem;
+      font-size: 0.50rem;
       color: #00f0ff;
       text-shadow: 0 0 6px #00f0ff;
     }
@@ -702,28 +719,28 @@
       background: #1e1136;
       border: 1px solid #f6c90e;
       border-radius: 4px;
-      padding: 6px;
+      padding: 5px;
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 8px;
-      font-size: 0.38rem;
+      gap: 6px;
+      margin-bottom: 6px;
+      font-size: 0.34rem;
       color: #f6c90e;
-      line-height: 1.4;
+      line-height: 1.3;
     }
 
     .shop-items-grid {
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      margin-bottom: 10px;
+      gap: 5px;
+      margin-bottom: 8px;
     }
 
     .shop-item-card {
       background: #180f2d;
       border: 1px solid #3c2a63;
       border-radius: 6px;
-      padding: 6px 8px;
+      padding: 5px 6px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -739,23 +756,24 @@
       display: flex;
       flex-direction: column;
       gap: 2px;
+      max-width: 72%;
     }
 
     .shop-item-name {
-      font-size: 0.42rem;
+      font-size: 0.38rem;
       color: #fff;
     }
 
     .shop-item-desc {
-      font-size: 0.32rem;
+      font-size: 0.29rem;
       color: #a89bb9;
-      line-height: 1.3;
+      line-height: 1.25;
     }
 
     .shop-item-buy-btn {
       font-family: 'Press Start 2P', monospace;
-      font-size: 0.38rem;
-      padding: 5px 8px;
+      font-size: 0.34rem;
+      padding: 4px 6px;
       background: linear-gradient(135deg, #f6c90e, #d35400);
       color: #000;
       border: 1px solid #ffe066;
@@ -780,8 +798,8 @@
     .shop-close-btn {
       margin-top: auto;
       font-family: 'Press Start 2P', monospace;
-      font-size: 0.48rem;
-      padding: 8px;
+      font-size: 0.42rem;
+      padding: 7px;
       background: linear-gradient(135deg, #39ff14, #0f7a28);
       color: #000;
       border: 2px solid #a8ff78;
@@ -789,6 +807,210 @@
       cursor: pointer;
       text-align: center;
       font-weight: bold;
+    }
+
+    /* Controller Deck */
+    .gb-controls-deck {
+      width: 100%;
+      margin-top: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2px 4px 0;
+      position: relative;
+    }
+
+    /* Virtual Joystick */
+    .joystick-zone {
+      width: 110px;
+      height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      touch-action: none;
+      position: relative;
+    }
+
+    .joystick-base {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #2a1f42 0%, #0d0818 100%);
+      border: 2px solid #4a3473;
+      box-shadow: 
+        inset 0 4px 8px rgba(0, 0, 0, 0.85),
+        0 4px 8px rgba(0, 0, 0, 0.6);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .joystick-indicator {
+      position: absolute;
+      font-size: 0.48rem;
+      color: rgba(157, 78, 221, 0.35);
+      transition: color 0.15s;
+      pointer-events: none;
+    }
+    .joystick-indicator.up { top: 4px; }
+    .joystick-indicator.down { bottom: 4px; }
+    .joystick-indicator.left { left: 4px; }
+    .joystick-indicator.right { right: 4px; }
+    .joystick-indicator.lit { color: #00f0ff; text-shadow: 0 0 8px #00f0ff; }
+
+    .joystick-knob {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #9d4edd 0%, #3c146e 65%, #210842 100%);
+      border: 2px solid #cc88ff;
+      box-shadow: 
+        0 4px 8px rgba(0, 0, 0, 0.8),
+        inset 0 2px 3px rgba(255, 255, 255, 0.4);
+      position: absolute;
+      touch-action: none;
+      transform: translate(0px, 0px);
+      transition: transform 0.05s ease-out;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .joystick-knob-core {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #180930;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .joystick-knob.active {
+      box-shadow: 0 0 16px rgba(0, 240, 255, 0.8), inset 0 2px 4px rgba(255, 255, 255, 0.6);
+      border-color: #00f0ff;
+    }
+
+    /* 4 Dedicated Arcade Buttons */
+    .gb-arcade-buttons-deck {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      align-items: center;
+      margin-left: auto;
+    }
+
+    .arcade-btn-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .arcade-custom-btn {
+      position: relative;
+      font-family: 'Press Start 2P', monospace;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1px;
+      outline: none;
+      touch-action: manipulation;
+      transition: transform 0.08s, box-shadow 0.08s, background 0.15s;
+    }
+
+    .btn-top-icon {
+      font-size: 0.68rem;
+      pointer-events: none;
+    }
+
+    .btn-main-text {
+      font-size: 0.32rem;
+      pointer-events: none;
+      font-weight: bold;
+    }
+
+    /* 1. POSSESS BUTTON */
+    .btn-possess-style {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #f72585, #b5179e);
+      border: 2px solid #ff70a6;
+      box-shadow: 0 3px 0 #4a0033, 0 0 10px rgba(247, 37, 133, 0.5);
+      color: #fff;
+    }
+    .btn-possess-style:active, .btn-possess-style.active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #4a0033, 0 0 16px rgba(247, 37, 133, 0.9);
+      background: #ff007f;
+    }
+    .btn-possess-style.eject-mode {
+      background: linear-gradient(145deg, #39ff14, #0f7a28);
+      border-color: #a8ff78;
+      box-shadow: 0 3px 0 #053310, 0 0 14px rgba(57, 255, 20, 0.7);
+    }
+
+    /* 2. TRAP DECOY BUTTON */
+    .btn-trap-style {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #e67e22, #b94a00);
+      border: 2px solid #ffaa44;
+      box-shadow: 0 3px 0 #3a1500, 0 0 10px rgba(230, 126, 34, 0.5);
+      color: #fff;
+    }
+    .btn-trap-style:active, .btn-trap-style.active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #3a1500, 0 0 16px rgba(230, 126, 34, 0.9);
+      background: #ff9900;
+    }
+
+    /* 3. SHOP BUTTON */
+    .btn-shop-style {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #9d4edd, #4a0e78);
+      border: 2px solid #cc88ff;
+      box-shadow: 0 3px 0 #24053d, 0 0 10px rgba(157, 78, 221, 0.5);
+      color: #fff;
+    }
+    .btn-shop-style:active, .btn-shop-style.active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #24053d, 0 0 16px rgba(157, 78, 221, 0.9);
+      background: #b055ff;
+    }
+
+    /* 4. MUSIC TOGGLE BUTTON */
+    .btn-music-style {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #00f0ff, #0077b6);
+      border: 2px solid #80f7ff;
+      box-shadow: 0 3px 0 #00375b, 0 0 10px rgba(0, 240, 255, 0.5);
+      color: #fff;
+    }
+    .btn-music-style:active, .btn-music-style.active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #00375b, 0 0 16px rgba(0, 240, 255, 0.9);
+      background: #48cae4;
+    }
+    .btn-music-style.muted {
+      background: linear-gradient(145deg, #555, #222);
+      border-color: #888;
+      box-shadow: 0 3px 0 #111;
+      opacity: 0.6;
+    }
+
+    .btn-sub-label {
+      font-size: 0.30rem;
+      color: #8c72b0;
+      letter-spacing: 0.5px;
     }
   </style>
 </head>
@@ -800,17 +1022,19 @@
       <div class="gb-grooves">
         <div class="gb-groove-line"></div>
         <div class="gb-groove-line"></div>
-        <div class="gb-groove-line"></div>
       </div>
       <div class="gb-logo-brand">GHOST JANITOR 8-BIT</div>
-      <div class="hud-pts-badge">
-        <span>💰</span>
-        <span id="goldCurrency">0 PTS</span>
-      </div>
-      <button id="pwaInstallBtn" class="pwa-install-btn" title="Install App for Offline Play" aria-label="Install App">⚡ INSTALL</button>
-      <div class="power-led-group">
-        <div class="power-led-label">PWR</div>
-        <div id="powerLed" class="power-led"></div>
+      <div class="header-actions">
+        <button id="btnHeaderLobby" class="header-btn" title="Open Floor Select Lobby">🏠 LOBBY</button>
+        <div class="hud-pts-badge">
+          <span>💰</span>
+          <span id="goldCurrency">0 PTS</span>
+        </div>
+        <button id="pwaInstallBtn" class="pwa-install-btn" title="Install App for Offline Play" aria-label="Install App">⚡ INSTALL</button>
+        <div class="power-led-group">
+          <div class="power-led-label">PWR</div>
+          <div id="powerLed" class="power-led"></div>
+        </div>
       </div>
     </header>
 
@@ -830,7 +1054,7 @@
             <div class="hud-cleanliness">
               <span>✨</span>
               <span>CLEAN:</span>
-              <span id="scoreText" style="color: #39ff14; font-size: 0.55rem;">0 / 25</span>
+              <span id="scoreText" style="color: #39ff14; font-size: 0.48rem;">0 / 25</span>
             </div>
           </div>
           <span id="timeAttackBadge" class="hud-time-pill">⏰ 75s</span>
@@ -839,20 +1063,87 @@
 
         <div class="hud-row">
           <div class="panic-wrap">
-            <span style="color: #ff3366; font-size: 0.38rem;">PANIC:</span>
+            <span style="color: #ff3366; font-size: 0.34rem;">PANIC:</span>
             <div class="panic-bar-outer">
               <div id="panicBar" class="panic-bar-inner"></div>
             </div>
-            <span id="panicPercent" style="font-size: 0.38rem; color: #ff3366; width: 28px;">0%</span>
+            <span id="panicPercent" style="font-size: 0.34rem; color: #ff3366; width: 24px;">0%</span>
           </div>
           <div id="roomTag" class="hud-room-tag">📍 FLOODED BASEMENT</div>
         </div>
       </div>
 
-      <!-- Screen Container with Pixel Canvas & Underworld Shop Overlay -->
+      <!-- Screen Container with Pixel Canvas & Overlays -->
       <div class="screen-container" id="screenBezel">
         <div id="panicAlert" class="panic-alert-overlay"></div>
         <canvas id="gameCanvas" width="512" height="512"></canvas>
+
+        <!-- LOBBY / MAIN MENU MODAL (Floors 1 to 6 Selector) -->
+        <div id="lobbyModal" class="lobby-modal">
+          <div class="lobby-title-wrap">
+            <div class="lobby-title-glow">👻 GHOST JANITOR 8-BIT</div>
+            <div class="lobby-subtitle">SELECT A FLOOR TO PURGE & POLISH</div>
+          </div>
+
+          <div class="lobby-stats-row">
+            <div>
+              <span style="color: #a89bb9;">BANK:</span>
+              <span id="lobbyPoints" style="color: #f6c90e; font-weight: bold;">0 PTS</span>
+            </div>
+            <div>
+              <span style="color: #a89bb9;">BEST RANK:</span>
+              <span id="lobbyBestRank" style="color: #39ff14; font-weight: bold;">S-RANK</span>
+            </div>
+          </div>
+
+          <div class="lobby-section-header">
+            <span>🏰 MANSION FLOORS (1 - 6):</span>
+            <span style="font-size: 0.32rem; color: #f6c90e;">TAP TO SELECT</span>
+          </div>
+
+          <!-- 6 Floors Grid -->
+          <div class="floor-select-grid" id="floorSelectGrid">
+            <!-- Dynamically populated by JS -->
+          </div>
+
+          <!-- Bottom Action Buttons -->
+          <div class="lobby-btn-row">
+            <button id="lobbyPlayBtn" class="lobby-play-btn">▶ PLAY FLOOR 1</button>
+            <button id="lobbyShopBtn" class="lobby-aux-btn">💀 SHOP</button>
+            <button id="lobbyGuideBtn" class="lobby-aux-btn">📖 GUIDE</button>
+          </div>
+        </div>
+
+        <!-- HOW TO PLAY / MANUAL OVERLAY -->
+        <div id="guideModal" class="guide-modal">
+          <div class="guide-header">
+            <div style="font-size: 0.48rem; color: #00f0ff;">📖 PHANTOM JANITOR'S HANDBOOK</div>
+            <button id="guideCloseBtn" class="header-btn">✕ CLOSE</button>
+          </div>
+          <div class="guide-content">
+            <div class="guide-card">
+              <div class="guide-card-title">👻 CORE GHOST MECHANICS:</div>
+              <div>• Move with Joystick / WASD / Arrow Keys.</div>
+              <div>• <b>POSSESS [Space / Button]</b>: Enter cleaning gear or stationary furniture to hide from human sight!</div>
+              <div>• <b>EJECT</b>: Leave possessed items anytime to slip through tight doorways.</div>
+            </div>
+            <div class="guide-card">
+              <div class="guide-card-title">🧹 SPECIALIZED CLEANING GEAR:</div>
+              <div>• <b>Mop & Bucket</b>: Cleans standard dust and leaves slippery water trails that trip humans.</div>
+              <div>• <b>Ghost Vacuum</b>: Auto-sucks standard dust & ectoplasm.</div>
+              <div>• <b>Candle / Fire Poker</b>: Burns haunted cobwebs.</div>
+              <div>• <b>Feather Duster</b>: Silent, high-speed dusting on Floor 4.</div>
+              <div>• <b>Exhaust Fan</b>: Clears kitchen grease & flour on Floor 6.</div>
+            </div>
+            <div class="guide-card">
+              <div class="guide-card-title">🚨 AVOID DETECTION:</div>
+              <div>• Stay out of human yellow Vision Cones!</div>
+              <div>• Beware Dr. Egon's EMF radar & Librarian's flashlight beam.</div>
+              <div>• Don't run on Creaky Planks or hover over Sizzling Stoves.</div>
+              <div>• Place <b>Squeaky Shoe Traps [T]</b> or ring <b>Dinner Bells</b> to lure NPCs away!</div>
+            </div>
+          </div>
+        </div>
 
         <!-- Underworld Janitor Shop Overlay Screen -->
         <div id="shopModal" class="shop-modal">
@@ -870,7 +1161,7 @@
           <div class="shop-items-grid" id="shopItemsGrid">
             <!-- Populated dynamically by JavaScript -->
           </div>
-          <button id="shopCloseBtn" class="shop-close-btn">RESUME / NEXT FLOOR ▶</button>
+          <button id="shopCloseBtn" class="shop-close-btn">RESUME / BACK ▶</button>
         </div>
       </div>
     </section>
@@ -880,7 +1171,6 @@
       <!-- Left: Smooth 360-degree Virtual Analog Joystick -->
       <div class="joystick-zone" id="joystickZone">
         <div class="joystick-base" id="joystickBase">
-          <div class="joystick-ring-deco"></div>
           <span class="joystick-indicator up" id="joyArrowUp">▲</span>
           <span class="joystick-indicator down" id="joyArrowDown">▼</span>
           <span class="joystick-indicator left" id="joyArrowLeft">◀</span>
@@ -945,6 +1235,7 @@
         this.lastVacuumSoundTime = 0;
         this.lastEMFSoundTime = 0;
         this.lastCreakSoundTime = 0;
+        this.lastSizzleSoundTime = 0;
         this.bgmTimer = null;
         this.bgmStep = 0;
         this.baseTempo = 145;
@@ -968,7 +1259,6 @@
         if (this.bgmTimer || !this.musicEnabled) return;
         this.init();
         if (!this.ctx) return;
-
         this.restartBGMInterval();
       }
 
@@ -983,7 +1273,7 @@
       setPanicTempo(frantic) {
         if (this.isFrantic === frantic) return;
         this.isFrantic = frantic;
-        this.currentTempo = frantic ? 210 : 145; // Frantic fast tempo shift on 75%+ Panic!
+        this.currentTempo = frantic ? 210 : 145;
         if (this.bgmTimer && this.musicEnabled) {
           this.restartBGMInterval();
         }
@@ -1048,8 +1338,8 @@
         ] : [
           440, 0, 523.25, 0,  659.25, 0, 587.33, 0,
           440, 0, 392, 0,     440, 0, 0, 0,
-          349.23, 0, 440, 0,  523.25, 0, 440, 0,
-          392, 0, 440, 0,     493.88, 0, 523.25, 0
+          349.23, 0, 392, 0,  440, 0, 523.25, 0,
+          392, 0, 349.23, 0,  329.63, 0, 293.66, 0
         ];
 
         const leadFreq = leadNotes[step];
@@ -1058,83 +1348,33 @@
           const gain = this.ctx.createGain();
           osc.type = 'square';
           osc.frequency.setValueAtTime(leadFreq, now);
-          gain.gain.setValueAtTime(this.isFrantic ? 0.06 : 0.045, now);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + (this.isFrantic ? 0.1 : 0.16));
+          gain.gain.setValueAtTime(this.isFrantic ? 0.10 : 0.08, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + (this.isFrantic ? 0.09 : 0.14));
           osc.connect(gain);
           gain.connect(this.ctx.destination);
           osc.start(now);
-          osc.stop(now + 0.17);
-        }
-
-        // 8-bit Noise Hi-Hat / Snare rhythm
-        if (step % 2 === 1 || this.isFrantic) {
-          this.playNoiseTick(0.03, this.isFrantic ? 0.035 : 0.02);
+          osc.stop(now + 0.15);
         }
 
         this.bgmStep++;
-      }
-
-      playNoiseTick(dur, vol) {
-        if (!this.ctx) return;
-        const now = this.ctx.currentTime;
-        const bufferSize = Math.floor(this.ctx.sampleRate * dur);
-        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-        const data = buffer.getChannelData(0);
-        for (let i = 0; i < bufferSize; i++) {
-          data[i] = Math.random() * 2 - 1;
-        }
-
-        const noise = this.ctx.createBufferSource();
-        noise.buffer = buffer;
-        const filter = this.ctx.createBiquadFilter();
-        filter.type = 'highpass';
-        filter.frequency.setValueAtTime(4000, now);
-
-        const gain = this.ctx.createGain();
-        gain.gain.setValueAtTime(vol, now);
-        gain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
-
-        noise.connect(filter);
-        filter.connect(gain);
-        gain.connect(this.ctx.destination);
-        noise.start(now);
       }
 
       playSlimeClean() {
         if (!this.sfxEnabled) return;
         this.init();
         if (!this.ctx) return;
-
         const now = this.ctx.currentTime;
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
-        osc.type = 'triangle';
-        
-        osc.frequency.setValueAtTime(180, now);
-        osc.frequency.exponentialRampToValueAtTime(920, now + 0.08);
-        osc.frequency.exponentialRampToValueAtTime(360, now + 0.16);
-
-        gain.gain.setValueAtTime(0.3, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
-
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(320, now);
+        osc.frequency.exponentialRampToValueAtTime(880, now + 0.08);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
         osc.connect(gain);
         gain.connect(this.ctx.destination);
         osc.start(now);
-        osc.stop(now + 0.18);
-
-        const chime = this.ctx.createOscillator();
-        const chimeGain = this.ctx.createGain();
-        chime.type = 'sine';
-        chime.frequency.setValueAtTime(1300, now + 0.04);
-        chime.frequency.exponentialRampToValueAtTime(2100, now + 0.16);
-
-        chimeGain.gain.setValueAtTime(0.18, now + 0.04);
-        chimeGain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
-
-        chime.connect(chimeGain);
-        chimeGain.connect(this.ctx.destination);
-        chime.start(now + 0.04);
-        chime.stop(now + 0.22);
+        osc.stop(now + 0.09);
       }
 
       playBurn() {
@@ -1142,29 +1382,17 @@
         this.init();
         if (!this.ctx) return;
         const now = this.ctx.currentTime;
-
-        const dur = 0.28;
-        const bufferSize = Math.floor(this.ctx.sampleRate * dur);
-        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-        const data = buffer.getChannelData(0);
-        for (let i = 0; i < bufferSize; i++) {
-          data[i] = (Math.random() * 2 - 1) * (Math.sin(i * 0.04) > 0.3 ? 1 : 0.2);
-        }
-        const noise = this.ctx.createBufferSource();
-        noise.buffer = buffer;
-        const filter = this.ctx.createBiquadFilter();
-        filter.type = 'bandpass';
-        filter.frequency.setValueAtTime(1200, now);
-        filter.frequency.exponentialRampToValueAtTime(3200, now + dur);
-
+        const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
-        gain.gain.setValueAtTime(0.35, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + dur);
-
-        noise.connect(filter);
-        filter.connect(gain);
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(140, now);
+        osc.frequency.exponentialRampToValueAtTime(350, now + 0.08);
+        gain.gain.setValueAtTime(0.18, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+        osc.connect(gain);
         gain.connect(this.ctx.destination);
-        noise.start(now);
+        osc.start(now);
+        osc.stop(now + 0.14);
       }
 
       playSqueak() {
@@ -1172,20 +1400,18 @@
         this.init();
         if (!this.ctx) return;
         const now = this.ctx.currentTime;
-
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(980, now);
-        osc.frequency.exponentialRampToValueAtTime(2400, now + 0.09);
-        osc.frequency.exponentialRampToValueAtTime(1400, now + 0.16);
-
+        osc.frequency.setValueAtTime(1200, now);
+        osc.frequency.exponentialRampToValueAtTime(2400, now + 0.06);
+        osc.frequency.exponentialRampToValueAtTime(800, now + 0.12);
         gain.gain.setValueAtTime(0.25, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
         osc.connect(gain);
         gain.connect(this.ctx.destination);
         osc.start(now);
-        osc.stop(now + 0.18);
+        osc.stop(now + 0.13);
       }
 
       playCreak() {
@@ -1193,16 +1419,14 @@
         this.init();
         if (!this.ctx) return;
         const now = this.ctx.currentTime;
-        if (now - this.lastCreakSoundTime < 0.3) return;
+        if (now - this.lastCreakSoundTime < 0.25) return;
         this.lastCreakSoundTime = now;
-
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         osc.type = 'sawtooth';
         osc.frequency.setValueAtTime(120, now);
         osc.frequency.exponentialRampToValueAtTime(280, now + 0.08);
         osc.frequency.exponentialRampToValueAtTime(80, now + 0.16);
-
         gain.gain.setValueAtTime(0.18, now);
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
         osc.connect(gain);
@@ -1211,12 +1435,69 @@
         osc.stop(now + 0.18);
       }
 
+      playDinnerBell() {
+        if (!this.sfxEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const freqs = [1046.5, 1318.5, 1567.9, 2093.0];
+        freqs.forEach((f, i) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(f, now + i * 0.05);
+          gain.gain.setValueAtTime(0.22, now + i * 0.05);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.05 + 0.25);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + i * 0.05);
+          osc.stop(now + i * 0.05 + 0.26);
+        });
+      }
+
+      playChitterBeetle() {
+        if (!this.sfxEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        for (let i = 0; i < 4; i++) {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(1800 + Math.random() * 400, now + i * 0.04);
+          gain.gain.setValueAtTime(0.18, now + i * 0.04);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.04 + 0.03);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + i * 0.04);
+          osc.stop(now + i * 0.04 + 0.04);
+        }
+      }
+
+      playStoveSizzle() {
+        if (!this.sfxEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        if (now - this.lastSizzleSoundTime < 0.2) return;
+        this.lastSizzleSoundTime = now;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(250 + Math.random() * 80, now);
+        gain.gain.setValueAtTime(0.14, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.16);
+      }
+
       playValveTurn() {
         if (!this.sfxEnabled) return;
         this.init();
         if (!this.ctx) return;
         const now = this.ctx.currentTime;
-
         const freqs = [350, 440, 580, 720];
         freqs.forEach((f, i) => {
           const osc = this.ctx.createOscillator();
@@ -1237,7 +1518,6 @@
         this.init();
         if (!this.ctx) return;
         const now = this.ctx.currentTime;
-
         const notes = [523.25, 659.25, 783.99, 1046.50, 1318.51];
         notes.forEach((f, i) => {
           const osc = this.ctx.createOscillator();
@@ -1257,17 +1537,14 @@
         if (!this.sfxEnabled) return;
         this.init();
         if (!this.ctx) return;
-
         const now = this.ctx.currentTime;
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         osc.type = 'sine';
         osc.frequency.setValueAtTime(240, now);
         osc.frequency.exponentialRampToValueAtTime(880, now + 0.18);
-
         gain.gain.setValueAtTime(0.3, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.24);
-
         osc.connect(gain);
         gain.connect(this.ctx.destination);
         osc.start(now);
@@ -1278,17 +1555,14 @@
         if (!this.sfxEnabled) return;
         this.init();
         if (!this.ctx) return;
-
         const now = this.ctx.currentTime;
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         osc.type = 'sine';
         osc.frequency.setValueAtTime(780, now);
         osc.frequency.exponentialRampToValueAtTime(220, now + 0.18);
-
         gain.gain.setValueAtTime(0.3, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.24);
-
         osc.connect(gain);
         gain.connect(this.ctx.destination);
         osc.start(now);
@@ -1302,7 +1576,6 @@
         const now = this.ctx.currentTime;
         if (now - this.lastVacuumSoundTime < 0.14) return;
         this.lastVacuumSoundTime = now;
-
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         osc.type = 'sawtooth';
@@ -1320,7 +1593,6 @@
         this.init();
         if (!this.ctx) return;
         const now = this.ctx.currentTime;
-
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         osc.type = 'sine';
@@ -1339,7 +1611,6 @@
         this.init();
         if (!this.ctx) return;
         const now = this.ctx.currentTime;
-
         const freqs = [880, 1174.66, 1760, 1318.51, 1046.50];
         freqs.forEach((freq, idx) => {
           const osc = this.ctx.createOscillator();
@@ -1362,7 +1633,6 @@
         const now = this.ctx.currentTime;
         if (now - this.lastEMFSoundTime < 0.18) return;
         this.lastEMFSoundTime = now;
-
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         osc.type = 'triangle';
@@ -1380,20 +1650,16 @@
         if (!this.sfxEnabled) return;
         this.init();
         if (!this.ctx) return;
-
         const now = this.ctx.currentTime;
         if (now - this.lastAlertTime < 0.18) return;
         this.lastAlertTime = now;
-
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         osc.type = 'sawtooth';
         osc.frequency.setValueAtTime(620, now);
         osc.frequency.setValueAtTime(840, now + 0.08);
-
         gain.gain.setValueAtTime(0.2, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
-
         osc.connect(gain);
         gain.connect(this.ctx.destination);
         osc.start(now);
@@ -1404,17 +1670,14 @@
         if (!this.sfxEnabled) return;
         this.init();
         if (!this.ctx) return;
-
         const now = this.ctx.currentTime;
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         osc.type = 'square';
         osc.frequency.setValueAtTime(85, now);
         osc.frequency.exponentialRampToValueAtTime(45, now + 0.08);
-
         gain.gain.setValueAtTime(0.12, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
-
         osc.connect(gain);
         gain.connect(this.ctx.destination);
         osc.start(now);
@@ -1425,7 +1688,6 @@
         if (!this.sfxEnabled) return;
         this.init();
         if (!this.ctx) return;
-
         const now = this.ctx.currentTime;
         const tones = [420, 350, 260, 180, 120];
         tones.forEach((freq, i) => {
@@ -1433,10 +1695,8 @@
           const gain = this.ctx.createGain();
           osc.type = 'sawtooth';
           osc.frequency.setValueAtTime(freq, now + i * 0.11);
-
           gain.gain.setValueAtTime(0.25, now + i * 0.11);
           gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.11 + 0.18);
-
           osc.connect(gain);
           gain.connect(this.ctx.destination);
           osc.start(now + i * 0.11);
@@ -1448,19 +1708,15 @@
         if (!this.sfxEnabled) return;
         this.init();
         if (!this.ctx) return;
-
         const notes = [523.25, 659.25, 783.99, 1046.50, 880.00, 1046.50, 1318.51];
         const now = this.ctx.currentTime;
-
         notes.forEach((freq, i) => {
           const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
           osc.type = 'square';
           osc.frequency.setValueAtTime(freq, now + i * 0.09);
-
           gain.gain.setValueAtTime(0.22, now + i * 0.09);
           gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.09 + 0.2);
-
           osc.connect(gain);
           gain.connect(this.ctx.destination);
           osc.start(now + i * 0.09);
@@ -1490,20 +1746,31 @@
     const audio = new RetroAudioEngine();
 
     /* ==========================================================================
-       PROGRESSION & UNDERWORLD SHOP UPGRADES DATA
+       PROGRESSION & PERSISTENT DATA
        ========================================================================== */
-    let playerPoints = 0; // Currency earned across floors
+    let playerPoints = parseInt(localStorage.getItem('gj_points') || '0', 10);
+    const storedUpgrades = JSON.parse(localStorage.getItem('gj_upgrades') || '{}');
+
     const upgrades = {
-      ghost_vacuum: { id: 'ghost_vacuum', name: 'GHOST VACUUM ATTACH', desc: '+60% Suction radius & sweeps ectoplasm faster', cost: 15, owned: false, icon: '🌀' },
-      poltergeist_polish: { id: 'poltergeist_polish', name: 'POLTERGEIST POLISH', desc: 'Cleans 2x faster when possessing cleaning tools', cost: 20, owned: false, icon: '✨' },
-      spectral_broom: { id: 'spectral_broom', name: 'SPECTRAL BROOM', desc: 'Silent floating: immune to creaky floorboards & footsteps', cost: 25, owned: false, icon: '🧹' },
-      squeaky_shoes: { id: 'squeaky_shoes', name: 'SQUEAKY SHOES TRAP', desc: 'Place decoy shoe trap to lure NPCs to a spot [T]', cost: 15, owned: false, icon: '👟' }
+      ghost_vacuum: { id: 'ghost_vacuum', name: 'GHOST VACUUM ATTACH', desc: '+60% Suction radius & cleans ectoplasm faster', cost: 15, owned: !!storedUpgrades.ghost_vacuum, icon: '🌀' },
+      poltergeist_polish: { id: 'poltergeist_polish', name: 'POLTERGEIST POLISH', desc: 'Cleans 2x faster when possessing cleaning tools', cost: 20, owned: !!storedUpgrades.poltergeist_polish, icon: '✨' },
+      spectral_broom: { id: 'spectral_broom', name: 'SPECTRAL BROOM', desc: 'Silent floating: immune to creaky floorboards & footsteps', cost: 25, owned: !!storedUpgrades.spectral_broom, icon: '🧹' },
+      squeaky_shoes: { id: 'squeaky_shoes', name: 'SQUEAKY SHOES TRAP', desc: 'Place decoy shoe trap to lure NPCs to a spot [T]', cost: 15, owned: !!storedUpgrades.squeaky_shoes, icon: '👟' }
     };
+
+    function savePlayerData() {
+      try {
+        localStorage.setItem('gj_points', playerPoints.toString());
+        const ownedMap = {};
+        Object.keys(upgrades).forEach(k => { ownedMap[k] = upgrades[k].owned; });
+        localStorage.setItem('gj_upgrades', JSON.stringify(ownedMap));
+      } catch (_) {}
+    }
 
     let traps = []; // Placed Squeaky Shoe Decoy traps
 
     /* ==========================================================================
-       MANSION LEVELS ARCHITECTURE (3 Distinct Themed Floors with Varied Hazards)
+       MANSION LEVELS ARCHITECTURE (Floors 1 to 6 with Varied Hazards & Themes)
        ========================================================================== */
     const TILE_SIZE = 32;
     const CANVAS_VIEWPORT_SIZE = 512;
@@ -1512,16 +1779,23 @@
       FLOOR: 0,
       WALL: 1,
       PILLAR: 2,
-      FLOODED: 3,       // Floor 1: Water puddle slowing movement
-      CREAKY_PLANK: 4   // Floor 2: Creaky floorboard causing noise
+      FLOODED: 3,        // Floor 1: Water puddle slowing movement
+      CREAKY_PLANK: 4,   // Floor 2 & 4: Creaky floorboard causing sound alerts
+      MUD_BED: 5,        // Floor 5: Muddy plant bed tracks fresh mud
+      HOT_STOVE: 6,      // Floor 6: Hot cooking range drains ghost energy
+      GREASE: 7          // Floor 6: Extra slick grease stain
     };
 
-    // 3 THEMED LEVELS
+    // 6 COMPLETE THEMED LEVELS
     const LEVELS = [
       {
         id: 1,
         name: "FLOODED BASEMENT & BOILER ROOM",
+        subtitle: "Drainage Basin & Sump Pumps",
         theme: "flooded_basement",
+        icon: "🌊",
+        hazardDesc: "Flooded water pools & leaking pipes slow speed.",
+        npcDesc: "Messy Billy & Basement Warden",
         totalSlimes: 22,
         totalCobwebs: 4,
         totalEctoSlimes: 6,
@@ -1530,7 +1804,7 @@
         rows: 24,
         spawnX: 4.5,
         spawnY: 4.5,
-        pipeValve: { x: 19, y: 19, turnedOff: false }, // Valve puzzle to stop leaking water
+        pipeValve: { x: 19, y: 19, turnedOff: false, type: 'water' },
         rooms: [
           { id: 'foyer', name: "Drainage Basin", x1: 1, y1: 1, x2: 7, y2: 7 },
           { id: 'boiler', name: "Boiler Chamber", x1: 8, y1: 1, x2: 15, y2: 7 },
@@ -1558,8 +1832,12 @@
       },
       {
         id: 2,
-        name: "THE GRAND LIBRARY & ARCHIVES",
+        name: "ANCIENT ARCHIVES & READING HALL",
+        subtitle: "Dusty Stacks & EMF Detectors",
         theme: "library",
+        icon: "📚",
+        hazardDesc: "EMF Ghost Detectors & Creaky floorboards.",
+        npcDesc: "Dr. Egon EMF & Butler Higgins",
         totalSlimes: 28,
         totalCobwebs: 8,
         totalEctoSlimes: 8,
@@ -1597,9 +1875,13 @@
       {
         id: 3,
         name: "GRAND BALLROOM (TIME ATTACK)",
+        subtitle: "Midnight Gala Speed Clean",
         theme: "ballroom_party",
+        icon: "⏰",
         isTimeAttack: true,
-        timeLimit: 75, // 75 second high stakes midnight party time attack!
+        timeLimit: 75,
+        hazardDesc: "75s Time Limit! High-density guest patrols.",
+        npcDesc: "Duchess Eleanor & Lord Guest",
         totalSlimes: 32,
         totalCobwebs: 6,
         totalEctoSlimes: 10,
@@ -1631,6 +1913,133 @@
           { type: 'investigator', name: "Prof. Ghosthunter", speed: 78, radius: 12, visionLength: 165, visionAngle: Math.PI / 4.6 },
           { type: 'homeowner', name: "Party Guest Lord", speed: 70, radius: 12, visionLength: 135, visionAngle: Math.PI / 5.2 },
           { type: 'messy_kid', name: "Messy Kid Zoe", speed: 95, radius: 11, visionLength: 120, visionAngle: Math.PI / 5.5 }
+        ]
+      },
+      {
+        id: 4,
+        name: "FORGOTTEN LIBRARY & ARCHIVE",
+        subtitle: "Drafts, Creaky Planks & Flashlights",
+        theme: "forgotten_library",
+        icon: "📖",
+        hazardDesc: "Creaky floorboards alert Librarian. Flying paper messes.",
+        npcDesc: "Strict Head Librarian (Long Flashlight)",
+        totalSlimes: 30,
+        totalCobwebs: 9,
+        totalEctoSlimes: 8,
+        totalFurniture: 12,
+        cols: 28,
+        rows: 28,
+        spawnX: 4.5,
+        spawnY: 4.5,
+        rooms: [
+          { id: 'stacks1', name: "Great Book Stacks", x1: 1, y1: 1, x2: 9, y2: 8 },
+          { id: 'rare_vault', name: "Forbidden Vault", x1: 10, y1: 1, x2: 17, y2: 8 },
+          { id: 'antiques', name: "Antique Hall", x1: 18, y1: 1, x2: 26, y2: 8 },
+          { id: 'desk', name: "Librarian Desk", x1: 1, y1: 9, x2: 8, y2: 17 },
+          { id: 'corridor4', name: "Whispering Corridor", x1: 9, y1: 9, x2: 18, y2: 17 },
+          { id: 'manuscripts', name: "Manuscript Gallery", x1: 19, y1: 9, x2: 26, y2: 17 },
+          { id: 'draft_wing', name: "Windy Window Gallery", x1: 1, y1: 18, x2: 12, y2: 26 },
+          { id: 'study', name: "Silent Study Nook", x1: 14, y1: 18, x2: 26, y2: 26 }
+        ],
+        patrolWaypoints: [
+          { x: 5, y: 4, name: "Great Book Stacks" },
+          { x: 14, y: 4, name: "Forbidden Vault" },
+          { x: 22, y: 4, name: "Antique Hall" },
+          { x: 22, y: 13, name: "Manuscript Gallery" },
+          { x: 13, y: 13, name: "Whispering Corridor" },
+          { x: 4, y: 13, name: "Librarian Desk" },
+          { x: 6, y: 22, name: "Windy Window Gallery" },
+          { x: 20, y: 22, name: "Silent Study Nook" }
+        ],
+        npcs: [
+          { type: 'librarian', name: "Head Librarian Agatha", speed: 64, radius: 12, visionLength: 210, visionAngle: Math.PI / 6.0 },
+          { type: 'messy_kid', name: "Sneezing Scholar", speed: 88, radius: 11, visionLength: 125, visionAngle: Math.PI / 5.5 },
+          { type: 'homeowner', name: "Archive Curator", speed: 68, radius: 12, visionLength: 140, visionAngle: Math.PI / 5.2 }
+        ]
+      },
+      {
+        id: 5,
+        name: "OVERGROWN CONSERVATORY & GREENHOUSE",
+        subtitle: "Lush Flora, Mud & Leaking Sprinklers",
+        theme: "conservatory",
+        icon: "🌱",
+        hazardDesc: "Mud tracks across plant beds. Shut off sprinklers!",
+        npcDesc: "The Messy Gardener (Dropping Soil)",
+        totalSlimes: 34,
+        totalCobwebs: 7,
+        totalEctoSlimes: 10,
+        totalFurniture: 13,
+        cols: 28,
+        rows: 28,
+        spawnX: 4.5,
+        spawnY: 4.5,
+        pipeValve: { x: 21, y: 21, turnedOff: false, type: 'sprinkler' },
+        rooms: [
+          { id: 'orchid', name: "Orchid Greenhouse", x1: 1, y1: 1, x2: 9, y2: 8 },
+          { id: 'fern', name: "Fern Rotunda", x1: 10, y1: 1, x2: 18, y2: 8 },
+          { id: 'palms', name: "Tropical Palm Dome", x1: 19, y1: 1, x2: 26, y2: 8 },
+          { id: 'propagation', name: "Muddy Propagation Bed", x1: 1, y1: 9, x2: 9, y2: 17 },
+          { id: 'atrium', name: "Central Glass Atrium", x1: 10, y1: 9, x2: 18, y2: 17 },
+          { id: 'cactus', name: "Succulent Terrarium", x1: 19, y1: 9, x2: 26, y2: 17 },
+          { id: 'shed', name: "Garden Tool Shed", x1: 1, y1: 18, x2: 11, y2: 26 },
+          { id: 'sprinklers', name: "Sprinkler Pump Vault", x1: 13, y1: 18, x2: 26, y2: 26 }
+        ],
+        patrolWaypoints: [
+          { x: 5, y: 4, name: "Orchid Greenhouse" },
+          { x: 14, y: 4, name: "Fern Rotunda" },
+          { x: 22, y: 4, name: "Tropical Palm Dome" },
+          { x: 22, y: 13, name: "Succulent Terrarium" },
+          { x: 14, y: 13, name: "Central Glass Atrium" },
+          { x: 5, y: 13, name: "Muddy Propagation Bed" },
+          { x: 6, y: 22, name: "Garden Tool Shed" },
+          { x: 20, y: 22, name: "Sprinkler Pump Vault" }
+        ],
+        npcs: [
+          { type: 'gardener', name: "Messy Gardener Bob", speed: 76, radius: 12, visionLength: 145, visionAngle: Math.PI / 5.2 },
+          { type: 'investigator', name: "Botanist Inspector", speed: 72, radius: 12, visionLength: 160, visionAngle: Math.PI / 4.8 },
+          { type: 'messy_kid', name: "Muddy Kid Sammy", speed: 92, radius: 11, visionLength: 120, visionAngle: Math.PI / 5.5 }
+        ]
+      },
+      {
+        id: 6,
+        name: "GRAND KITCHEN & FEAST HALL",
+        subtitle: "Slick Grease Spills & Sizzling Stoves",
+        theme: "grand_kitchen",
+        icon: "🍳",
+        hazardDesc: "Hot Stoves drain energy! Grease slips cause mess chains.",
+        npcDesc: "The Head Chef (Dropping Flour & Broth)",
+        totalSlimes: 36,
+        totalCobwebs: 8,
+        totalEctoSlimes: 12,
+        totalFurniture: 14,
+        cols: 30,
+        rows: 30,
+        spawnX: 5.5,
+        spawnY: 5.5,
+        rooms: [
+          { id: 'prep', name: "Master Prep Line", x1: 1, y1: 1, x2: 10, y2: 9 },
+          { id: 'ranges', name: "Sizzling Range Stoves", x1: 11, y1: 1, x2: 20, y2: 9 },
+          { id: 'pantry', name: "Walk-In Pantry", x1: 21, y1: 1, x2: 28, y2: 9 },
+          { id: 'bakeshop', name: "Bakery & Flour Depot", x1: 1, y1: 10, x2: 9, y2: 19 },
+          { id: 'pass', name: "Banquet Pass-Through", x1: 10, y1: 10, x2: 20, y2: 19 },
+          { id: 'wash', name: "Scullery & Dishwash", x1: 21, y1: 10, x2: 28, y2: 19 },
+          { id: 'feast_hall', name: "Imperial Feast Hall", x1: 1, y1: 20, x2: 14, y2: 28 },
+          { id: 'cellar6', name: "Chef Wine Cellar", x1: 16, y1: 20, x2: 28, y2: 28 }
+        ],
+        patrolWaypoints: [
+          { x: 5, y: 5, name: "Master Prep Line" },
+          { x: 15, y: 5, name: "Sizzling Range Stoves" },
+          { x: 24, y: 5, name: "Walk-In Pantry" },
+          { x: 24, y: 14, name: "Scullery & Dishwash" },
+          { x: 15, y: 14, name: "Banquet Pass-Through" },
+          { x: 5, y: 14, name: "Bakery & Flour Depot" },
+          { x: 7, y: 24, name: "Imperial Feast Hall" },
+          { x: 22, y: 24, name: "Chef Wine Cellar" }
+        ],
+        npcs: [
+          { type: 'chef', name: "Executive Chef Pierre", speed: 96, radius: 12, visionLength: 155, visionAngle: Math.PI / 4.9 },
+          { type: 'homeowner', name: "Food Critic Lord", speed: 68, radius: 12, visionLength: 145, visionAngle: Math.PI / 5.2 },
+          { type: 'messy_kid', name: "Messy Sous Apprentice", speed: 92, radius: 11, visionLength: 120, visionAngle: Math.PI / 5.5 }
         ]
       }
     ];
@@ -1692,8 +2101,8 @@
         }
       });
 
-      // Inject Environmental Hazard Tiles:
-      // Floor 1: Flooded Water puddles (reduces movement speed unless pipe valve turned off)
+      // Environmental Hazards Injections
+      // Floor 1: Flooded Water puddles
       if (level.theme === 'flooded_basement') {
         level.rooms.forEach((room, rIdx) => {
           if (rIdx % 2 === 1) {
@@ -1708,14 +2117,52 @@
         });
       }
 
-      // Floor 2: Creaky Floorboard zones (raise suspicion/alert if walked on without Spectral Broom)
-      if (level.theme === 'library') {
+      // Floor 2 & 4: Creaky Floorboards
+      if (level.theme === 'library' || level.theme === 'forgotten_library') {
         level.rooms.forEach((room, rIdx) => {
-          if (rIdx === 2 || rIdx === 4 || rIdx === 6) {
+          if (rIdx === 0 || rIdx === 3 || rIdx === 6) {
             for (let y = room.y1 + 1; y < room.y2; y++) {
               for (let x = room.x1 + 1; x < room.x2; x++) {
-                if (grid[y][x] === TILE.FLOOR && Math.random() < 0.5) {
+                if (grid[y][x] === TILE.FLOOR && Math.random() < 0.55) {
                   grid[y][x] = TILE.CREAKY_PLANK;
+                }
+              }
+            }
+          }
+        });
+      }
+
+      // Floor 5: Muddy Plant Beds & Wet Soil
+      if (level.theme === 'conservatory') {
+        level.rooms.forEach((room, rIdx) => {
+          if (rIdx === 1 || rIdx === 3 || rIdx === 7) {
+            for (let y = room.y1 + 1; y < room.y2; y++) {
+              for (let x = room.x1 + 1; x < room.x2; x++) {
+                if (grid[y][x] === TILE.FLOOR && Math.random() < 0.60) {
+                  grid[y][x] = TILE.MUD_BED;
+                }
+              }
+            }
+          }
+        });
+      }
+
+      // Floor 6: Hot Stoves & Grease Spills
+      if (level.theme === 'grand_kitchen') {
+        level.rooms.forEach((room, rIdx) => {
+          if (rIdx === 1) { // Sizzling Range Stoves room
+            for (let y = room.y1 + 2; y < room.y2 - 1; y++) {
+              for (let x = room.x1 + 2; x < room.x2 - 1; x++) {
+                if (grid[y][x] === TILE.FLOOR) {
+                  grid[y][x] = TILE.HOT_STOVE;
+                }
+              }
+            }
+          } else if (rIdx === 0 || rIdx === 4) { // Prep & Pass-Through Grease
+            for (let y = room.y1 + 1; y < room.y2; y++) {
+              for (let x = room.x1 + 1; x < room.x2; x++) {
+                if (grid[y][x] === TILE.FLOOR && Math.random() < 0.45) {
+                  grid[y][x] = TILE.GREASE;
                 }
               }
             }
@@ -1744,23 +2191,25 @@
     const ctx = canvas.getContext('2d');
     ctx.imageSmoothingEnabled = false;
 
+    let inLobby = true;
     let currentLevelIndex = 0;
     let currentLevel = LEVELS[0];
     let levelMap = generateLevelMap(currentLevel);
 
     let score = 0;
     let totalTargetScore = 25;
-    let panicMeter = 0; // 0 to 100%
-    let timeRemaining = 75; // Time attack countdown
+    let panicMeter = 0;
+    let timeRemaining = 75;
     let slimes = [];
     let cobwebs = [];
     let furnitureList = [];
     let wetTrails = [];
+    let mudTrails = [];
     let lureWaves = [];
     let particles = [];
     let floatingTexts = [];
     let npcs = [];
-    let cleanedRoomsSet = new Set(); // Track rooms that have hit 100% cleanliness
+    let cleanedRoomsSet = new Set();
     let shakeIntensity = 0;
     let shakeDuration = 0;
     let gameOver = false;
@@ -1770,8 +2219,7 @@
     let closestFurniture = null;
     let pipeValveObj = null;
 
-    // "Before & After" Floor Summary Visual Replay State
-    let victoryPhase = 0; // 0: summary card, 1: before/after time-lapse
+    // Victory animation
     let victoryTimer = 0;
     let floorInitialMessSnapshot = 0;
 
@@ -1910,6 +2358,7 @@
       cobwebs = [];
       furnitureList = [];
       wetTrails = [];
+      mudTrails = [];
       lureWaves = [];
       traps = [];
       particles = [];
@@ -1921,7 +2370,6 @@
       gameOver = false;
       busted = false;
       levelCleared = false;
-      victoryPhase = 0;
       victoryTimer = 0;
       timeRemaining = currentLevel.timeLimit || 75;
 
@@ -1934,12 +2382,13 @@
       player.isPossessing = false;
       player.possessedFurniture = null;
 
-      // Pipe Valve object setup for Basement
+      // Pipe Valve object setup (Flooded Basement or Conservatory Sprinkler)
       if (currentLevel.pipeValve) {
         pipeValveObj = {
           x: (currentLevel.pipeValve.x + 0.5) * TILE_SIZE,
           y: (currentLevel.pipeValve.y + 0.5) * TILE_SIZE,
-          turnedOff: false
+          turnedOff: false,
+          type: currentLevel.pipeValve.type || 'water'
         };
       } else {
         pipeValveObj = null;
@@ -1949,7 +2398,7 @@
       const emptyTiles = [];
       for (let y = 1; y < currentLevel.rows - 1; y++) {
         for (let x = 1; x < currentLevel.cols - 1; x++) {
-          if (levelMap[y][x] === TILE.FLOOR || levelMap[y][x] === TILE.FLOODED || levelMap[y][x] === TILE.CREAKY_PLANK) {
+          if (levelMap[y][x] === TILE.FLOOR || levelMap[y][x] === TILE.FLOODED || levelMap[y][x] === TILE.CREAKY_PLANK || levelMap[y][x] === TILE.MUD_BED || levelMap[y][x] === TILE.GREASE) {
             const dx = x - currentLevel.spawnX;
             const dy = y - currentLevel.spawnY;
             if (dx * dx + dy * dy > 8) {
@@ -1965,21 +2414,28 @@
         [emptyTiles[i], emptyTiles[j]] = [emptyTiles[j], emptyTiles[i]];
       }
 
-      // Spawn Specialized Cleaning & Fire Tools + Distractions + Standard Furniture
-      // Possessable Fire Tools: Candle / Fireplace Poker (Essential for burning Haunted Cobwebs)
-      const specialTools = ['vacuum', 'mop_bucket', 'candle', 'fire_poker', 'tv', 'clock'];
-      const standardFurniture = ['armchair', 'table', 'lamp', 'chair', 'mirror_cabinet', 'piano'];
+      // Floor-specific tools list
+      let floorTools = ['vacuum', 'mop_bucket', 'candle', 'fire_poker', 'tv', 'clock'];
+      if (currentLevel.id === 4) { // Library: Feather Duster & Antique Clock
+        floorTools = ['feather_duster', 'feather_duster', 'mop_bucket', 'vacuum', 'candle', 'clock'];
+      } else if (currentLevel.id === 5) { // Conservatory: Mechanical Beetle & Sprinkler Valves
+        floorTools = ['mechanical_beetle', 'mop_bucket', 'vacuum', 'candle', 'clock', 'tv'];
+      } else if (currentLevel.id === 6) { // Kitchen: Exhaust Fan & Dinner Bell
+        floorTools = ['exhaust_fan', 'dinner_bell', 'mop_bucket', 'vacuum', 'fire_poker', 'clock'];
+      }
 
+      const standardFurniture = ['armchair', 'table', 'lamp', 'chair', 'mirror_cabinet', 'piano'];
       const totalItems = currentLevel.totalFurniture;
+
       for (let i = 0; i < totalItems; i++) {
         if (emptyTiles.length === 0) break;
         const tile = emptyTiles.pop();
         let itemType;
 
-        if (i < specialTools.length) {
-          itemType = specialTools[i];
+        if (i < floorTools.length) {
+          itemType = floorTools[i];
         } else {
-          itemType = standardFurniture[(i - specialTools.length) % standardFurniture.length];
+          itemType = standardFurniture[(i - floorTools.length) % standardFurniture.length];
         }
 
         furnitureList.push({
@@ -1989,9 +2445,10 @@
           y: (tile.y + 0.5) * TILE_SIZE,
           radius: 14,
           isPossessed: false,
-          isMobileTool: (itemType === 'vacuum' || itemType === 'mop_bucket' || itemType === 'candle' || itemType === 'fire_poker'),
+          isMobileTool: (itemType === 'vacuum' || itemType === 'mop_bucket' || itemType === 'feather_duster' || itemType === 'candle' || itemType === 'fire_poker'),
           isFireTool: (itemType === 'candle' || itemType === 'fire_poker'),
-          isDistraction: (itemType === 'tv' || itemType === 'clock')
+          isDistraction: (itemType === 'tv' || itemType === 'clock' || itemType === 'dinner_bell' || itemType === 'mechanical_beetle'),
+          isExhaustFan: (itemType === 'exhaust_fan')
         });
       }
 
@@ -2005,7 +2462,13 @@
         let sPoints = 1;
         let sColor = '#39ff14';
 
-        if (sTypeRoll > 0.6) {
+        if (currentLevel.theme === 'conservatory') {
+          sType = 'mud_dirt';
+          sColor = '#8b5a2b';
+        } else if (currentLevel.theme === 'grand_kitchen' && sTypeRoll > 0.5) {
+          sType = 'flour_dust';
+          sColor = '#e8f0fe';
+        } else if (sTypeRoll > 0.6) {
           sType = 'cyan';
           sRadius = 12;
           sPoints = 2;
@@ -2033,7 +2496,7 @@
         slimes.push({
           id: 1000 + i,
           type: 'ecto_slime',
-          category: 'ecto_slime', // Only cleanable via possessed gear or vacuum
+          category: 'ecto_slime',
           points: 3,
           x: (tile.x + 0.5) * TILE_SIZE,
           y: (tile.y + 0.5) * TILE_SIZE,
@@ -2086,7 +2549,7 @@
           inspectTimer: 0,
           inspectPhase: 0,
           slipTimer: 0,
-          messTimer: 6 + Math.random() * 4,
+          messTimer: 5 + Math.random() * 4,
           speechText: '',
           speechTimer: 0
         };
@@ -2102,10 +2565,87 @@
       updateUI();
     }
 
-    function initGame() {
-      loadLevel(0);
+    /* ==========================================================================
+       LOBBY & FLOOR SELECTOR LOGIC
+       ========================================================================== */
+    function renderLobbyFloorCards() {
+      const grid = document.getElementById('floorSelectGrid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      LEVELS.forEach((lvl, idx) => {
+        const card = document.createElement('div');
+        card.className = `floor-card ${idx === currentLevelIndex ? 'selected' : ''}`;
+        card.onclick = () => {
+          selectLobbyFloor(idx);
+        };
+        card.ondblclick = () => {
+          selectLobbyFloor(idx);
+          startSelectedFloor();
+        };
+
+        card.innerHTML = `
+          <div class="floor-card-top">
+            <span class="floor-num-badge">FL ${lvl.id}</span>
+            <span class="floor-theme-icon">${lvl.icon}</span>
+          </div>
+          <div class="floor-card-title">${lvl.name}</div>
+          <div class="floor-card-hazard">⚠️ ${lvl.hazardDesc}</div>
+          <div class="floor-card-npc">👤 ${lvl.npcDesc}</div>
+          <div class="floor-card-meta">
+            <span>${lvl.isTimeAttack ? '⏰ ' + lvl.timeLimit + 's' : '✨ 100% CLEAN'}</span>
+            <span style="color: #00f0ff;">SELECT ▶</span>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      document.getElementById('lobbyPoints').textContent = `${playerPoints} PTS`;
+      document.getElementById('lobbyPlayBtn').textContent = `▶ PLAY FLOOR ${currentLevelIndex + 1}`;
+    }
+
+    function selectLobbyFloor(idx) {
+      currentLevelIndex = idx;
+      audio.playClick();
+      renderLobbyFloorCards();
+    }
+
+    function startSelectedFloor() {
+      audio.init();
+      audio.playVictory();
+      inLobby = false;
+      document.getElementById('lobbyModal').classList.add('closed');
+      loadLevel(currentLevelIndex);
       audio.startBGM();
     }
+
+    function openLobby() {
+      audio.init();
+      audio.playClick();
+      inLobby = true;
+      toggleShop(false);
+      toggleGuide(false);
+      document.getElementById('lobbyModal').classList.remove('closed');
+      renderLobbyFloorCards();
+    }
+
+    function toggleGuide(open = null) {
+      const modal = document.getElementById('guideModal');
+      const isCurrentlyOpen = modal.classList.contains('open');
+      const shouldOpen = (open !== null) ? open : !isCurrentlyOpen;
+      if (shouldOpen) {
+        audio.playClick();
+        modal.classList.add('open');
+      } else {
+        modal.classList.remove('open');
+      }
+    }
+
+    document.getElementById('btnHeaderLobby')?.addEventListener('click', openLobby);
+    document.getElementById('lobbyPlayBtn')?.addEventListener('click', startSelectedFloor);
+    document.getElementById('lobbyShopBtn')?.addEventListener('click', () => { toggleShop(true); });
+    document.getElementById('lobbyGuideBtn')?.addEventListener('click', () => { toggleGuide(true); });
+    document.getElementById('guideCloseBtn')?.addEventListener('click', () => { toggleGuide(false); });
 
     function updateUI() {
       // Points Currency & Clean Progress
@@ -2172,6 +2712,26 @@
           stealthBadge.className = 'hud-stealth-pill tool-mode';
           btnPossessText.textContent = 'EJECT';
           btnPossessIcon.textContent = '🧹';
+        } else if (toolType === 'feather_duster') {
+          stealthBadge.textContent = `🪶 DUSTER (SILENT)`;
+          stealthBadge.className = 'hud-stealth-pill tool-mode';
+          btnPossessText.textContent = 'EJECT';
+          btnPossessIcon.textContent = '🪶';
+        } else if (toolType === 'exhaust_fan') {
+          stealthBadge.textContent = `💨 EXHAUST FAN (SUCK)`;
+          stealthBadge.className = 'hud-stealth-pill tool-mode';
+          btnPossessText.textContent = 'EJECT';
+          btnPossessIcon.textContent = '💨';
+        } else if (toolType === 'mechanical_beetle') {
+          stealthBadge.textContent = `🪲 BEETLE (LURE ON)`;
+          stealthBadge.className = 'hud-stealth-pill tool-mode';
+          btnPossessText.textContent = 'CHITTER';
+          btnPossessIcon.textContent = '🪲';
+        } else if (toolType === 'dinner_bell') {
+          stealthBadge.textContent = `🔔 DINNER BELL`;
+          stealthBadge.className = 'hud-stealth-pill tool-mode';
+          btnPossessText.textContent = 'RING';
+          btnPossessIcon.textContent = '🔔';
         } else if (toolType === 'candle' || toolType === 'fire_poker') {
           stealthBadge.textContent = `🔥 FIRE TOOL (BURNS WEBS)`;
           stealthBadge.className = 'hud-stealth-pill tool-mode';
@@ -2222,24 +2782,33 @@
 
     /* Trigger Distraction Waves */
     function triggerDistractionWave(sourceX, sourceY, type) {
-      audio.playDistractionRing();
+      if (type === 'dinner_bell') audio.playDinnerBell();
+      else if (type === 'mechanical_beetle') audio.playChitterBeetle();
+      else audio.playDistractionRing();
+
       triggerScreenShake(4, 0.2);
 
       lureWaves.push({
         x: sourceX,
         y: sourceY,
         radius: 10,
-        maxRadius: 280,
+        maxRadius: 300,
         type: type,
-        life: 1.6
+        life: 1.8
       });
 
       npcs.forEach(npc => {
         if (npc.state === 'slipped') return;
         const dist = Math.hypot(npc.x - sourceX, npc.y - sourceY);
-        if (dist <= 300) {
+        if (dist <= 320) {
           npc.state = 'distracted';
-          npc.speechText = (type === 'clock' ? '⏰ WHAT IS THAT RINGING?!' : (type === 'trap' ? '👟 SQUEAKING SHOES?!' : '📺 WHO TURNED ON THE TV?!'));
+          let alertQuote = '📺 WHO TURNED ON THE TV?!';
+          if (type === 'clock') alertQuote = '⏰ WHAT IS THAT ALARM?!';
+          else if (type === 'dinner_bell') alertQuote = '🔔 DINNER BELL IS RINGING!';
+          else if (type === 'mechanical_beetle') alertQuote = '🪲 WHAT IS THAT CHITTERING?!';
+          else if (type === 'trap') alertQuote = '👟 SQUEAKING SHOES?!';
+
+          npc.speechText = alertQuote;
           npc.speechTimer = 2.8;
 
           const curGridX = Math.floor(npc.x / TILE_SIZE);
@@ -2299,6 +2868,7 @@
           if (!up.owned && playerPoints >= up.cost) {
             playerPoints -= up.cost;
             up.owned = true;
+            savePlayerData();
             audio.playVictory();
             renderShopItems();
             updateUI();
@@ -2317,6 +2887,7 @@
       const shouldOpen = (open !== null) ? open : !isCurrentlyOpen;
 
       if (shouldOpen) {
+        audio.playClick();
         renderShopItems();
         modal.classList.add('open');
       } else {
@@ -2340,6 +2911,11 @@
         try { navigator.vibrate(14); } catch (_) {}
       }
 
+      if (inLobby) {
+        startSelectedFloor();
+        return;
+      }
+
       if (busted) {
         loadLevel(currentLevelIndex);
         return;
@@ -2350,14 +2926,15 @@
         return;
       }
 
-      // Check if near Pipe Valve to turn it off in Flooded Basement
+      // Check if near Pipe Valve to turn it off in Flooded Basement or Conservatory
       if (pipeValveObj && !pipeValveObj.turnedOff) {
         const distToValve = Math.hypot(player.x - pipeValveObj.x, player.y - pipeValveObj.y);
-        if (distToValve <= 45) {
+        if (distToValve <= 48) {
           pipeValveObj.turnedOff = true;
           audio.playValveTurn();
           triggerScreenShake(6, 0.3);
-          floatingTexts.push({ text: "VALVE CLOSED! FLOOD RECEDING! 🚰", x: pipeValveObj.x, y: pipeValveObj.y - 20, life: 1.5, color: "#00f0ff" });
+          const label = pipeValveObj.type === 'sprinkler' ? "SPRINKLER SHUT OFF! 🚰" : "VALVE CLOSED! WATER RECEDING! 🚰";
+          floatingTexts.push({ text: label, x: pipeValveObj.x, y: pipeValveObj.y - 20, life: 1.5, color: "#00f0ff" });
           spawnPoofParticles(pipeValveObj.x, pipeValveObj.y, '#00f0ff');
           return;
         }
@@ -2369,13 +2946,12 @@
         
         if (furn && furn.isDistraction) {
           triggerDistractionWave(furn.x, furn.y, furn.type);
-          floatingTexts.push({
-            text: (furn.type === 'clock' ? "RINGGG! ⏰" : "STATIC BLAST! 📺"),
-            x: player.x,
-            y: player.y - 18,
-            life: 1.0,
-            color: "#00f0ff"
-          });
+          let distText = "STATIC BLAST! 📺";
+          if (furn.type === 'clock') distText = "RINGGG! ⏰";
+          else if (furn.type === 'dinner_bell') distText = "CLANGGG! 🔔";
+          else if (furn.type === 'mechanical_beetle') distText = "CHITTERRR! 🪲";
+
+          floatingTexts.push({ text: distText, x: player.x, y: player.y - 18, life: 1.0, color: "#00f0ff" });
           furn.isPossessed = false;
           player.isPossessing = false;
           player.possessedFurniture = null;
@@ -2427,8 +3003,17 @@
           let possessLabel = `HIDDEN IN ${targetFurn.type.toUpperCase()}!`;
           if (targetFurn.type === 'vacuum') possessLabel = "🌀 VACUUM POSSESSED!";
           else if (targetFurn.type === 'mop_bucket') possessLabel = "🧹 MOP POSSESSED!";
-          else if (targetFurn.type === 'candle' || targetFurn.type === 'fire_poker') possessLabel = "🔥 FIRE TOOL (BURNS WEBS)!";
-          else if (targetFurn.type === 'tv') {
+          else if (targetFurn.type === 'feather_duster') possessLabel = "🪶 FEATHER DUSTER (SILENT SPEED)!";
+          else if (targetFurn.type === 'exhaust_fan') possessLabel = "💨 EXHAUST HOOD FAN POSSESSED!";
+          else if (targetFurn.type === 'mechanical_beetle') {
+            possessLabel = "🪲 MECHANICAL BEETLE LURE!";
+            triggerDistractionWave(targetFurn.x, targetFurn.y, 'mechanical_beetle');
+          } else if (targetFurn.type === 'dinner_bell') {
+            possessLabel = "🔔 DINNER BELL RUNG!";
+            triggerDistractionWave(targetFurn.x, targetFurn.y, 'dinner_bell');
+          } else if (targetFurn.type === 'candle' || targetFurn.type === 'fire_poker') {
+            possessLabel = "🔥 FIRE TOOL (BURNS WEBS)!";
+          } else if (targetFurn.type === 'tv') {
             possessLabel = "📺 TV POSSESSED (LURE ON)!";
             triggerDistractionWave(targetFurn.x, targetFurn.y, 'tv');
           } else if (targetFurn.type === 'clock') {
@@ -2449,7 +3034,6 @@
        NPC VISION CONE & STEALTH DETECTION
        ========================================================================== */
     function isPlayerSpottedByAnyNPC() {
-      // Completely hidden inside stationary non-mobile furniture
       if (player.isPossessing && player.possessedFurniture && !player.possessedFurniture.isMobileTool) {
         return false;
       }
@@ -2461,7 +3045,7 @@
         const dy = player.y - npc.y;
         const dist = Math.hypot(dx, dy);
 
-        // 1. Paranormal Investigator EMF Radar Check (Detects unpossessed ghost nearby)
+        // 1. Paranormal Investigator EMF Radar Check
         if (npc.type === 'investigator' && !player.isPossessing && dist <= 130) {
           audio.playEMFBeep();
           npc.speechText = "🚨 EMF DETECTED!";
@@ -2469,7 +3053,24 @@
           return true;
         }
 
-        // 2. Vacuum Noise (Unless using silent spectral broom upgrade)
+        // 2. Head Librarian Long Flashlight Corridor Beam Check (Floor 4)
+        if (npc.type === 'librarian') {
+          if (dist <= npc.visionLength) {
+            const npcAngle = npc.visionAngleFacing;
+            const angleToPlayer = Math.atan2(dy, dx);
+            let diff = angleToPlayer - npcAngle;
+            while (diff < -Math.PI) diff += Math.PI * 2;
+            while (diff > Math.PI) diff -= Math.PI * 2;
+
+            if (Math.abs(diff) <= npc.visionAngle) {
+              npc.speechText = "🔦 QUIET IN THE LIBRARY!";
+              npc.speechTimer = 1.8;
+              return true;
+            }
+          }
+        }
+
+        // 3. Vacuum Noise (Unless using silent spectral broom upgrade or feather duster)
         if (player.isPossessing && player.possessedFurniture?.type === 'vacuum' && player.isMoving && dist <= 140) {
           if (!upgrades.spectral_broom.owned) {
             npc.speechText = "❓ WHAT'S THAT VACUUM MOTOR?!";
@@ -2478,7 +3079,7 @@
           }
         }
 
-        // 3. Line-of-sight vision cone
+        // 4. Standard Line-of-sight vision cone
         if (dist <= npc.visionLength) {
           const npcAngle = npc.visionAngleFacing;
           const angleToPlayer = Math.atan2(dy, dx);
@@ -2581,7 +3182,8 @@
 
         if (slimesInRoom.length === 0 && websInRoom.length === 0) {
           cleanedRoomsSet.add(room.name);
-          playerPoints += 3; // Bonus points for pristine room
+          playerPoints += 3;
+          savePlayerData();
           audio.playRoomCleanedChime();
           triggerScreenShake(5, 0.25);
           spawnRoomCleanseSparkles(room);
@@ -2602,7 +3204,7 @@
         if (shakeDuration <= 0) shakeIntensity = 0;
       }
 
-      if (busted || levelCleared) return;
+      if (inLobby || busted || levelCleared) return;
 
       // Time Attack Countdown (Floor 3 Grand Ballroom)
       if (currentLevel.isTimeAttack) {
@@ -2640,41 +3242,74 @@
           return;
         }
 
-        // Messy Kid drops mess
-        if (npc.type === 'messy_kid') {
+        // Messy NPC Special Drops
+        if (npc.type === 'messy_kid' || npc.type === 'gardener' || npc.type === 'chef') {
           npc.messTimer -= dt;
           if (npc.messTimer <= 0) {
-            npc.messTimer = 7 + Math.random() * 5;
+            npc.messTimer = 5 + Math.random() * 4;
+            let dropColor = '#39ff14';
+            let dropType = 'green';
+            let dropText = "🍪 DROPPED SNACKS!";
+
+            if (npc.type === 'gardener') {
+              dropColor = '#8b5a2b';
+              dropType = 'mud_dirt';
+              dropText = "🌱 SPILLED POTTING SOIL!";
+            } else if (npc.type === 'chef') {
+              dropColor = '#ffffff';
+              dropType = 'flour_dust';
+              dropText = "🍲 SPILLED BROTH & FLOUR!";
+            }
+
             slimes.push({
               id: Date.now() + Math.random(),
-              type: 'green',
+              type: dropType,
               category: 'standard_dust',
               points: 1,
               x: npc.x,
               y: npc.y,
               radius: 10,
-              color: '#39ff14',
+              color: dropColor,
               bubblePhase: Math.random() * Math.PI * 2,
               bubbleSpeed: 3
             });
-            spawnPoofParticles(npc.x, npc.y, '#39ff14');
-            npc.speechText = "🍪 DROPPED SNACKS!";
+            spawnPoofParticles(npc.x, npc.y, dropColor);
+            npc.speechText = dropText;
             npc.speechTimer = 2.4;
           }
         }
 
-        // Slipped on wet mop trail check
+        // Slipped on wet mop trail or slick grease check
         for (let i = wetTrails.length - 1; i >= 0; i--) {
           const trail = wetTrails[i];
           if (Math.hypot(npc.x - trail.x, npc.y - trail.y) < npc.radius + trail.radius) {
             npc.state = 'slipped';
-            npc.slipTimer = 2.4;
+            npc.slipTimer = 2.5;
             npc.speechText = "💫 WHOA! *SLIPPED!*";
-            npc.speechTimer = 2.4;
+            npc.speechTimer = 2.5;
             audio.playSlip();
             triggerScreenShake(5, 0.2);
             spawnPoofParticles(npc.x, npc.y, '#00f0ff');
             wetTrails.splice(i, 1);
+
+            // Chef slipping on grease chain reaction
+            if (npc.type === 'chef') {
+              for (let k = 0; k < 3; k++) {
+                slimes.push({
+                  id: Date.now() + k,
+                  type: 'flour_dust',
+                  category: 'standard_dust',
+                  points: 1,
+                  x: npc.x + (Math.random() - 0.5) * 40,
+                  y: npc.y + (Math.random() - 0.5) * 40,
+                  radius: 10,
+                  color: '#ffffff',
+                  bubblePhase: Math.random() * Math.PI * 2,
+                  bubbleSpeed: 3
+                });
+              }
+              npc.speechText = "🍳 PANIC! DROPPED THE FEAST!";
+            }
             break;
           }
         }
@@ -2772,20 +3407,23 @@
       } else {
         let currentSpeed = player.baseSpeed;
 
-        // Environmental Hazard: Flooded Water Tile slows speed by 40% (unless valve turned off)
         const curTileX = Math.floor(player.x / TILE_SIZE);
         const curTileY = Math.floor(player.y / TILE_SIZE);
-        if (levelMap[curTileY] && levelMap[curTileY][curTileX] === TILE.FLOODED && (!pipeValveObj || !pipeValveObj.turnedOff)) {
+        const curTile = levelMap[curTileY] ? levelMap[curTileY][curTileX] : TILE.FLOOR;
+
+        // Environmental Hazard: Flooded Water Tile slows speed by 40% (unless valve turned off)
+        if (curTile === TILE.FLOODED && (!pipeValveObj || !pipeValveObj.turnedOff)) {
           currentSpeed *= 0.60;
         }
 
-        // Environmental Hazard: Creaky Floorboards alert guards if walked over without Spectral Broom
-        if (levelMap[curTileY] && levelMap[curTileY][curTileX] === TILE.CREAKY_PLANK && player.isMoving) {
-          if (!upgrades.spectral_broom.owned) {
+        // Environmental Hazard: Creaky Floorboards alert guards if walked over without Spectral Broom or Feather Duster
+        if (curTile === TILE.CREAKY_PLANK && player.isMoving) {
+          const isDuster = player.isPossessing && player.possessedFurniture?.type === 'feather_duster';
+          if (!upgrades.spectral_broom.owned && !isDuster) {
             audio.playCreak();
-            panicMeter = Math.min(100, panicMeter + 18 * dt);
+            panicMeter = Math.min(100, panicMeter + 20 * dt);
             npcs.forEach(npc => {
-              if (Math.hypot(npc.x - player.x, npc.y - player.y) < 160) {
+              if (Math.hypot(npc.x - player.x, npc.y - player.y) < 180) {
                 npc.speechText = "👀 HEARD A CREAK!";
                 npc.speechTimer = 1.6;
               }
@@ -2793,7 +3431,20 @@
           }
         }
 
-        if (player.isPossessing && player.possessedFurniture?.type === 'mop_bucket') {
+        // Environmental Hazard: Hot Stoves (Floor 6) drain ghost energy & spike panic!
+        if (curTile === TILE.HOT_STOVE) {
+          audio.playStoveSizzle();
+          panicMeter = Math.min(100, panicMeter + 45 * dt);
+          spawnFlameParticles(player.x, player.y);
+          if (Math.random() < 0.1) {
+            floatingTexts.push({ text: "🔥 HOT STOVE! OUCH!", x: player.x, y: player.y - 14, life: 0.6, color: "#ff5500" });
+          }
+        }
+
+        // Feather Duster speed bonus
+        if (player.isPossessing && player.possessedFurniture?.type === 'feather_duster') {
+          currentSpeed *= 1.30;
+        } else if (player.isPossessing && player.possessedFurniture?.type === 'mop_bucket') {
           currentSpeed *= 1.15;
         }
 
@@ -2862,13 +3513,16 @@
       player.tailFrame = Math.floor((gameTime * 8) % 4);
 
       // 4. CLEANING MESSES & HAZARDS
-      // Clean radius & tool checks
       let cleanRadius = player.radius + 12;
       const isVacuum = player.isPossessing && player.possessedFurniture?.type === 'vacuum';
       const isMop = player.isPossessing && player.possessedFurniture?.type === 'mop_bucket';
+      const isDuster = player.isPossessing && player.possessedFurniture?.type === 'feather_duster';
+      const isExhaust = player.isPossessing && player.possessedFurniture?.type === 'exhaust_fan';
       const isFireTool = player.isPossessing && (player.possessedFurniture?.type === 'candle' || player.possessedFurniture?.type === 'fire_poker');
 
       if (isVacuum) cleanRadius = upgrades.ghost_vacuum.owned ? 85 : 55;
+      else if (isExhaust) cleanRadius = 90;
+      else if (isDuster) cleanRadius = 38;
       else if (isMop) cleanRadius = 32;
 
       // Clean Standard Dust & Ectoplasm
@@ -2878,7 +3532,6 @@
           const dist = Math.hypot(player.x - slime.x, player.y - slime.y);
 
           if (dist < cleanRadius + slime.radius) {
-            // Ectoplasmic Slime requirement: Can only be cleaned with possessed gear or vacuum upgrade
             if (slime.category === 'ecto_slime' && !player.isPossessing && !upgrades.ghost_vacuum.owned) {
               if (Math.random() < 0.05) {
                 floatingTexts.push({ text: "NEED CLEANING GEAR! 🌀🧹", x: slime.x, y: slime.y - 14, life: 0.8, color: "#f72585" });
@@ -2889,6 +3542,7 @@
             const pts = slime.points * (upgrades.poltergeist_polish.owned && player.isPossessing ? 2 : 1);
             score += pts;
             playerPoints += pts;
+            savePlayerData();
 
             spawnPoofParticles(slime.x, slime.y, slime.color);
             audio.playSlimeClean();
@@ -2919,6 +3573,8 @@
             const pts = web.points;
             score += pts;
             playerPoints += pts;
+            savePlayerData();
+
             audio.playBurn();
             spawnFlameParticles(web.x, web.y);
             cobwebs.splice(i, 1);
@@ -3005,6 +3661,32 @@
             ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
             const rip = Math.sin(gameTime * 4 + x) * 2;
             ctx.fillRect(px + 6, py + 14 + rip, 14, 2);
+          } else if (tile === TILE.MUD_BED) {
+            ctx.fillStyle = '#2e1c0c';
+            ctx.fillRect(px, py, TILE_SIZE, TILE_SIZE);
+            ctx.fillStyle = '#4a2c11';
+            ctx.fillRect(px + 2, py + 2, TILE_SIZE - 4, TILE_SIZE - 4);
+            ctx.fillStyle = '#27ae60';
+            ctx.fillRect(px + 4, py + 4, 3, 3);
+            ctx.fillRect(px + 18, py + 14, 4, 4);
+          } else if (tile === TILE.HOT_STOVE) {
+            ctx.fillStyle = '#1a1a1a';
+            ctx.fillRect(px, py, TILE_SIZE, TILE_SIZE);
+            ctx.fillStyle = '#333';
+            ctx.fillRect(px + 2, py + 2, TILE_SIZE - 4, TILE_SIZE - 4);
+            ctx.fillStyle = Math.sin(gameTime * 8 + x) > 0 ? '#ff3300' : '#ffaa00';
+            ctx.beginPath();
+            ctx.arc(px + 16, py + 16, 8, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(px + 14, py + 14, 4, 4);
+          } else if (tile === TILE.GREASE) {
+            ctx.fillStyle = '#221a08';
+            ctx.fillRect(px, py, TILE_SIZE, TILE_SIZE);
+            ctx.fillStyle = '#4a3a11';
+            ctx.fillRect(px + 2, py + 2, TILE_SIZE - 4, TILE_SIZE - 4);
+            ctx.fillStyle = '#f1c40f';
+            ctx.fillRect(px + 8, py + 10, 14, 8);
           } else if (tile === TILE.CREAKY_PLANK) {
             ctx.fillStyle = '#3a2012';
             ctx.fillRect(px, py, TILE_SIZE, TILE_SIZE);
@@ -3026,7 +3708,7 @@
         }
       }
 
-      // Draw Pipe Valve in Flooded Basement
+      // Draw Pipe Valve in Flooded Basement / Conservatory
       if (pipeValveObj) {
         const vx = pipeValveObj.x - camera.x;
         const vy = pipeValveObj.y - camera.y;
@@ -3043,7 +3725,7 @@
           ctx.font = '6px "Press Start 2P", monospace';
           ctx.fillStyle = pipeValveObj.turnedOff ? '#39ff14' : '#ff0055';
           ctx.textAlign = 'center';
-          ctx.fillText(pipeValveObj.turnedOff ? "VALVE CLOSED" : "[TURN VALVE]", vx, vy - 18);
+          ctx.fillText(pipeValveObj.turnedOff ? "VALVE OFF" : "[TURN VALVE]", vx, vy - 18);
           ctx.restore();
         }
       }
@@ -3083,9 +3765,9 @@
         const lx = lw.x - camera.x;
         const ly = lw.y - camera.y;
         if (lx < -300 || lx > CANVAS_VIEWPORT_SIZE + 300 || ly < -300 || ly > CANVAS_VIEWPORT_SIZE + 300) return;
-        const alpha = Math.max(0, lw.life / 1.6);
+        const alpha = Math.max(0, lw.life / 1.8);
         ctx.save();
-        ctx.strokeStyle = lw.type === 'clock' ? `rgba(246, 201, 14, ${alpha})` : (lw.type === 'trap' ? `rgba(255, 170, 0, ${alpha})` : `rgba(0, 240, 255, ${alpha})`);
+        ctx.strokeStyle = lw.type === 'clock' ? `rgba(246, 201, 14, ${alpha})` : (lw.type === 'dinner_bell' ? `rgba(255, 85, 0, ${alpha})` : `rgba(0, 240, 255, ${alpha})`);
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.arc(lx, ly, lw.radius, 0, Math.PI * 2);
@@ -3143,11 +3825,6 @@
           ctx.fillRect(Math.floor(sx - 4), Math.floor(sy - 4), 3, 3);
           ctx.fillRect(Math.floor(sx + 3), Math.floor(sy + 2), 2, 2);
         } else {
-          ctx.fillStyle = slime.type === 'cyan' ? 'rgba(0, 240, 255, 0.25)' : 'rgba(57, 255, 20, 0.22)';
-          ctx.beginPath();
-          ctx.arc(sx, sy, r + 4, 0, Math.PI * 2);
-          ctx.fill();
-
           ctx.fillStyle = slime.color;
           ctx.beginPath();
           ctx.arc(sx, sy, r * 0.8, 0, Math.PI * 2);
@@ -3201,15 +3878,19 @@
         ctx.fillStyle = 'rgba(10, 5, 24, 0.9)';
         ctx.strokeStyle = '#39ff14';
         ctx.lineWidth = 1;
-        ctx.fillRect(x - 36, y - 28 + bob, 72, 12);
-        ctx.strokeRect(x - 36, y - 28 + bob, 72, 12);
+        ctx.fillRect(x - 38, y - 28 + bob, 76, 12);
+        ctx.strokeRect(x - 38, y - 28 + bob, 76, 12);
 
         let label = '[POSSESS]';
         if (furn.type === 'vacuum') label = '[VACUUM]';
-        if (furn.type === 'mop_bucket') label = '[MOP]';
-        if (furn.type === 'candle' || furn.type === 'fire_poker') label = '[FIRE TOOL]';
-        if (furn.type === 'tv') label = '[LURE TV]';
-        if (furn.type === 'clock') label = '[ALARM]';
+        else if (furn.type === 'mop_bucket') label = '[MOP]';
+        else if (furn.type === 'feather_duster') label = '[DUSTER]';
+        else if (furn.type === 'exhaust_fan') label = '[EXHAUST]';
+        else if (furn.type === 'mechanical_beetle') label = '[BEETLE]';
+        else if (furn.type === 'dinner_bell') label = '[BELL]';
+        else if (furn.type === 'candle' || furn.type === 'fire_poker') label = '[FIRE TOOL]';
+        else if (furn.type === 'tv') label = '[LURE TV]';
+        else if (furn.type === 'clock') label = '[ALARM]';
 
         ctx.font = '6px "Press Start 2P", monospace';
         ctx.fillStyle = '#39ff14';
@@ -3240,9 +3921,6 @@
           ctx.fillRect(-2, 6, 4, 8);
           ctx.fillStyle = '#34495e';
           ctx.fillRect(-6, 12, 12, 4);
-          ctx.fillStyle = '#2c3e50';
-          ctx.fillRect(-9, -2, 3, 6);
-          ctx.fillRect(6, -2, 3, 6);
           break;
 
         case 'mop_bucket':
@@ -3254,8 +3932,48 @@
           ctx.fillRect(-6, 0, 12, 3);
           ctx.fillStyle = '#d4a373';
           ctx.fillRect(3, -14, 3, 14);
-          ctx.fillStyle = '#ecf0f1';
-          ctx.fillRect(0, -16, 9, 4);
+          break;
+
+        case 'feather_duster':
+          ctx.fillStyle = '#8e44ad';
+          ctx.fillRect(-4, -12, 8, 14);
+          ctx.fillStyle = '#f72585';
+          ctx.fillRect(-6, -16, 12, 6);
+          ctx.fillStyle = '#d4a373';
+          ctx.fillRect(-2, 2, 4, 12);
+          break;
+
+        case 'exhaust_fan':
+          ctx.fillStyle = '#7f8c8d';
+          ctx.fillRect(-12, -12, 24, 24);
+          ctx.fillStyle = '#bdc3c7';
+          ctx.beginPath();
+          ctx.arc(0, 0, 8, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = '#2c3e50';
+          ctx.fillRect(-2, -8, 4, 16);
+          ctx.fillRect(-8, -2, 16, 4);
+          break;
+
+        case 'mechanical_beetle':
+          ctx.fillStyle = '#d35400';
+          ctx.beginPath();
+          ctx.arc(0, 0, 9, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = '#f1c40f';
+          ctx.fillRect(-4, -4, 8, 8);
+          break;
+
+        case 'dinner_bell':
+          ctx.fillStyle = '#f39c12';
+          ctx.beginPath();
+          ctx.arc(0, -2, 8, Math.PI, 0, false);
+          ctx.lineTo(8, 6);
+          ctx.lineTo(-8, 6);
+          ctx.closePath();
+          ctx.fill();
+          ctx.fillStyle = '#e67e22';
+          ctx.fillRect(-2, -8, 4, 6);
           break;
 
         case 'candle':
@@ -3266,10 +3984,6 @@
           ctx.fillStyle = '#ff5500';
           ctx.beginPath();
           ctx.arc(0, -12, 4, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.fillStyle = '#ffea00';
-          ctx.beginPath();
-          ctx.arc(0, -12, 2, 0, Math.PI * 2);
           ctx.fill();
           break;
 
@@ -3371,7 +4085,7 @@
       const hx = Math.floor(npc.x - camera.x);
       const hy = Math.floor(npc.y - camera.y);
 
-      if (hx < -180 || hx > CANVAS_VIEWPORT_SIZE + 180 || hy < -180 || hy > CANVAS_VIEWPORT_SIZE + 180) return;
+      if (hx < -220 || hx > CANVAS_VIEWPORT_SIZE + 220 || hy < -220 || hy > CANVAS_VIEWPORT_SIZE + 220) return;
 
       if (npc.state !== 'slipped') {
         ctx.save();
@@ -3383,9 +4097,16 @@
         const rightAngle = vFacing + vAngle;
 
         const coneGrad = ctx.createRadialGradient(hx, hy, 4, hx, hy, vLen);
-        coneGrad.addColorStop(0, 'rgba(255, 240, 150, 0.48)');
-        coneGrad.addColorStop(0.7, 'rgba(255, 230, 100, 0.22)');
-        coneGrad.addColorStop(1, 'rgba(255, 200, 50, 0)');
+        if (npc.type === 'librarian') {
+          // Intense Flashlight Beam
+          coneGrad.addColorStop(0, 'rgba(255, 255, 200, 0.7)');
+          coneGrad.addColorStop(0.7, 'rgba(255, 255, 120, 0.35)');
+          coneGrad.addColorStop(1, 'rgba(255, 240, 50, 0)');
+        } else {
+          coneGrad.addColorStop(0, 'rgba(255, 240, 150, 0.48)');
+          coneGrad.addColorStop(0.7, 'rgba(255, 230, 100, 0.22)');
+          coneGrad.addColorStop(1, 'rgba(255, 200, 50, 0)');
+        }
 
         ctx.fillStyle = coneGrad;
         ctx.beginPath();
@@ -3405,7 +4126,43 @@
 
       const legBob = Math.sin(npc.walkFrame) * 2.5;
 
-      if (npc.type === 'messy_kid') {
+      if (npc.type === 'librarian') {
+        ctx.fillStyle = '#2c3e50';
+        ctx.fillRect(-5, 4 + (legBob > 0 ? legBob : 0), 4, 7);
+        ctx.fillRect(1, 4 + (legBob < 0 ? -legBob : 0), 4, 7);
+        ctx.fillStyle = '#4a235a';
+        ctx.fillRect(-7, -5, 14, 10);
+        ctx.fillStyle = '#f1c27d';
+        ctx.beginPath();
+        ctx.arc(0, -9, 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#ffea00';
+        ctx.fillRect(2, -4, 6, 3); // Flashlight in hand
+      } else if (npc.type === 'gardener') {
+        ctx.fillStyle = '#27ae60';
+        ctx.fillRect(-5, 4 + (legBob > 0 ? legBob : 0), 4, 7);
+        ctx.fillRect(1, 4 + (legBob < 0 ? -legBob : 0), 4, 7);
+        ctx.fillStyle = '#5d4037';
+        ctx.fillRect(-7, -5, 14, 10);
+        ctx.fillStyle = '#f1c27d';
+        ctx.beginPath();
+        ctx.arc(0, -9, 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#d35400';
+        ctx.fillRect(-7, -12, 14, 3); // Straw hat
+      } else if (npc.type === 'chef') {
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(-5, 4 + (legBob > 0 ? legBob : 0), 4, 7);
+        ctx.fillRect(1, 4 + (legBob < 0 ? -legBob : 0), 4, 7);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(-7, -5, 14, 10);
+        ctx.fillStyle = '#f1c27d';
+        ctx.beginPath();
+        ctx.arc(0, -9, 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(-5, -16, 10, 8); // Tall Chef Toque hat
+      } else if (npc.type === 'messy_kid') {
         ctx.fillStyle = '#e67e22';
         ctx.fillRect(-5, 4 + (legBob > 0 ? legBob : 0), 4, 5);
         ctx.fillRect(1, 4 + (legBob < 0 ? -legBob : 0), 4, 5);
@@ -3415,14 +4172,6 @@
         ctx.beginPath();
         ctx.arc(0, -8, 5, 0, Math.PI * 2);
         ctx.fill();
-      } else if (npc.type === 'investigator') {
-        ctx.fillStyle = '#2c3e50';
-        ctx.fillRect(-5, 4 + (legBob > 0 ? legBob : 0), 4, 7);
-        ctx.fillRect(1, 4 + (legBob < 0 ? -legBob : 0), 4, 7);
-        ctx.fillStyle = '#34495e';
-        ctx.fillRect(-7, -5, 14, 10);
-        ctx.fillStyle = '#00f0ff';
-        ctx.fillRect(-5, -11, 10, 3);
       } else {
         ctx.fillStyle = '#2c3e50';
         ctx.fillRect(-5, 4 + (legBob > 0 ? legBob : 0), 4, 7);
@@ -3435,22 +4184,18 @@
         ctx.fill();
       }
 
-      // ENHANCED LARGER READABLE POP-UP MESSAGES
+      // Speech bubble pop-ups
       if (npc.speechTimer > 0 && npc.speechText) {
         ctx.save();
-        ctx.font = '8.5px "Press Start 2P", monospace';
-        
+        ctx.font = '8px "Press Start 2P", monospace';
         const textMetrics = ctx.measureText(npc.speechText);
         const boxW = Math.max(80, textMetrics.width + 16);
         const boxH = 18;
-        const boxY = -38;
+        const boxY = -40;
 
         ctx.fillStyle = 'rgba(13, 8, 24, 0.95)';
         ctx.strokeStyle = '#f6c90e';
         ctx.lineWidth = 1.5;
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
-        ctx.shadowBlur = 6;
-
         ctx.fillRect(-boxW / 2, boxY, boxW, boxH);
         ctx.strokeRect(-boxW / 2, boxY, boxW, boxH);
 
@@ -3462,7 +4207,6 @@
         ctx.fill();
 
         ctx.fillStyle = '#f6c90e';
-        ctx.shadowBlur = 0;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(npc.speechText, 0, boxY + boxH / 2 + 1);
@@ -3503,13 +4247,13 @@
     /* "BEFORE & AFTER" FLOOR SUMMARY & OVERLAYS */
     function drawOverlays() {
       if (busted) {
-        ctx.fillStyle = 'rgba(25, 0, 10, 0.92)';
+        ctx.fillStyle = 'rgba(25, 0, 10, 0.94)';
         ctx.fillRect(0, 0, CANVAS_VIEWPORT_SIZE, CANVAS_VIEWPORT_SIZE);
         ctx.textAlign = 'center';
 
         const pulse = 1 + Math.sin(gameTime * 6) * 0.06;
         ctx.save();
-        ctx.translate(CANVAS_VIEWPORT_SIZE / 2, 160);
+        ctx.translate(CANVAS_VIEWPORT_SIZE / 2, 140);
         ctx.scale(pulse, pulse);
         ctx.font = '22px "Press Start 2P", monospace';
         ctx.fillStyle = '#ff0055';
@@ -3520,24 +4264,25 @@
 
         ctx.font = '9px "Press Start 2P", monospace';
         ctx.fillStyle = '#f6c90e';
-        ctx.fillText('THE RESIDENTS SPOTTED YOU!', CANVAS_VIEWPORT_SIZE / 2, 210);
+        ctx.fillText('THE RESIDENTS SPOTTED YOU!', CANVAS_VIEWPORT_SIZE / 2, 195);
 
         ctx.fillStyle = '#00f0ff';
         ctx.font = '8px "Press Start 2P", monospace';
-        ctx.fillText(`FLOOR CLEANED: ${score} / ${totalTargetScore}`, CANVAS_VIEWPORT_SIZE / 2, 260);
+        ctx.fillText(`FLOOR CLEANED: ${score} / ${totalTargetScore}`, CANVAS_VIEWPORT_SIZE / 2, 240);
 
-        const blink = Math.floor(gameTime * 2.5) % 2 === 0;
-        if (blink) {
-          ctx.fillStyle = '#ffffff';
-          ctx.font = '9px "Press Start 2P", monospace';
-          ctx.fillText('TAP [START] / [POSSESS] TO RETRY', CANVAS_VIEWPORT_SIZE / 2, 335);
-        }
+        ctx.fillStyle = '#39ff14';
+        ctx.font = '8.5px "Press Start 2P", monospace';
+        ctx.fillText('[TAP SCREEN / POSSESS TO RETRY]', CANVAS_VIEWPORT_SIZE / 2, 310);
+
+        ctx.fillStyle = '#f6c90e';
+        ctx.font = '8px "Press Start 2P", monospace';
+        ctx.fillText('[TAP 🏠 LOBBY IN HEADER FOR FLOORS]', CANVAS_VIEWPORT_SIZE / 2, 350);
         return;
       }
 
       if (levelCleared) {
         victoryTimer += 0.016;
-        ctx.fillStyle = 'rgba(10, 5, 24, 0.95)';
+        ctx.fillStyle = 'rgba(10, 5, 24, 0.96)';
         ctx.fillRect(0, 0, CANVAS_VIEWPORT_SIZE, CANVAS_VIEWPORT_SIZE);
 
         ctx.textAlign = 'center';
@@ -3545,13 +4290,13 @@
         ctx.fillStyle = '#f6c90e';
         ctx.shadowColor = '#f6c90e';
         ctx.shadowBlur = 12;
-        ctx.fillText('FLOOR CLEANSED! ✨', CANVAS_VIEWPORT_SIZE / 2, 60);
+        ctx.fillText(`FLOOR ${currentLevel.id} CLEANSED! ✨`, CANVAS_VIEWPORT_SIZE / 2, 55);
         ctx.shadowBlur = 0;
 
-        const boxX = 60;
-        const boxY = 90;
-        const boxW = 392;
-        const boxH = 140;
+        const boxX = 50;
+        const boxY = 80;
+        const boxW = 412;
+        const boxH = 135;
 
         ctx.fillStyle = '#140c26';
         ctx.strokeStyle = '#9d4edd';
@@ -3602,13 +4347,17 @@
 
         ctx.fillStyle = '#fff';
         ctx.font = '9px "Press Start 2P", monospace';
-        ctx.fillText(`GRADE: S RANK (CLEANLINESS MASTER)`, CANVAS_VIEWPORT_SIZE / 2, 260);
+        ctx.fillText(`GRADE: S RANK (CLEANLINESS MASTER)`, CANVAS_VIEWPORT_SIZE / 2, 245);
         ctx.fillStyle = '#f6c90e';
-        ctx.fillText(`TOTAL POINTS BANKED: ${playerPoints} PTS`, CANVAS_VIEWPORT_SIZE / 2, 285);
+        ctx.fillText(`TOTAL POINTS BANKED: ${playerPoints} PTS`, CANVAS_VIEWPORT_SIZE / 2, 275);
+
+        ctx.fillStyle = '#39ff14';
+        ctx.font = '8px "Press Start 2P", monospace';
+        ctx.fillText('PRESS [START/NEXT] FOR NEXT FLOOR', CANVAS_VIEWPORT_SIZE / 2, 325);
 
         ctx.fillStyle = '#00f0ff';
-        ctx.font = '8px "Press Start 2P", monospace';
-        ctx.fillText('TAP [SHOP] TO UPGRADE GEAR OR [START] FOR NEXT', CANVAS_VIEWPORT_SIZE / 2, 335);
+        ctx.font = '7.5px "Press Start 2P", monospace';
+        ctx.fillText('[TAP 🏠 LOBBY TO CHOOSE ANY LEVEL]', CANVAS_VIEWPORT_SIZE / 2, 360);
       }
     }
 
@@ -3659,7 +4408,6 @@
 
     let isJoystickActive = false;
     let joystickPointerId = null;
-    let joystickTouchId = null;
     const MAX_JOYSTICK_RADIUS = 30;
     const JOYSTICK_DEADZONE = 4;
 
@@ -3713,7 +4461,6 @@
     function stopJoystick() {
       isJoystickActive = false;
       joystickPointerId = null;
-      joystickTouchId = null;
       inputVector.x = 0;
       inputVector.y = 0;
       inputVector.active = false;
@@ -3784,10 +4531,17 @@
         handleMusicButton();
       }
 
+      // LOBBY / MENU (Escape / KeyH)
+      if (e.code === 'Escape' || e.code === 'KeyH') {
+        e.preventDefault();
+        openLobby();
+      }
+
       // START / NEXT (Enter / KeyR)
       if (e.code === 'Enter' || e.code === 'KeyR') {
         e.preventDefault();
-        if (busted) loadLevel(currentLevelIndex);
+        if (inLobby) startSelectedFloor();
+        else if (busted) loadLevel(currentLevelIndex);
         else if (levelCleared) loadLevel(currentLevelIndex + 1);
       }
     }
@@ -3878,8 +4632,8 @@
       });
     }
 
-    // Start Game
-    initGame();
+    // Initialize Game & Lobby
+    openLobby();
     requestAnimationFrame((ts) => {
       lastTimestamp = ts;
       gameLoop(ts);

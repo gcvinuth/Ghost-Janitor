@@ -1912,10 +1912,15 @@
       CREAKY_PLANK: 4,   // Floor 2 & 4: Creaky floorboard causing sound alerts
       MUD_BED: 5,        // Floor 5: Muddy plant bed tracks fresh mud
       HOT_STOVE: 6,      // Floor 6: Hot cooking range drains ghost energy
-      GREASE: 7          // Floor 6: Extra slick grease stain
+      GREASE: 7,         // Floor 6: Extra slick grease stain
+      STEAM_VENT: 8,     // Floor 7: Steam vent that blasts periodically
+      GEAR_TRACK: 9,     // Floor 7: Moving cogwheel conveyor floor
+      OIL_SLICK: 10,     // Floor 7: Slippery oil puddle
+      PRISM_BEAM: 11,    // Floor 8: Celestial light beam hazard
+      SKYLIGHT: 12       // Floor 8: Glass skylight tile (lightning flash)
     };
 
-    // 6 COMPLETE THEMED LEVELS
+    // 8 COMPLETE THEMED LEVELS
     const LEVELS = [
       {
         id: 1,
@@ -2170,6 +2175,99 @@
           { type: 'homeowner', name: "Food Critic Lord", speed: 68, radius: 12, visionLength: 145, visionAngle: Math.PI / 5.2 },
           { type: 'messy_kid', name: "Messy Sous Apprentice", speed: 92, radius: 11, visionLength: 120, visionAngle: Math.PI / 5.5 }
         ]
+      },
+      {
+        id: 7,
+        name: "CLOCKTOWER & MECHANICAL ATTIC",
+        subtitle: "Whirring Gears, Steam & Oily Machinery",
+        theme: "clocktower",
+        icon: "⚙️",
+        hazardDesc: "Steam vents dispel possession! Gear tracks drift items.",
+        npcDesc: "Eccentric Clockmaker (Metal Shavings & Oil)",
+        totalSlimes: 38,
+        totalCobwebs: 9,
+        totalEctoSlimes: 14,
+        totalFurniture: 15,
+        cols: 32,
+        rows: 32,
+        spawnX: 5.5,
+        spawnY: 5.5,
+        steamVentTimer: 0,
+        steamVentActive: false,
+        clockChimeTimer: 0,
+        rooms: [
+          { id: 'bellry', name: "Grand Bell Tower", x1: 1, y1: 1, x2: 10, y2: 9 },
+          { id: 'gearworks', name: "Main Gearworks Hall", x1: 11, y1: 1, x2: 22, y2: 9 },
+          { id: 'steam_pipes', name: "Steam Pipe Junction", x1: 23, y1: 1, x2: 30, y2: 9 },
+          { id: 'workshop7', name: "Clockmaker Workshop", x1: 1, y1: 10, x2: 9, y2: 20 },
+          { id: 'pendulum', name: "Pendulum Corridor", x1: 10, y1: 10, x2: 21, y2: 20 },
+          { id: 'automata', name: "Automata Gallery", x1: 22, y1: 10, x2: 30, y2: 20 },
+          { id: 'oil_depot', name: "Oil & Grease Depot", x1: 1, y1: 21, x2: 14, y2: 30 },
+          { id: 'escapement', name: "Escapement Vault", x1: 16, y1: 21, x2: 30, y2: 30 }
+        ],
+        patrolWaypoints: [
+          { x: 5, y: 5, name: "Grand Bell Tower" },
+          { x: 16, y: 5, name: "Main Gearworks Hall" },
+          { x: 26, y: 5, name: "Steam Pipe Junction" },
+          { x: 26, y: 15, name: "Automata Gallery" },
+          { x: 15, y: 15, name: "Pendulum Corridor" },
+          { x: 5, y: 15, name: "Clockmaker Workshop" },
+          { x: 7, y: 25, name: "Oil & Grease Depot" },
+          { x: 23, y: 25, name: "Escapement Vault" }
+        ],
+        npcs: [
+          { type: 'clockmaker', name: "Mad Inventor Cogsworth", speed: 78, radius: 12, visionLength: 150, visionAngle: Math.PI / 5.0 },
+          { type: 'investigator', name: "Steam Inspector", speed: 74, radius: 12, visionLength: 160, visionAngle: Math.PI / 4.8 },
+          { type: 'messy_kid', name: "Oily Apprentice Pip", speed: 94, radius: 11, visionLength: 125, visionAngle: Math.PI / 5.5 },
+          { type: 'homeowner', name: "Tower Keeper", speed: 66, radius: 12, visionLength: 140, visionAngle: Math.PI / 5.2 }
+        ]
+      },
+      {
+        id: 8,
+        name: "CELESTIAL OBSERVATORY & ROOFTOP SPIRE",
+        subtitle: "Lightning, Prism Beams & Cosmic Stardust",
+        theme: "observatory",
+        icon: "🔭",
+        hazardDesc: "Lightning doubles NPC vision! Prism beams drain ectoplasm.",
+        npcDesc: "Master Paranormal Inquisitor (Spectral Searchlight)",
+        totalSlimes: 42,
+        totalCobwebs: 10,
+        totalEctoSlimes: 16,
+        totalFurniture: 16,
+        cols: 34,
+        rows: 34,
+        spawnX: 5.5,
+        spawnY: 5.5,
+        lightningTimer: 0,
+        lightningActive: false,
+        lightningFlashAlpha: 0,
+        groundingRodActive: false,
+        rooms: [
+          { id: 'dome', name: "Great Telescope Dome", x1: 1, y1: 1, x2: 11, y2: 10 },
+          { id: 'astrolabe', name: "Astrolabe Chamber", x1: 12, y1: 1, x2: 22, y2: 10 },
+          { id: 'balcony8', name: "Storm Balcony", x1: 23, y1: 1, x2: 32, y2: 10 },
+          { id: 'optics', name: "Optics & Prism Lab", x1: 1, y1: 11, x2: 10, y2: 21 },
+          { id: 'rotunda8', name: "Celestial Rotunda", x1: 11, y1: 11, x2: 22, y2: 21 },
+          { id: 'stardust', name: "Stardust Gallery", x1: 23, y1: 11, x2: 32, y2: 21 },
+          { id: 'archive8', name: "Star Chart Archive", x1: 1, y1: 22, x2: 15, y2: 32 },
+          { id: 'spire', name: "Lightning Spire Peak", x1: 17, y1: 22, x2: 32, y2: 32 }
+        ],
+        patrolWaypoints: [
+          { x: 6, y: 5, name: "Great Telescope Dome" },
+          { x: 17, y: 5, name: "Astrolabe Chamber" },
+          { x: 27, y: 5, name: "Storm Balcony" },
+          { x: 27, y: 16, name: "Stardust Gallery" },
+          { x: 16, y: 16, name: "Celestial Rotunda" },
+          { x: 5, y: 16, name: "Optics & Prism Lab" },
+          { x: 8, y: 27, name: "Star Chart Archive" },
+          { x: 24, y: 27, name: "Lightning Spire Peak" }
+        ],
+        npcs: [
+          { type: 'inquisitor', name: "Grand Inquisitor Volta", speed: 82, radius: 13, visionLength: 190, visionAngle: Math.PI / 3.8 },
+          { type: 'investigator', name: "Astral Researcher", speed: 74, radius: 12, visionLength: 165, visionAngle: Math.PI / 4.6 },
+          { type: 'clockmaker', name: "Lens Technician", speed: 70, radius: 12, visionLength: 145, visionAngle: Math.PI / 5.0 },
+          { type: 'messy_kid', name: "Clumsy Stargazer", speed: 96, radius: 11, visionLength: 120, visionAngle: Math.PI / 5.5 }
+        ]
       }
     ];
 
@@ -2299,6 +2397,60 @@
         });
       }
 
+      // Floor 7: Steam Vents, Gear Tracks & Oil Slicks
+      if (level.theme === 'clocktower') {
+        level.rooms.forEach((room, rIdx) => {
+          if (rIdx === 1 || rIdx === 4) { // Gearworks Hall & Pendulum Corridor = gear tracks
+            for (let y = room.y1 + 1; y < room.y2; y++) {
+              for (let x = room.x1 + 1; x < room.x2; x++) {
+                if (grid[y][x] === TILE.FLOOR && Math.random() < 0.50) {
+                  grid[y][x] = TILE.GEAR_TRACK;
+                }
+              }
+            }
+          } else if (rIdx === 2) { // Steam Pipe Junction = steam vents
+            for (let y = room.y1 + 1; y < room.y2; y++) {
+              for (let x = room.x1 + 1; x < room.x2; x++) {
+                if (grid[y][x] === TILE.FLOOR && Math.random() < 0.40) {
+                  grid[y][x] = TILE.STEAM_VENT;
+                }
+              }
+            }
+          } else if (rIdx === 6) { // Oil & Grease Depot = oil slicks
+            for (let y = room.y1 + 1; y < room.y2; y++) {
+              for (let x = room.x1 + 1; x < room.x2; x++) {
+                if (grid[y][x] === TILE.FLOOR && Math.random() < 0.45) {
+                  grid[y][x] = TILE.OIL_SLICK;
+                }
+              }
+            }
+          }
+        });
+      }
+
+      // Floor 8: Prism Beams & Skylight Windows
+      if (level.theme === 'observatory') {
+        level.rooms.forEach((room, rIdx) => {
+          if (rIdx === 3) { // Optics & Prism Lab = prism beams
+            for (let y = room.y1 + 2; y < room.y2 - 1; y++) {
+              for (let x = room.x1 + 2; x < room.x2 - 1; x++) {
+                if (grid[y][x] === TILE.FLOOR && Math.random() < 0.35) {
+                  grid[y][x] = TILE.PRISM_BEAM;
+                }
+              }
+            }
+          } else if (rIdx === 2 || rIdx === 7) { // Storm Balcony & Lightning Spire = skylights
+            for (let y = room.y1 + 1; y < room.y2; y++) {
+              for (let x = room.x1 + 1; x < room.x2; x++) {
+                if (grid[y][x] === TILE.FLOOR && Math.random() < 0.50) {
+                  grid[y][x] = TILE.SKYLIGHT;
+                }
+              }
+            }
+          }
+        });
+      }
+
       // Clear spawn
       const sx = Math.floor(level.spawnX);
       const sy = Math.floor(level.spawnY);
@@ -2347,6 +2499,19 @@
     let gameTime = 0;
     let closestFurniture = null;
     let pipeValveObj = null;
+
+    // Floor 7: Clocktower mechanics
+    let steamVentTimer = 0;
+    let steamVentActive = false;
+    let clockChimeTimer = 0;
+    let clockChimeCooldown = 0;
+
+    // Floor 8: Observatory mechanics
+    let lightningTimer = 0;
+    let lightningActive = false;
+    let lightningFlashAlpha = 0;
+    let groundingRodActive = false;
+    let groundingRodTimer = 0;
 
     // Victory animation
     let victoryTimer = 0;
@@ -2551,6 +2716,10 @@
         floorTools = ['mechanical_beetle', 'mop_bucket', 'vacuum', 'candle', 'clock', 'tv'];
       } else if (currentLevel.id === 6) { // Kitchen: Exhaust Fan & Dinner Bell
         floorTools = ['exhaust_fan', 'dinner_bell', 'mop_bucket', 'vacuum', 'fire_poker', 'clock'];
+      } else if (currentLevel.id === 7) { // Clocktower: Magnet Sweeper & Bellows
+        floorTools = ['magnet_sweeper', 'bellows', 'mop_bucket', 'vacuum', 'candle', 'clock'];
+      } else if (currentLevel.id === 8) { // Observatory: Grounding Rod & Telescope Prism
+        floorTools = ['grounding_rod', 'telescope_prism', 'vacuum', 'mop_bucket', 'candle', 'fire_poker', 'clock'];
       }
 
       const standardFurniture = ['armchair', 'table', 'lamp', 'chair', 'mirror_cabinet', 'piano'];
@@ -2574,10 +2743,14 @@
           y: (tile.y + 0.5) * TILE_SIZE,
           radius: 14,
           isPossessed: false,
-          isMobileTool: (itemType === 'vacuum' || itemType === 'mop_bucket' || itemType === 'feather_duster' || itemType === 'candle' || itemType === 'fire_poker'),
+          isMobileTool: (itemType === 'vacuum' || itemType === 'mop_bucket' || itemType === 'feather_duster' || itemType === 'candle' || itemType === 'fire_poker' || itemType === 'magnet_sweeper' || itemType === 'bellows'),
           isFireTool: (itemType === 'candle' || itemType === 'fire_poker'),
           isDistraction: (itemType === 'tv' || itemType === 'clock' || itemType === 'dinner_bell' || itemType === 'mechanical_beetle'),
-          isExhaustFan: (itemType === 'exhaust_fan')
+          isExhaustFan: (itemType === 'exhaust_fan'),
+          isMagnetSweeper: (itemType === 'magnet_sweeper'),
+          isBellows: (itemType === 'bellows'),
+          isGroundingRod: (itemType === 'grounding_rod'),
+          isTelescopePrism: (itemType === 'telescope_prism')
         });
       }
 
@@ -2597,6 +2770,12 @@
         } else if (currentLevel.theme === 'grand_kitchen' && sTypeRoll > 0.5) {
           sType = 'flour_dust';
           sColor = '#e8f0fe';
+        } else if (currentLevel.theme === 'clocktower') {
+          if (sTypeRoll > 0.5) { sType = 'metal_shavings'; sColor = '#c0c0c0'; }
+          else { sType = 'oil_grime'; sColor = '#4a3728'; }
+        } else if (currentLevel.theme === 'observatory') {
+          if (sTypeRoll > 0.5) { sType = 'cosmic_dust'; sColor = '#e6ccff'; sPoints = 2; sRadius = 12; }
+          else { sType = 'stardust'; sColor = '#fffacd'; }
         } else if (sTypeRoll > 0.6) {
           sType = 'cyan';
           sRadius = 12;
@@ -3199,6 +3378,33 @@
           }
         }
 
+        // 2b. Master Paranormal Inquisitor wide-beam spectral searchlight (Floor 8)
+        if (npc.type === 'inquisitor') {
+          // Inquisitor has wider vision angle and detects moving tools
+          if (dist <= npc.visionLength) {
+            const npcAngle = npc.visionAngleFacing;
+            const angleToPlayer = Math.atan2(dy, dx);
+            let diff = angleToPlayer - npcAngle;
+            while (diff < -Math.PI) diff += Math.PI * 2;
+            while (diff > Math.PI) diff -= Math.PI * 2;
+
+            // During lightning: doubled vision range checked via lightningActive
+            const effectiveVisionLen = lightningActive && !groundingRodActive ? npc.visionLength * 1.5 : npc.visionLength;
+            if (dist <= effectiveVisionLen && Math.abs(diff) <= npc.visionAngle) {
+              npc.speechText = "🔦 SPECTRAL SCAN LOCKED!";
+              npc.speechTimer = 1.8;
+              audio.playLaserPrism();
+              return true;
+            }
+          }
+          // Inquisitor detects any moving tool within range
+          if (player.isPossessing && player.possessedFurniture?.isMobileTool && player.isMoving && dist <= 160) {
+            npc.speechText = "🔍 THAT TOOL IS MOVING ON ITS OWN!";
+            npc.speechTimer = 1.8;
+            return true;
+          }
+        }
+
         // 3. Vacuum Noise (Unless using silent spectral broom upgrade or feather duster)
         if (player.isPossessing && player.possessedFurniture?.type === 'vacuum' && player.isMoving && dist <= 140) {
           if (!upgrades.spectral_broom.owned) {
@@ -3208,7 +3414,7 @@
           }
         }
 
-        // 4. Standard Line-of-sight vision cone
+        // 4. Standard Line-of-sight vision cone (with lightning boost for Floor 8)
         if (dist <= npc.visionLength) {
           const npcAngle = npc.visionAngleFacing;
           const angleToPlayer = Math.atan2(dy, dx);
@@ -3372,7 +3578,7 @@
         }
 
         // Messy NPC Special Drops
-        if (npc.type === 'messy_kid' || npc.type === 'gardener' || npc.type === 'chef') {
+        if (npc.type === 'messy_kid' || npc.type === 'gardener' || npc.type === 'chef' || npc.type === 'clockmaker' || npc.type === 'inquisitor') {
           npc.messTimer -= dt;
           if (npc.messTimer <= 0) {
             npc.messTimer = 5 + Math.random() * 4;
@@ -3388,6 +3594,14 @@
               dropColor = '#ffffff';
               dropType = 'flour_dust';
               dropText = "🍲 SPILLED BROTH & FLOUR!";
+            } else if (npc.type === 'clockmaker') {
+              dropColor = '#c0c0c0';
+              dropType = 'metal_shavings';
+              dropText = "⚙️ DROPPED METAL SHAVINGS!";
+            } else if (npc.type === 'inquisitor') {
+              dropColor = '#e6ccff';
+              dropType = 'cosmic_dust';
+              dropText = "🔮 SCATTERED DETECTION RESIDUE!";
             }
 
             slimes.push({

@@ -157,44 +157,44 @@
     }
 
     .power-led-label {
-      font-size: 0.38rem;
-      color: #a594c7;
+      font-size: 0.42rem;
+      color: #8c72b0;
       letter-spacing: 0.5px;
     }
 
     .power-led {
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
       background: #39ff14;
-      box-shadow: 0 0 8px #39ff14, 0 0 14px #39ff14;
-      transition: all 0.2s ease;
+      box-shadow: 0 0 8px #39ff14, inset 0 0 2px #fff;
+      transition: background 0.3s, box-shadow 0.3s;
     }
 
     .power-led.panic {
       background: #ff0055;
-      box-shadow: 0 0 10px #ff0055, 0 0 18px #ff0055;
-      animation: ledBlink 0.3s infinite alternate;
+      box-shadow: 0 0 10px #ff0055;
+      animation: blinkLed 0.25s infinite alternate;
     }
 
-    @keyframes ledBlink {
-      0% { filter: brightness(1); transform: scale(1); }
-      100% { filter: brightness(1.8); transform: scale(1.25); }
+    @keyframes blinkLed {
+      from { opacity: 0.4; }
+      to { opacity: 1; }
     }
 
-    /* Screen Glass Bezel */
+    /* Screen Bezel Area */
     .gb-screen-bezel {
+      background: #110b20;
+      border: 3px solid #0a0614;
+      border-radius: 12px;
+      padding: 8px 8px 6px;
       width: 100%;
-      background: #0e0a1a;
-      border: 3px solid #1a1030;
-      border-radius: 12px 12px 24px 12px;
-      padding: 6px 8px 8px;
-      box-shadow: 
-        inset 0 0 16px rgba(0, 0, 0, 0.95),
-        0 4px 10px rgba(0, 0, 0, 0.6);
       display: flex;
       flex-direction: column;
       align-items: center;
+      box-shadow: 
+        inset 0 3px 6px rgba(0, 0, 0, 0.9),
+        0 2px 4px rgba(255, 255, 255, 0.08);
       position: relative;
     }
 
@@ -276,6 +276,9 @@
       color: #00f0ff;
       white-space: nowrap;
       transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
 
     .hud-stealth-pill.hidden {
@@ -286,9 +289,32 @@
       animation: stealthGlow 1.2s infinite alternate;
     }
 
+    .hud-stealth-pill.tool-mode {
+      border-color: #f72585;
+      color: #ff0077;
+      background: #3b0a24;
+      box-shadow: 0 0 8px rgba(247, 37, 133, 0.8);
+    }
+
     @keyframes stealthGlow {
       0% { transform: scale(1); }
       100% { transform: scale(1.04); }
+    }
+
+    .hud-inspection-pill {
+      font-size: 0.40rem;
+      padding: 2px 5px;
+      border-radius: 3px;
+      background: #33200a;
+      border: 1px solid #f6c90e;
+      color: #f6c90e;
+      display: none;
+      animation: pulseInspect 1s infinite alternate;
+    }
+
+    @keyframes pulseInspect {
+      0% { opacity: 0.8; }
+      100% { opacity: 1; }
     }
 
     .panic-wrap {
@@ -478,25 +504,26 @@
       height: 52px;
       border-radius: 50%;
       background: radial-gradient(circle at 35% 35%, #9d4edd 0%, #4a127a 60%, #1b072e 100%);
-      border: 2.5px solid #c77dff;
+      border: 2px solid #b872ff;
       box-shadow: 
-        0 4px 10px rgba(0, 0, 0, 0.9),
-        0 0 14px rgba(157, 78, 221, 0.6),
-        inset 0 2px 5px rgba(255, 255, 255, 0.45);
+        0 5px 10px rgba(0, 0, 0, 0.9),
+        0 0 12px rgba(157, 78, 221, 0.7),
+        inset 0 2px 4px rgba(255, 255, 255, 0.4),
+        inset 0 -3px 6px rgba(0, 0, 0, 0.8);
+      pointer-events: none;
+      transition: transform 0.05s ease-out;
       display: flex;
       align-items: center;
       justify-content: center;
-      pointer-events: none;
-      will-change: transform;
     }
 
     .joystick-knob-core {
       width: 22px;
       height: 22px;
       border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #00f0ff 0%, #7209b7 100%);
-      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.7);
-      border: 1px solid rgba(255, 255, 255, 0.4);
+      background: radial-gradient(circle, #00f0ff 0%, #7209b7 100%);
+      border: 1px solid #00f0ff;
+      box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.8);
     }
 
     .joystick-knob.active {
@@ -581,6 +608,12 @@
       box-shadow: 0 1px 0 #053310, 0 0 24px rgba(57, 255, 20, 1);
     }
 
+    .btn-possess-style.distract-mode {
+      background: linear-gradient(145deg, #00f0ff, #0077b6);
+      border-color: #80f7ff;
+      box-shadow: 0 4px 0 #00375b, 0 0 16px rgba(0, 240, 255, 0.7);
+    }
+
     /* 2. START / RESTART BUTTON */
     .btn-start-style {
       width: 46px;
@@ -598,90 +631,44 @@
       background: #ffb703;
     }
 
-    /* 3. MUSIC BUTTON */
+    /* 3. MUSIC / SOUND TOGGLE BUTTON */
     .btn-music-style {
       width: 46px;
       height: 46px;
       border-radius: 50%;
-      background: linear-gradient(145deg, #00b4d8, #03045e);
-      border: 2px solid #90e0ef;
-      box-shadow: 0 4px 0 #021330, 0 0 12px rgba(0, 180, 216, 0.5);
+      background: linear-gradient(145deg, #00f0ff, #0077b6);
+      border: 2px solid #80f7ff;
+      box-shadow: 0 4px 0 #00375b, 0 0 12px rgba(0, 240, 255, 0.5);
       color: #fff;
     }
 
     .btn-music-style:active, .btn-music-style.active {
       transform: translateY(3px);
-      box-shadow: 0 1px 0 #021330, 0 0 20px rgba(0, 240, 255, 0.9);
-      background: #00f0ff;
+      box-shadow: 0 1px 0 #00375b, 0 0 20px rgba(0, 240, 255, 0.9);
+      background: #48cae4;
     }
 
     .btn-music-style.muted {
-      background: linear-gradient(145deg, #495057, #212529);
-      border-color: #6c757d;
-      box-shadow: 0 4px 0 #111, 0 0 4px rgba(0, 0, 0, 0.5);
-      color: #888;
+      background: linear-gradient(145deg, #555, #222);
+      border-color: #888;
+      box-shadow: 0 4px 0 #111;
+      opacity: 0.7;
     }
 
     .btn-sub-label {
-      font-size: 0.36rem;
-      color: #cfc2eb;
+      font-size: 0.38rem;
+      color: #8c72b0;
       letter-spacing: 0.5px;
-      text-transform: uppercase;
     }
 
-    /* Small Screen & Mobile Landscape Optimization */
-    @media (max-height: 580px) and (orientation: landscape) {
+    /* Responsive scaling for compact phones */
+    @media (max-height: 680px) {
       .gameboy-console {
-        flex-direction: row;
-        max-width: 96vw;
-        max-height: 96dvh;
-        padding: 6px 12px;
-        gap: 12px;
-        border-radius: 20px;
-      }
-      .gb-header {
-        display: none;
-      }
-      .gb-screen-bezel {
-        max-width: 48%;
-        padding: 4px;
-      }
-      .gb-controls-deck {
-        flex: 1;
-        padding-top: 0;
-      }
-      canvas#gameCanvas {
-        max-width: min(44vw, 42vh);
+        padding: 6px 10px 10px;
       }
       .joystick-zone {
         width: 100px;
         height: 100px;
-      }
-      .joystick-base {
-        width: 92px;
-        height: 92px;
-      }
-      .joystick-knob {
-        width: 42px;
-        height: 42px;
-      }
-      .btn-possess-style {
-        width: 48px;
-        height: 48px;
-      }
-      .btn-start-style, .btn-music-style {
-        width: 40px;
-        height: 40px;
-      }
-    }
-
-    @media (max-width: 380px) {
-      .gameboy-console {
-        padding: 6px 8px 10px;
-      }
-      .joystick-zone {
-        width: 104px;
-        height: 104px;
       }
       .joystick-base {
         width: 96px;
@@ -690,10 +677,6 @@
       .joystick-knob {
         width: 44px;
         height: 44px;
-      }
-      .gb-arcade-buttons-deck {
-        padding: 6px 8px;
-        gap: 6px;
       }
       .btn-possess-style {
         width: 48px;
@@ -743,7 +726,8 @@
               <span id="scoreText" style="color: #39ff14; font-size: 0.6rem;">0 / 25</span>
             </div>
           </div>
-          <div id="stealthBadge" class="hud-stealth-pill">GHOST FORM</div>
+          <span id="inspectionBadge" class="hud-inspection-pill">⏳ INSPECT: 20s</span>
+          <div id="stealthBadge" class="hud-stealth-pill">👻 GHOST FORM</div>
         </div>
 
         <div class="hud-row">
@@ -783,9 +767,9 @@
 
       <!-- Right: 3 Dedicated Arcade Buttons -->
       <div class="gb-arcade-buttons-deck">
-        <!-- Button 1: POSSESS / EJECT -->
+        <!-- Button 1: POSSESS / EJECT / DISTRACT -->
         <div class="arcade-btn-col">
-          <button class="arcade-custom-btn btn-possess-style" id="btnPossess" aria-label="Possess or Eject Furniture">
+          <button class="arcade-custom-btn btn-possess-style" id="btnPossess" aria-label="Possess or Eject Tool">
             <span class="btn-top-icon" id="btnPossessIcon">👻</span>
             <span class="btn-main-text" id="btnPossessText">POSSESS</span>
           </button>
@@ -823,6 +807,8 @@
         this.musicEnabled = true;
         this.sfxEnabled = true;
         this.lastAlertTime = 0;
+        this.lastVacuumSoundTime = 0;
+        this.lastEMFSoundTime = 0;
         this.bgmTimer = null;
         this.bgmStep = 0;
         this.tempo = 145; // BPM
@@ -930,7 +916,7 @@
       playNoiseTick(dur, vol) {
         if (!this.ctx) return;
         const now = this.ctx.currentTime;
-        const bufferSize = this.ctx.sampleRate * dur;
+        const bufferSize = Math.floor(this.ctx.sampleRate * dur);
         const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
         const data = buffer.getChannelData(0);
         for (let i = 0; i < bufferSize; i++) {
@@ -1030,6 +1016,108 @@
         gain.connect(this.ctx.destination);
         osc.start(now);
         osc.stop(now + 0.24);
+      }
+
+      playVacuumHum() {
+        if (!this.sfxEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        if (now - this.lastVacuumSoundTime < 0.14) return;
+        this.lastVacuumSoundTime = now;
+
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(95 + Math.random() * 20, now);
+        gain.gain.setValueAtTime(0.08, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.13);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.14);
+      }
+
+      playSlip() {
+        if (!this.sfxEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(650, now);
+        osc.frequency.exponentialRampToValueAtTime(140, now + 0.25);
+        gain.gain.setValueAtTime(0.28, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.28);
+      }
+
+      playDistractionRing() {
+        if (!this.sfxEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+
+        const freqs = [880, 1174.66, 1760, 1318.51, 1046.50];
+        freqs.forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+          gain.gain.setValueAtTime(0.18, now + idx * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.16);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.08);
+          osc.stop(now + idx * 0.08 + 0.18);
+        });
+      }
+
+      playEMFBeep() {
+        if (!this.sfxEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        if (now - this.lastEMFSoundTime < 0.18) return;
+        this.lastEMFSoundTime = now;
+
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(1600, now);
+        osc.frequency.exponentialRampToValueAtTime(2400, now + 0.05);
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.08);
+      }
+
+      playInspectionAlert() {
+        if (!this.sfxEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+
+        const notes = [587.33, 739.99, 880.00, 1174.66];
+        notes.forEach((f, i) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(f, now + i * 0.07);
+          gain.gain.setValueAtTime(0.2, now + i * 0.07);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.07 + 0.15);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + i * 0.07);
+          osc.stop(now + i * 0.07 + 0.16);
+        });
       }
 
       playPanicAlert() {
@@ -1157,13 +1245,13 @@
       PILLAR: 2
     };
 
-    // LEVEL DEFINITIONS
+    // LEVEL DEFINITIONS WITH DYNAMIC NPC TYPES
     const LEVELS = [
       {
         id: 1,
         name: "GROUND FLOOR MANOR",
         totalSlimes: 25,
-        totalFurniture: 8,
+        totalFurniture: 9,
         cols: 24,
         rows: 24,
         spawnX: 4.5,
@@ -1189,14 +1277,15 @@
           { x: 17, y: 19, name: "Library Annex" }
         ],
         npcs: [
-          { speed: 72, radius: 12, visionLength: 150, visionAngle: Math.PI / 5.2, name: "Homeowner" }
+          { type: 'messy_kid', name: "Messy Kid Billy", speed: 90, radius: 11, visionLength: 120, visionAngle: Math.PI / 5.5 },
+          { type: 'homeowner', name: "Lord Pembroke", speed: 68, radius: 12, visionLength: 145, visionAngle: Math.PI / 5.2 }
         ]
       },
       {
         id: 2,
         name: "GRAND ARCHIVES & OBSERVATORY",
         totalSlimes: 35,
-        totalFurniture: 10,
+        totalFurniture: 11,
         cols: 26,
         rows: 26,
         spawnX: 4.5,
@@ -1222,15 +1311,16 @@
           { x: 18, y: 20, name: "Rare Books Chamber" }
         ],
         npcs: [
-          { speed: 76, radius: 12, visionLength: 155, visionAngle: Math.PI / 5.0, name: "Head Butler" },
-          { speed: 68, radius: 12, visionLength: 140, visionAngle: Math.PI / 5.5, name: "Night Watchman" }
+          { type: 'investigator', name: "Dr. Egon (EMF)", speed: 72, radius: 12, visionLength: 160, visionAngle: Math.PI / 4.8 },
+          { type: 'messy_kid', name: "Messy Kid Timmy", speed: 92, radius: 11, visionLength: 120, visionAngle: Math.PI / 5.5 },
+          { type: 'butler', name: "Head Butler Higgins", speed: 70, radius: 12, visionLength: 140, visionAngle: Math.PI / 5.2 }
         ]
       },
       {
         id: 3,
         name: "PHANTOM BALLROOM & MASTER SUITE",
         totalSlimes: 45,
-        totalFurniture: 12,
+        totalFurniture: 14,
         cols: 28,
         rows: 28,
         spawnX: 5.5,
@@ -1254,8 +1344,9 @@
           { x: 20, y: 22, name: "Crypt Sanctuary" }
         ],
         npcs: [
-          { speed: 82, radius: 12, visionLength: 165, visionAngle: Math.PI / 4.8, name: "Mansion Owner" },
-          { speed: 78, radius: 12, visionLength: 150, visionAngle: Math.PI / 5.2, name: "Spectral Detective" }
+          { type: 'snooty_owner', name: "Duchess Eleanor", speed: 74, radius: 12, visionLength: 155, visionAngle: Math.PI / 4.8 },
+          { type: 'investigator', name: "Prof. Ghosthunter", speed: 76, radius: 12, visionLength: 165, visionAngle: Math.PI / 4.6 },
+          { type: 'messy_kid', name: "Messy Kid Zoe", speed: 95, radius: 11, visionLength: 120, visionAngle: Math.PI / 5.5 }
         ]
       }
     ];
@@ -1347,6 +1438,8 @@
     let panicMeter = 0; // 0 to 100%
     let slimes = [];
     let furnitureList = [];
+    let wetTrails = [];       // Slick water puddles left by possessed Mop & Bucket
+    let lureWaves = [];       // Sonic/Visual lure pulses from TV & Clock
     let particles = [];
     let floatingTexts = [];
     let npcs = [];
@@ -1358,6 +1451,11 @@
     let gameTime = 0;
     let closestFurniture = null;
 
+    // Inspection Mechanic for Snooty Mansion Owner
+    let inspectionTargetRoom = null;
+    let inspectionTimer = 22; // Countdown in seconds
+    let isOwnerInspecting = false;
+
     // Smooth Camera Tracking Viewport
     const camera = {
       x: 0,
@@ -1366,7 +1464,7 @@
       targetY: 0
     };
 
-    // Ghost Janitor Player
+    // Ghost Janitor Player (Possession Dual-State)
     const player = {
       x: 4.5 * TILE_SIZE,
       y: 4.5 * TILE_SIZE,
@@ -1381,7 +1479,8 @@
       mopAngle: 0,
       floatOffset: 0,
       tailFrame: 0,
-      lastBumpSound: 0
+      lastBumpSound: 0,
+      lastTrailSpawn: 0
     };
 
     // Keys & Virtual Joystick Input State
@@ -1511,6 +1610,8 @@
       panicMeter = 0;
       slimes = [];
       furnitureList = [];
+      wetTrails = [];
+      lureWaves = [];
       particles = [];
       floatingTexts = [];
       npcs = [];
@@ -1519,6 +1620,9 @@
       gameOver = false;
       busted = false;
       levelCleared = false;
+      inspectionTimer = 22;
+      inspectionTargetRoom = currentLevel.rooms[1] || currentLevel.rooms[0];
+      isOwnerInspecting = false;
 
       // Reset Player inside starting Foyer
       player.x = currentLevel.spawnX * TILE_SIZE;
@@ -1547,18 +1651,37 @@
         [emptyTiles[i], emptyTiles[j]] = [emptyTiles[j], emptyTiles[i]];
       }
 
-      // Spawn Fixed Stationary Furniture Items (NEVER MOVE)
-      const furnitureTypes = ['armchair', 'clock', 'table', 'lamp', 'chair', 'mirror_cabinet', 'piano'];
-      for (let i = 0; i < currentLevel.totalFurniture; i++) {
+      // Guaranteed Core Possession Maintenance Items:
+      // 1. Vacuum Cleaner (Auto-sucks dust, loud motor noise)
+      // 2. Mop & Bucket (Moves fast, cleans wet spills, leaves slippery trail)
+      // 3. Grandfather Clock & Retro TV (Distraction lures)
+      // 4. Regular Furniture (Stealth hideouts)
+      const specialTools = ['vacuum', 'mop_bucket', 'tv', 'clock'];
+      const standardFurniture = ['armchair', 'table', 'lamp', 'chair', 'mirror_cabinet', 'piano'];
+
+      const totalItems = currentLevel.totalFurniture;
+      for (let i = 0; i < totalItems; i++) {
         if (emptyTiles.length === 0) break;
         const tile = emptyTiles.pop();
+        let itemType;
+
+        if (i < specialTools.length) {
+          itemType = specialTools[i];
+        } else {
+          itemType = standardFurniture[(i - specialTools.length) % standardFurniture.length];
+        }
+
         furnitureList.push({
           id: i,
-          type: furnitureTypes[i % furnitureTypes.length],
+          type: itemType,
           x: (tile.x + 0.5) * TILE_SIZE,
           y: (tile.y + 0.5) * TILE_SIZE,
+          initialX: (tile.x + 0.5) * TILE_SIZE,
+          initialY: (tile.y + 0.5) * TILE_SIZE,
           radius: 14,
-          isPossessed: false
+          isPossessed: false,
+          isMobileTool: (itemType === 'vacuum' || itemType === 'mop_bucket'),
+          isDistraction: (itemType === 'tv' || itemType === 'clock')
         });
       }
 
@@ -1597,17 +1720,19 @@
         });
       }
 
-      // Initialize Patrolling NPCs for this floor
+      // Initialize Patrolling NPCs for this floor (with dynamic types)
       currentLevel.npcs.forEach((npcDef, i) => {
         const startWpIdx = (i * 3 + 2) % currentLevel.patrolWaypoints.length;
         const wp = currentLevel.patrolWaypoints[startWpIdx];
         const npc = {
           id: i,
+          type: npcDef.type || 'homeowner',
           name: npcDef.name,
           x: (wp.x + 0.5) * TILE_SIZE,
           y: (wp.y + 0.5) * TILE_SIZE,
           radius: npcDef.radius,
           speed: npcDef.speed,
+          baseSpeed: npcDef.speed,
           direction: 'down',
           visionAngleFacing: Math.PI / 2,
           targetVisionAngle: Math.PI / 2,
@@ -1617,9 +1742,14 @@
           currentPath: [],
           pathIndex: 0,
           currentWaypointIdx: startWpIdx,
-          state: 'patrolling',
+          state: 'patrolling', // 'patrolling', 'inspecting', 'distracted', 'slipped', 'investigating_emf', 'mansion_inspect'
           inspectTimer: 0,
-          inspectPhase: 0
+          inspectPhase: 0,
+          slipTimer: 0,
+          messTimer: 5 + Math.random() * 4,
+          emfPulseTimer: 0,
+          speechText: '',
+          speechTimer: 0
         };
         pickNextNPCDestination(npc);
         npcs.push(npc);
@@ -1642,6 +1772,24 @@
       document.getElementById('floorBadge').textContent = `FLOOR ${currentLevel.id}`;
       document.getElementById('scoreText').textContent = `${score} / ${currentLevel.totalSlimes}`;
       
+      // Inspection Badge for Snooty Owner Floor
+      const inspectionBadge = document.getElementById('inspectionBadge');
+      const hasOwner = npcs.some(n => n.type === 'snooty_owner');
+      if (hasOwner && inspectionTargetRoom) {
+        inspectionBadge.style.display = 'inline-block';
+        const timeLeft = Math.max(0, Math.ceil(inspectionTimer));
+        inspectionBadge.textContent = `⏳ ${inspectionTargetRoom.name.toUpperCase().substring(0, 8)}: ${timeLeft}s`;
+        if (timeLeft <= 5) {
+          inspectionBadge.style.borderColor = '#ff0055';
+          inspectionBadge.style.color = '#ff0055';
+        } else {
+          inspectionBadge.style.borderColor = '#f6c90e';
+          inspectionBadge.style.color = '#f6c90e';
+        }
+      } else {
+        inspectionBadge.style.display = 'none';
+      }
+
       // Panic Bar
       const panicPercent = Math.min(100, Math.max(0, Math.floor(panicMeter)));
       const panicBar = document.getElementById('panicBar');
@@ -1669,13 +1817,37 @@
       const btnPossessIcon = document.getElementById('btnPossessIcon');
 
       if (player.isPossessing && player.possessedFurniture) {
-        stealthBadge.textContent = `HIDDEN IN ${player.possessedFurniture.type.toUpperCase()}`;
-        stealthBadge.className = 'hud-stealth-pill hidden';
+        const toolType = player.possessedFurniture.type;
         btnPossess.classList.add('eject-mode');
-        btnPossessText.textContent = 'EJECT';
-        btnPossessIcon.textContent = '⚡';
+
+        if (toolType === 'vacuum') {
+          stealthBadge.textContent = `🌀 VACUUM (AUTO-SUCK)`;
+          stealthBadge.className = 'hud-stealth-pill tool-mode';
+          btnPossessText.textContent = 'EJECT';
+          btnPossessIcon.textContent = '🌀';
+        } else if (toolType === 'mop_bucket') {
+          stealthBadge.textContent = `🧹 MOP & BUCKET`;
+          stealthBadge.className = 'hud-stealth-pill tool-mode';
+          btnPossessText.textContent = 'EJECT';
+          btnPossessIcon.textContent = '🧹';
+        } else if (toolType === 'tv') {
+          stealthBadge.textContent = `📺 TV (LURE ON)`;
+          stealthBadge.className = 'hud-stealth-pill tool-mode';
+          btnPossessText.textContent = 'DISTRACT';
+          btnPossessIcon.textContent = '📺';
+        } else if (toolType === 'clock') {
+          stealthBadge.textContent = `⏰ CLOCK (ALARM)`;
+          stealthBadge.className = 'hud-stealth-pill tool-mode';
+          btnPossessText.textContent = 'ALARM';
+          btnPossessIcon.textContent = '⏰';
+        } else {
+          stealthBadge.textContent = `HIDDEN IN ${toolType.toUpperCase()}`;
+          stealthBadge.className = 'hud-stealth-pill hidden';
+          btnPossessText.textContent = 'EJECT';
+          btnPossessIcon.textContent = '⚡';
+        }
       } else {
-        stealthBadge.textContent = 'GHOST FORM';
+        stealthBadge.textContent = '👻 GHOST FORM';
         stealthBadge.className = 'hud-stealth-pill';
         btnPossess.classList.remove('eject-mode');
         btnPossessText.textContent = 'POSSESS';
@@ -1701,8 +1873,42 @@
       }
     }
 
+    /* Trigger Distraction Waves from TV or Clock */
+    function triggerDistractionWave(sourceX, sourceY, type) {
+      audio.playDistractionRing();
+      triggerScreenShake(4, 0.2);
+
+      lureWaves.push({
+        x: sourceX,
+        y: sourceY,
+        radius: 10,
+        maxRadius: 280,
+        type: type,
+        life: 1.6
+      });
+
+      // Lure nearby NPCs to investigate the noise
+      npcs.forEach(npc => {
+        if (npc.state === 'slipped') return; // Cannot move while slipping
+        const dist = Math.hypot(npc.x - sourceX, npc.y - sourceY);
+        if (dist <= 300) {
+          npc.state = 'distracted';
+          npc.speechText = (type === 'clock' ? '⏰ WHAT IS THAT RINGING?!' : '📺 WHO TURNED ON THE TV?!');
+          npc.speechTimer = 2.8;
+
+          const curGridX = Math.floor(npc.x / TILE_SIZE);
+          const curGridY = Math.floor(npc.y / TILE_SIZE);
+          const targetGridX = Math.floor(sourceX / TILE_SIZE);
+          const targetGridY = Math.floor(sourceY / TILE_SIZE);
+
+          npc.currentPath = findBFSPath(curGridX, curGridY, targetGridX, targetGridY);
+          npc.pathIndex = 0;
+        }
+      });
+    }
+
     /* ==========================================================================
-       ONLY POSSESS ON BUTTON PRESS & STATIONARY FURNITURE (NEVER MOVES)
+       POSSESSION & MAINTENANCE INTERACTION SYSTEM
        ========================================================================== */
     function togglePossession(targetOverride = null) {
       audio.init();
@@ -1720,11 +1926,36 @@
         return;
       }
 
-      // 1. IF CURRENTLY POSSESSING: EJECT / UNPOSSESS
+      // 1. IF CURRENTLY POSSESSING: EJECT / TRIGGER DISTRACTION
       if (player.isPossessing) {
         const furn = player.possessedFurniture;
+        
+        // If possessing Clock/TV, pressing button rings the alarm distraction wave!
+        if (furn && furn.isDistraction) {
+          triggerDistractionWave(furn.x, furn.y, furn.type);
+          floatingTexts.push({
+            text: (furn.type === 'clock' ? "RINGGG! ⏰" : "STATIC BLAST! 📺"),
+            x: player.x,
+            y: player.y - 18,
+            life: 1.0,
+            color: "#00f0ff"
+          });
+          // Also allow double tap to eject
+          furn.isPossessed = false;
+          player.isPossessing = false;
+          player.possessedFurniture = null;
+          audio.playUnpossess();
+          spawnPoofParticles(player.x, player.y, '#9d4edd');
+          updateUI();
+          return;
+        }
+
         if (furn) {
           furn.isPossessed = false;
+          if (furn.isMobileTool) {
+            furn.x = player.x;
+            furn.y = player.y;
+          }
         }
         player.isPossessing = false;
         player.possessedFurniture = null;
@@ -1739,7 +1970,7 @@
           color: "#00f0ff"
         });
       } 
-      // 2. POSSESS NEAREST FURNITURE ONLY WHEN BUTTON IS PRESSED OR TAPPED
+      // 2. POSSESS NEAREST ITEM / APPLIANCE
       else {
         let targetFurn = targetOverride || closestFurniture;
         
@@ -1759,22 +1990,35 @@
           player.isPossessing = true;
           player.possessedFurniture = targetFurn;
           targetFurn.isPossessed = true;
-          // Player snaps inside stationary furniture position
           player.x = targetFurn.x;
           player.y = targetFurn.y;
 
           audio.playPossess();
           spawnPoofParticles(player.x, player.y, '#39ff14');
+
+          let possessLabel = `HIDDEN IN ${targetFurn.type.toUpperCase()}!`;
+          if (targetFurn.type === 'vacuum') {
+            possessLabel = "🌀 VACUUM POSSESSED! (AUTO-SUCKS DUST)";
+          } else if (targetFurn.type === 'mop_bucket') {
+            possessLabel = "🧹 MOP & BUCKET POSSESSED! (SLICK TRAIL)";
+          } else if (targetFurn.type === 'tv') {
+            possessLabel = "📺 TV POSSESSED! (EMITS LURE)";
+            triggerDistractionWave(targetFurn.x, targetFurn.y, 'tv');
+          } else if (targetFurn.type === 'clock') {
+            possessLabel = "⏰ CLOCK POSSESSED! (RING ALARM)";
+            triggerDistractionWave(targetFurn.x, targetFurn.y, 'clock');
+          }
+
           floatingTexts.push({
-            text: `HIDDEN IN ${targetFurn.type.toUpperCase()}!`,
+            text: possessLabel,
             x: player.x,
             y: player.y - 14,
-            life: 0.9,
+            life: 1.1,
             color: "#39ff14"
           });
         } else {
           floatingTexts.push({
-            text: "GET NEAR FURNITURE!",
+            text: "GET NEAR AN OBJECT!",
             x: player.x,
             y: player.y - 14,
             life: 0.6,
@@ -1787,19 +2031,37 @@
     }
 
     /* ==========================================================================
-       NPC VISION CONE DETECTION (STEALTH CHECK)
+       NPC VISION CONE DETECTION & EMF SENSORS (STEALTH CHECK)
        ========================================================================== */
     function isPlayerSpottedByAnyNPC() {
-      // Complete Stealth while hiding inside stationary furniture!
-      if (player.isPossessing) {
+      // Complete Stealth while hiding inside stationary non-mobile furniture
+      if (player.isPossessing && player.possessedFurniture && !player.possessedFurniture.isMobileTool) {
         return false;
       }
 
       for (const npc of npcs) {
+        if (npc.state === 'slipped') continue;
+
         const dx = player.x - npc.x;
         const dy = player.y - npc.y;
         const dist = Math.hypot(dx, dy);
 
+        // 1. Paranormal Investigator EMF Radar Check (Detects unpossessed ghost nearby)
+        if (npc.type === 'investigator' && !player.isPossessing && dist <= 130) {
+          audio.playEMFBeep();
+          npc.speechText = "🚨 EMF DETECTED!";
+          npc.speechTimer = 1.8;
+          return true;
+        }
+
+        // 2. Vacuum Cleaner Noise Alert (Nearby NPCs hear loud motor hum)
+        if (player.isPossessing && player.possessedFurniture?.type === 'vacuum' && player.isMoving && dist <= 140) {
+          npc.speechText = "❓ WHAT'S THAT VACUUM NOISE?!";
+          npc.speechTimer = 1.8;
+          return true;
+        }
+
+        // 3. Flashlight Line-of-Sight Vision Cone
         if (dist <= npc.visionLength) {
           const npcAngle = npc.visionAngleFacing;
           const angleToPlayer = Math.atan2(dy, dx);
@@ -1867,6 +2129,23 @@
       });
     }
 
+    function spawnVacuumVortexParticles(x, y) {
+      for (let i = 0; i < 3; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const r = 24 + Math.random() * 20;
+        particles.push({
+          x: x + Math.cos(angle) * r,
+          y: y + Math.sin(angle) * r,
+          vx: -Math.cos(angle) * 60,
+          vy: -Math.sin(angle) * 60,
+          size: 2,
+          color: '#00f0ff',
+          life: 0.3,
+          maxLife: 0.3
+        });
+      }
+    }
+
     /* ==========================================================================
        MAIN GAME LOOP & UPDATE SYSTEM
        ========================================================================== */
@@ -1887,9 +2166,82 @@
         return;
       }
 
-      // 1. UPDATE MULTI-NPC PATROL AI
+      // 1. UPDATE DYNAMIC HUMAN NPC BEHAVIORS & PATROLS
       npcs.forEach(npc => {
-        if (npc.state === 'patrolling') {
+        if (npc.speechTimer > 0) {
+          npc.speechTimer -= dt;
+        }
+
+        // Slipped Stun State (stepped on wet mop puddle trail)
+        if (npc.state === 'slipped') {
+          npc.slipTimer -= dt;
+          if (npc.slipTimer <= 0) {
+            npc.state = 'patrolling';
+            pickNextNPCDestination(npc);
+          }
+          return;
+        }
+
+        // Dynamic Messy Kid Behavior: Drops food & spills drinks periodically
+        if (npc.type === 'messy_kid') {
+          npc.messTimer -= dt;
+          if (npc.messTimer <= 0) {
+            npc.messTimer = 6 + Math.random() * 5;
+            // Drop a new slime spill on current tile
+            const sTypeRoll = Math.random();
+            const sColor = sTypeRoll > 0.5 ? '#f72585' : '#39ff14';
+            slimes.push({
+              id: Date.now() + Math.random(),
+              type: sTypeRoll > 0.5 ? 'purple' : 'green',
+              points: 1,
+              x: npc.x,
+              y: npc.y,
+              radius: 10,
+              color: sColor,
+              bubblePhase: Math.random() * Math.PI * 2,
+              bubbleSpeed: 3
+            });
+            spawnPoofParticles(npc.x, npc.y, sColor);
+            npc.speechText = "🍪 DROPPED MY SNACK!";
+            npc.speechTimer = 2.2;
+            floatingTexts.push({
+              text: "NEW MESS!",
+              x: npc.x,
+              y: npc.y - 16,
+              life: 1.0,
+              color: "#ff0077"
+            });
+          }
+        }
+
+        // Check if NPC steps on any slick wet mop puddle trail
+        for (let i = wetTrails.length - 1; i >= 0; i--) {
+          const trail = wetTrails[i];
+          const distToTrail = Math.hypot(npc.x - trail.x, npc.y - trail.y);
+          if (distToTrail < npc.radius + trail.radius) {
+            npc.state = 'slipped';
+            npc.slipTimer = 2.4;
+            npc.speechText = "💫 WHOA! *SLIP*";
+            npc.speechTimer = 2.4;
+            audio.playSlip();
+            triggerScreenShake(5, 0.2);
+            spawnPoofParticles(npc.x, npc.y, '#00f0ff');
+            floatingTexts.push({
+              text: "SLIPPED! 💫",
+              x: npc.x,
+              y: npc.y - 18,
+              life: 1.2,
+              color: "#00f0ff"
+            });
+            wetTrails.splice(i, 1); // puddle gets smeared
+            break;
+          }
+        }
+
+        if (npc.state === 'slipped') return;
+
+        // Navigation and Patrol
+        if (npc.state === 'patrolling' || npc.state === 'distracted') {
           if (npc.currentPath && npc.pathIndex < npc.currentPath.length) {
             const nextStep = npc.currentPath[npc.pathIndex];
             const targetX = (nextStep.x + 0.5) * TILE_SIZE;
@@ -1902,7 +2254,8 @@
             npc.direction = nextStep.dir;
             npc.targetVisionAngle = getAngleForDirection(nextStep.dir);
 
-            const stepDist = npc.speed * dt;
+            const speed = npc.state === 'distracted' ? npc.speed * 1.2 : npc.speed;
+            const stepDist = speed * dt;
             if (dist <= stepDist) {
               npc.x = targetX;
               npc.y = targetY;
@@ -1912,7 +2265,7 @@
               npc.y += (dy / dist) * stepDist;
             }
 
-            npc.walkFrame += dt * 7.5;
+            npc.walkFrame += dt * 8;
           } else {
             npc.state = 'inspecting';
             npc.inspectTimer = 1.4 + Math.random() * 1.2;
@@ -1937,7 +2290,71 @@
         npc.visionAngleFacing += angleDiff * Math.min(1, 10 * dt);
       });
 
-      // 2. CHECK NPC FLASHLIGHT VISION & PANIC METER
+      // 2. UPDATE SNOOTY MANSION OWNER TIMED ROOM INSPECTION
+      const snootyOwner = npcs.find(n => n.type === 'snooty_owner');
+      if (snootyOwner && inspectionTargetRoom) {
+        inspectionTimer -= dt;
+        if (inspectionTimer <= 0 && !isOwnerInspecting) {
+          isOwnerInspecting = true;
+          inspectionTimer = 24; // reset next timer
+          audio.playInspectionAlert();
+          snootyOwner.speechText = `🧐 INSPECTING ${inspectionTargetRoom.name.toUpperCase()}!`;
+          snootyOwner.speechTimer = 3.5;
+
+          // Route Owner directly to inspection room center
+          const targetMidX = Math.floor((inspectionTargetRoom.x1 + inspectionTargetRoom.x2) / 2);
+          const targetMidY = Math.floor((inspectionTargetRoom.y1 + inspectionTargetRoom.y2) / 2);
+          const curGridX = Math.floor(snootyOwner.x / TILE_SIZE);
+          const curGridY = Math.floor(snootyOwner.y / TILE_SIZE);
+
+          snootyOwner.currentPath = findBFSPath(curGridX, curGridY, targetMidX, targetMidY);
+          snootyOwner.pathIndex = 0;
+          snootyOwner.state = 'patrolling';
+
+          // Check if room is clean or dirty
+          setTimeout(() => {
+            const slimesInRoom = slimes.filter(s => {
+              const gx = Math.floor(s.x / TILE_SIZE);
+              const gy = Math.floor(s.y / TILE_SIZE);
+              return gx >= inspectionTargetRoom.x1 && gx <= inspectionTargetRoom.x2 && gy >= inspectionTargetRoom.y1 && gy <= inspectionTargetRoom.y2;
+            });
+
+            if (slimesInRoom.length > 0) {
+              snootyOwner.speechText = "😡 DISGRACEFUL DUST!";
+              snootyOwner.speechTimer = 3.0;
+              panicMeter = Math.min(100, panicMeter + 30);
+              audio.playPanicAlert();
+              triggerScreenShake(8, 0.4);
+              floatingTexts.push({
+                text: "INSPECTION FAILED! +30% PANIC",
+                x: snootyOwner.x,
+                y: snootyOwner.y - 20,
+                life: 1.5,
+                color: "#ff0055"
+              });
+            } else {
+              snootyOwner.speechText = "✨ SPOTLESS. EXCELLENT.";
+              snootyOwner.speechTimer = 3.0;
+              panicMeter = Math.max(0, panicMeter - 25);
+              score = Math.min(currentLevel.totalSlimes, score + 2);
+              floatingTexts.push({
+                text: "SPOTLESS ROOM! BONUS +2",
+                x: snootyOwner.x,
+                y: snootyOwner.y - 20,
+                life: 1.5,
+                color: "#39ff14"
+              });
+            }
+
+            // Pick a new random room for next inspection
+            const otherRooms = currentLevel.rooms.filter(r => r.name !== inspectionTargetRoom.name);
+            inspectionTargetRoom = otherRooms[Math.floor(Math.random() * otherRooms.length)] || currentLevel.rooms[0];
+            isOwnerInspecting = false;
+          }, 3200);
+        }
+      }
+
+      // 3. CHECK NPC FLASHLIGHT VISION & PANIC METER
       const spotted = isPlayerSpottedByAnyNPC();
 
       if (spotted) {
@@ -1954,12 +2371,12 @@
       } else {
         if (panicMeter > 0) {
           // Drops faster while hiding inside furniture
-          const coolRate = player.isPossessing ? 45 : 26;
+          const coolRate = (player.isPossessing && !player.possessedFurniture?.isMobileTool) ? 50 : 25;
           panicMeter = Math.max(0, panicMeter - coolRate * dt);
         }
       }
 
-      // 3. COMBINE JOYSTICK & KEYBOARD INPUT FOR 360-DEGREE MOVEMENT
+      // 4. COMBINE JOYSTICK & KEYBOARD INPUT FOR 360-DEGREE MOVEMENT
       let moveX = 0;
       let moveY = 0;
 
@@ -1976,19 +2393,27 @@
       const inputLength = Math.hypot(moveX, moveY);
       player.isMoving = (inputLength > 0.05);
 
-      // IF POSSESSING: FURNITURE NEVER MOVES!
-      // If player pushes joystick while possessing, smoothly ejects out of the stationary furniture in move direction!
-      if (player.isPossessing) {
+      // Player Movement Logic
+      const isMobileTool = player.isPossessing && player.possessedFurniture?.isMobileTool;
+      const isStationaryFurn = player.isPossessing && !player.possessedFurniture?.isMobileTool;
+
+      if (isStationaryFurn) {
+        // Stationary Furniture Never Moves!
         if (player.possessedFurniture) {
           player.x = player.possessedFurniture.x;
           player.y = player.possessedFurniture.y;
         }
         player.mopAngle = 0;
       } else {
-        // Normal Ghost Floating Movement
+        // Normal Ghost Floating OR Mobile Appliance Movement (Vacuum / Mop & Bucket)
+        let currentSpeed = player.baseSpeed;
+        if (player.isPossessing && player.possessedFurniture?.type === 'mop_bucket') {
+          currentSpeed *= 1.15; // Mop glides smoothly and quickly
+        }
+
         if (player.isMoving) {
-          const normX = (moveX / (inputLength > 1 ? inputLength : 1)) * player.baseSpeed * dt;
-          const normY = (moveY / (inputLength > 1 ? inputLength : 1)) * player.baseSpeed * dt;
+          const normX = (moveX / (inputLength > 1 ? inputLength : 1)) * currentSpeed * dt;
+          const normY = (moveY / (inputLength > 1 ? inputLength : 1)) * currentSpeed * dt;
 
           if (Math.abs(moveX) > Math.abs(moveY)) {
             player.direction = moveX > 0 ? 'right' : 'left';
@@ -2013,12 +2438,37 @@
           }
 
           player.mopAngle = Math.sin(gameTime * 14) * 0.4;
+
+          // If operating Vacuum, play vacuum motor sound and swirl vortex
+          if (player.isPossessing && player.possessedFurniture?.type === 'vacuum') {
+            audio.playVacuumHum();
+            spawnVacuumVortexParticles(player.x, player.y);
+          }
+
+          // If operating Mop & Bucket, spawn slick wet puddle trail
+          if (player.isPossessing && player.possessedFurniture?.type === 'mop_bucket') {
+            if (gameTime - player.lastTrailSpawn > 0.18) {
+              player.lastTrailSpawn = gameTime;
+              wetTrails.push({
+                x: player.x,
+                y: player.y,
+                radius: 12,
+                life: 7.0,
+                maxLife: 7.0
+              });
+            }
+          }
+
+          if (player.isPossessing && player.possessedFurniture) {
+            player.possessedFurniture.x = player.x;
+            player.possessedFurniture.y = player.y;
+          }
         } else {
           player.mopAngle = 0;
         }
       }
 
-      // Update Nearest Furniture for Interaction Prompts (60px radius ~ 1.9 tiles)
+      // Update Nearest Furniture for Interaction Prompts
       closestFurniture = null;
       if (!player.isPossessing) {
         let minDist = 60;
@@ -2034,15 +2484,23 @@
       player.floatOffset = Math.sin(gameTime * 4) * 3;
       player.tailFrame = Math.floor((gameTime * 8) % 4);
 
-      // 4. CLEANING SLIME SPOTS (Ghost cleans slime)
-      if (!player.isPossessing) {
+      // 5. CLEANING SLIME SPOTS
+      // Vacuum auto-sucks in larger 52px radius; Mop cleans in 28px radius; Ghost cleans in 22px
+      let cleanRadius = player.radius + 12;
+      const isVacuum = player.isPossessing && player.possessedFurniture?.type === 'vacuum';
+      const isMop = player.isPossessing && player.possessedFurniture?.type === 'mop_bucket';
+
+      if (isVacuum) cleanRadius = 52;
+      if (isMop) cleanRadius = 28;
+
+      if (!isStationaryFurn) {
         for (let i = slimes.length - 1; i >= 0; i--) {
           const slime = slimes[i];
           const dist = Math.hypot(player.x - slime.x, player.y - slime.y);
           
-          if (dist < player.radius + slime.radius + 2) {
+          if (dist < cleanRadius + slime.radius) {
             score += slime.points;
-            triggerScreenShake(7, 0.25);
+            triggerScreenShake(isVacuum ? 4 : 7, 0.2);
             spawnSlimeParticles(slime.x, slime.y, slime.color, slime.points);
             audio.playSlimeClean();
             slimes.splice(i, 1);
@@ -2057,7 +2515,7 @@
         }
       }
 
-      // 5. UPDATE SMOOTH CAMERA VIEWPORT TRACKING
+      // 6. UPDATE SMOOTH CAMERA VIEWPORT TRACKING
       const mapPixelWidth = currentLevel.cols * TILE_SIZE;
       const mapPixelHeight = currentLevel.rows * TILE_SIZE;
 
@@ -2072,7 +2530,21 @@
       camera.x += (camera.targetX - camera.x) * Math.min(1, 10 * dt);
       camera.y += (camera.targetY - camera.y) * Math.min(1, 10 * dt);
 
-      // 6. PARTICLES & FLOATING TEXTS
+      // 7. UPDATE WET TRAILS & LURE WAVES
+      for (let i = wetTrails.length - 1; i >= 0; i--) {
+        const wt = wetTrails[i];
+        wt.life -= dt;
+        if (wt.life <= 0) wetTrails.splice(i, 1);
+      }
+
+      for (let i = lureWaves.length - 1; i >= 0; i--) {
+        const lw = lureWaves[i];
+        lw.radius += 160 * dt;
+        lw.life -= dt;
+        if (lw.life <= 0 || lw.radius > lw.maxRadius) lureWaves.splice(i, 1);
+      }
+
+      // 8. PARTICLES & FLOATING TEXTS
       for (let i = particles.length - 1; i >= 0; i--) {
         const p = particles[i];
         p.x += p.vx * dt;
@@ -2167,6 +2639,42 @@
       });
     }
 
+    function drawWetTrails() {
+      wetTrails.forEach(wt => {
+        const wx = wt.x - camera.x;
+        const wy = wt.y - camera.y;
+        if (wx < -30 || wx > CANVAS_VIEWPORT_SIZE + 30 || wy < -30 || wy > CANVAS_VIEWPORT_SIZE + 30) return;
+
+        const alpha = Math.max(0, wt.life / wt.maxLife);
+        ctx.save();
+        ctx.fillStyle = `rgba(0, 240, 255, ${alpha * 0.4})`;
+        ctx.beginPath();
+        ctx.ellipse(wx, wy, wt.radius, wt.radius * 0.65, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.6})`;
+        ctx.fillRect(Math.floor(wx - 3), Math.floor(wy - 2), 6, 2);
+        ctx.restore();
+      });
+    }
+
+    function drawLureWaves() {
+      lureWaves.forEach(lw => {
+        const lx = lw.x - camera.x;
+        const ly = lw.y - camera.y;
+        if (lx < -300 || lx > CANVAS_VIEWPORT_SIZE + 300 || ly < -300 || ly > CANVAS_VIEWPORT_SIZE + 300) return;
+
+        const alpha = Math.max(0, lw.life / 1.6);
+        ctx.save();
+        ctx.strokeStyle = lw.type === 'clock' ? `rgba(246, 201, 14, ${alpha})` : `rgba(0, 240, 255, ${alpha})`;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(lx, ly, lw.radius, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+      });
+    }
+
     function drawSlimes() {
       slimes.forEach(slime => {
         const sx = slime.x - camera.x;
@@ -2207,7 +2715,7 @@
       const x = furn.x - camera.x;
       const y = furn.y - camera.y;
 
-      if (x < -40 || x > CANVAS_VIEWPORT_SIZE + 40 || y < -40 || y > CANVAS_VIEWPORT_SIZE + 40) {
+      if (x < -50 || x > CANVAS_VIEWPORT_SIZE + 50 || y < -50 || y > CANVAS_VIEWPORT_SIZE + 50) {
         return;
       }
 
@@ -2225,13 +2733,19 @@
         ctx.fillStyle = 'rgba(10, 5, 24, 0.9)';
         ctx.strokeStyle = '#39ff14';
         ctx.lineWidth = 1;
-        ctx.fillRect(x - 30, y - 28 + bob, 60, 12);
-        ctx.strokeRect(x - 30, y - 28 + bob, 60, 12);
+        ctx.fillRect(x - 34, y - 28 + bob, 68, 12);
+        ctx.strokeRect(x - 34, y - 28 + bob, 68, 12);
+
+        let label = '[POSSESS]';
+        if (furn.type === 'vacuum') label = '[VACUUM]';
+        if (furn.type === 'mop_bucket') label = '[MOP]';
+        if (furn.type === 'tv') label = '[LURE TV]';
+        if (furn.type === 'clock') label = '[ALARM]';
 
         ctx.font = '6px "Press Start 2P", monospace';
         ctx.fillStyle = '#39ff14';
         ctx.textAlign = 'center';
-        ctx.fillText('[POSSESS]', x, y - 20 + bob);
+        ctx.fillText(label, x, y - 20 + bob);
         ctx.restore();
       }
 
@@ -2243,7 +2757,6 @@
         ctx.shadowColor = '#39ff14';
         ctx.shadowBlur = 16;
 
-        // Glowing Ectoplasm Shield
         ctx.fillStyle = 'rgba(57, 255, 20, 0.25)';
         ctx.beginPath();
         ctx.arc(0, 0, 22, 0, Math.PI * 2);
@@ -2251,6 +2764,83 @@
       }
 
       switch (furn.type) {
+        // 1. VACUUM CLEANER (Possessable Appliance)
+        case 'vacuum':
+          ctx.fillStyle = '#c0392b';
+          ctx.fillRect(-8, -6, 16, 12);
+          ctx.fillStyle = '#e74c3c';
+          ctx.fillRect(-6, -4, 12, 8);
+          // Chrome Nozzle & Hose
+          ctx.fillStyle = '#7f8c8d';
+          ctx.fillRect(-2, 6, 4, 8);
+          ctx.fillStyle = '#34495e';
+          ctx.fillRect(-6, 12, 12, 4);
+          // Wheels
+          ctx.fillStyle = '#2c3e50';
+          ctx.fillRect(-9, -2, 3, 6);
+          ctx.fillRect(6, -2, 3, 6);
+          break;
+
+        // 2. MOP & BUCKET (Possessable Tool)
+        case 'mop_bucket':
+          // Yellow Bucket with Water
+          ctx.fillStyle = '#f39c12';
+          ctx.fillRect(-9, -4, 18, 12);
+          ctx.fillStyle = '#f1c40f';
+          ctx.fillRect(-7, -2, 14, 8);
+          ctx.fillStyle = '#00f0ff';
+          ctx.fillRect(-6, 0, 12, 3);
+          // Mop Stick
+          ctx.fillStyle = '#d4a373';
+          ctx.fillRect(3, -14, 3, 14);
+          ctx.fillStyle = '#ecf0f1';
+          ctx.fillRect(0, -16, 9, 4);
+          break;
+
+        // 3. RETRO CRT TV (Distraction Object)
+        case 'tv':
+          ctx.fillStyle = '#4a2810';
+          ctx.fillRect(-12, -10, 24, 20);
+          ctx.fillStyle = furn.isPossessed ? '#00f0ff' : '#1a252f';
+          ctx.fillRect(-9, -7, 14, 14);
+          if (furn.isPossessed) {
+            // TV Static Noise lines
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(-7, -4, 10, 2);
+            ctx.fillRect(-5, 0, 8, 2);
+            ctx.fillRect(-8, 3, 11, 2);
+          }
+          // TV Knobs & Antenna
+          ctx.fillStyle = '#7f8c8d';
+          ctx.fillRect(6, -6, 2, 3);
+          ctx.fillRect(6, -1, 2, 3);
+          ctx.strokeStyle = '#bdc3c7';
+          ctx.beginPath();
+          ctx.moveTo(-4, -10);
+          ctx.lineTo(-8, -16);
+          ctx.moveTo(4, -10);
+          ctx.lineTo(8, -16);
+          ctx.stroke();
+          break;
+
+        // 4. GRANDFATHER CLOCK (Distraction Object)
+        case 'clock':
+          ctx.fillStyle = '#5d4037';
+          ctx.fillRect(-8, -14, 16, 28);
+          ctx.fillStyle = '#fff8e1';
+          ctx.beginPath();
+          ctx.arc(0, -7, 6, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = '#212121';
+          ctx.fillRect(0, -7, 1, -5);
+          ctx.fillRect(0, -7, 4, 1);
+          ctx.fillStyle = '#fbc02d';
+          const pend = Math.sin(gameTime * 4) * 3;
+          ctx.beginPath();
+          ctx.arc(pend, 6, 2.5, 0, Math.PI * 2);
+          ctx.fill();
+          break;
+
         case 'chair':
           ctx.fillStyle = '#8B4513';
           ctx.fillRect(-8, -10, 16, 6);
@@ -2286,23 +2876,6 @@
           ctx.fillStyle = '#4a1230';
           ctx.fillRect(-13, -5, 4, 13);
           ctx.fillRect(9, -5, 4, 13);
-          break;
-
-        case 'clock':
-          ctx.fillStyle = '#5d4037';
-          ctx.fillRect(-8, -14, 16, 28);
-          ctx.fillStyle = '#fff8e1';
-          ctx.beginPath();
-          ctx.arc(0, -7, 6, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.fillStyle = '#212121';
-          ctx.fillRect(0, -7, 1, -5);
-          ctx.fillRect(0, -7, 4, 1);
-          ctx.fillStyle = '#fbc02d';
-          const pend = Math.sin(gameTime * 4) * 3;
-          ctx.beginPath();
-          ctx.arc(pend, 6, 2.5, 0, Math.PI * 2);
-          ctx.fill();
           break;
 
         case 'table':
@@ -2434,76 +3007,176 @@
         return;
       }
 
-      // Flashlight Vision Cone
-      ctx.save();
-      const vFacing = npc.visionAngleFacing;
-      const vAngle = npc.visionAngle;
-      const vLen = npc.visionLength;
+      // Flashlight Vision Cone (except when slipped)
+      if (npc.state !== 'slipped') {
+        ctx.save();
+        const vFacing = npc.visionAngleFacing;
+        const vAngle = npc.visionAngle;
+        const vLen = npc.visionLength;
 
-      const leftAngle = vFacing - vAngle;
-      const rightAngle = vFacing + vAngle;
+        const leftAngle = vFacing - vAngle;
+        const rightAngle = vFacing + vAngle;
 
-      const coneGrad = ctx.createRadialGradient(hx, hy, 4, hx, hy, vLen);
-      coneGrad.addColorStop(0, 'rgba(255, 240, 150, 0.48)');
-      coneGrad.addColorStop(0.7, 'rgba(255, 230, 100, 0.22)');
-      coneGrad.addColorStop(1, 'rgba(255, 200, 50, 0)');
+        const coneGrad = ctx.createRadialGradient(hx, hy, 4, hx, hy, vLen);
+        coneGrad.addColorStop(0, 'rgba(255, 240, 150, 0.48)');
+        coneGrad.addColorStop(0.7, 'rgba(255, 230, 100, 0.22)');
+        coneGrad.addColorStop(1, 'rgba(255, 200, 50, 0)');
 
-      ctx.fillStyle = coneGrad;
-      ctx.beginPath();
-      ctx.moveTo(hx, hy);
-      ctx.arc(hx, hy, vLen, leftAngle, rightAngle);
-      ctx.closePath();
-      ctx.fill();
+        ctx.fillStyle = coneGrad;
+        ctx.beginPath();
+        ctx.moveTo(hx, hy);
+        ctx.arc(hx, hy, vLen, leftAngle, rightAngle);
+        ctx.closePath();
+        ctx.fill();
 
-      ctx.strokeStyle = 'rgba(255, 240, 150, 0.45)';
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(hx, hy);
-      ctx.lineTo(hx + Math.cos(leftAngle) * vLen, hy + Math.sin(leftAngle) * vLen);
-      ctx.moveTo(hx, hy);
-      ctx.lineTo(hx + Math.cos(rightAngle) * vLen, hy + Math.sin(rightAngle) * vLen);
-      ctx.stroke();
-      ctx.restore();
+        ctx.strokeStyle = 'rgba(255, 240, 150, 0.45)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(hx, hy);
+        ctx.lineTo(hx + Math.cos(leftAngle) * vLen, hy + Math.sin(leftAngle) * vLen);
+        ctx.moveTo(hx, hy);
+        ctx.lineTo(hx + Math.cos(rightAngle) * vLen, hy + Math.sin(rightAngle) * vLen);
+        ctx.stroke();
 
-      // NPC Body
+        // If Paranormal Investigator: Draw Pulsing EMF Radar Arc
+        if (npc.type === 'investigator') {
+          const emfPulse = (gameTime * 4) % 1;
+          ctx.strokeStyle = `rgba(0, 240, 255, ${1 - emfPulse})`;
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(hx, hy, 120 * emfPulse, vFacing - 0.6, vFacing + 0.6);
+          ctx.stroke();
+        }
+
+        ctx.restore();
+      }
+
+      // NPC Body Rendering by Type
       ctx.save();
       ctx.translate(hx, hy);
 
+      if (npc.state === 'slipped') {
+        ctx.rotate(Math.sin(gameTime * 18) * 0.6 + Math.PI / 3);
+      }
+
       const legBob = Math.sin(npc.walkFrame) * 2.5;
 
-      ctx.fillStyle = '#2c3e50';
-      ctx.fillRect(-5, 4 + (legBob > 0 ? legBob : 0), 4, 7);
-      ctx.fillRect(1, 4 + (legBob < 0 ? -legBob : 0), 4, 7);
+      // 1. THE MESSY KID (Billy / Timmy / Zoe)
+      if (npc.type === 'messy_kid') {
+        // Sneakers & Shorts
+        ctx.fillStyle = '#e67e22';
+        ctx.fillRect(-5, 4 + (legBob > 0 ? legBob : 0), 4, 5);
+        ctx.fillRect(1, 4 + (legBob < 0 ? -legBob : 0), 4, 5);
+        // Striped Shirt
+        ctx.fillStyle = '#e74c3c';
+        ctx.fillRect(-6, -4, 12, 8);
+        ctx.fillStyle = '#f1c40f';
+        ctx.fillRect(-6, -2, 12, 2);
+        ctx.fillRect(-6, 2, 12, 2);
+        // Face & Backwards Cap
+        ctx.fillStyle = '#f1c27d';
+        ctx.beginPath();
+        ctx.arc(0, -8, 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#2980b9';
+        ctx.fillRect(-5, -13, 10, 3);
+        ctx.fillRect(3, -12, 4, 2); // Cap visor
+        // Soda Can In Hand
+        ctx.fillStyle = '#9b59b6';
+        ctx.fillRect(6, -2, 3, 5);
+      }
+      // 2. THE PARANORMAL INVESTIGATOR (EMF Hunter)
+      else if (npc.type === 'investigator') {
+        // Dark jumpsuit & Boots
+        ctx.fillStyle = '#2c3e50';
+        ctx.fillRect(-5, 4 + (legBob > 0 ? legBob : 0), 4, 7);
+        ctx.fillRect(1, 4 + (legBob < 0 ? -legBob : 0), 4, 7);
+        ctx.fillStyle = '#34495e';
+        ctx.fillRect(-7, -5, 14, 10);
+        // Yellow safety hazard stripes
+        ctx.fillStyle = '#f1c40f';
+        ctx.fillRect(-7, -1, 14, 2);
+        // Head with Ghost Goggles
+        ctx.fillStyle = '#f1c27d';
+        ctx.beginPath();
+        ctx.arc(0, -9, 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#00f0ff';
+        ctx.fillRect(-5, -11, 10, 3); // Goggles
+        // Handheld Blinking EMF Meter
+        ctx.fillStyle = '#111';
+        ctx.fillRect(6, -4, 5, 6);
+        ctx.fillStyle = Math.floor(gameTime * 8) % 2 === 0 ? '#39ff14' : '#ff0055';
+        ctx.fillRect(7, -3, 3, 2);
+      }
+      // 3. THE SNOOTY MANSION OWNER (Duchess Eleanor)
+      else if (npc.type === 'snooty_owner') {
+        // Velvet Dress / Robe
+        ctx.fillStyle = '#4a0e17';
+        ctx.fillRect(-7, 2, 14, 8);
+        ctx.fillStyle = '#800020';
+        ctx.fillRect(-6, -5, 12, 9);
+        // Gold Brooch
+        ctx.fillStyle = '#f1c40f';
+        ctx.fillRect(-1, -2, 2, 2);
+        // Head & Hair Bun
+        ctx.fillStyle = '#f1c27d';
+        ctx.beginPath();
+        ctx.arc(0, -9, 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#bdc3c7';
+        ctx.fillRect(-6, -15, 12, 4);
+        ctx.beginPath();
+        ctx.arc(0, -15, 3.5, 0, Math.PI * 2);
+        ctx.fill();
+        // Golden Monocle
+        ctx.fillStyle = '#f1c40f';
+        ctx.fillRect(2, -10, 3, 3);
+      }
+      // 4. STANDARD RESIDENTS / BUTLERS
+      else {
+        ctx.fillStyle = '#2c3e50';
+        ctx.fillRect(-5, 4 + (legBob > 0 ? legBob : 0), 4, 7);
+        ctx.fillRect(1, 4 + (legBob < 0 ? -legBob : 0), 4, 7);
 
-      ctx.fillStyle = npc.id === 0 ? '#8e44ad' : '#2980b9';
-      ctx.fillRect(-7, -5, 14, 10);
-      ctx.fillStyle = npc.id === 0 ? '#9b59b6' : '#3498db';
-      ctx.fillRect(-5, -4, 10, 8);
+        ctx.fillStyle = npc.type === 'butler' ? '#111' : '#8e44ad';
+        ctx.fillRect(-7, -5, 14, 10);
+        ctx.fillStyle = npc.type === 'butler' ? '#ecf0f1' : '#9b59b6';
+        ctx.fillRect(-5, -4, 10, 8);
 
-      ctx.fillStyle = '#f1c27d';
-      ctx.beginPath();
-      ctx.arc(0, -9, 6, 0, Math.PI * 2);
-      ctx.fill();
+        ctx.fillStyle = '#f1c27d';
+        ctx.beginPath();
+        ctx.arc(0, -9, 6, 0, Math.PI * 2);
+        ctx.fill();
 
-      ctx.fillStyle = '#5c3d2e';
-      ctx.fillRect(-6, -15, 12, 4);
-
-      let eyeX = 0;
-      let eyeY = 0;
-      if (npc.direction === 'left') eyeX = -2;
-      if (npc.direction === 'right') eyeX = 2;
-      if (npc.direction === 'up') eyeY = -2;
-      if (npc.direction === 'down') eyeY = 1;
-
-      ctx.fillStyle = '#000';
-      ctx.fillRect(-3 + eyeX, -10 + eyeY, 1.5, 2);
-      ctx.fillRect(1 + eyeX, -10 + eyeY, 1.5, 2);
+        ctx.fillStyle = '#5c3d2e';
+        ctx.fillRect(-6, -15, 12, 4);
+      }
 
       // Flashlight In Hand
       ctx.fillStyle = '#34495e';
       const flashDirX = Math.cos(npc.visionAngleFacing);
       const flashDirY = Math.sin(npc.visionAngleFacing);
       ctx.fillRect(flashDirX * 6 - 2, flashDirY * 6 - 2, 4, 4);
+
+      // NPC Speech Bubble Bark
+      if (npc.speechTimer > 0 && npc.speechText) {
+        ctx.save();
+        ctx.font = '6px "Press Start 2P", monospace';
+        ctx.fillStyle = 'rgba(10, 5, 24, 0.92)';
+        ctx.strokeStyle = '#f6c90e';
+        ctx.lineWidth = 1;
+
+        const textMetrics = ctx.measureText(npc.speechText);
+        const boxW = textMetrics.width + 10;
+        ctx.fillRect(-boxW / 2, -32, boxW, 13);
+        ctx.strokeRect(-boxW / 2, -32, boxW, 13);
+
+        ctx.fillStyle = '#f6c90e';
+        ctx.textAlign = 'center';
+        ctx.fillText(npc.speechText, 0, -23);
+        ctx.restore();
+      }
 
       ctx.restore();
     }
@@ -2563,7 +3236,7 @@
 
         ctx.fillStyle = '#00f0ff';
         ctx.font = '8px "Press Start 2P", monospace';
-        ctx.fillText('HIDE INSIDE FURNITURE WITH [POSSESS]', CANVAS_VIEWPORT_SIZE / 2, 255);
+        ctx.fillText('POSSESS TOOLS OR HIDE IN FURNITURE', CANVAS_VIEWPORT_SIZE / 2, 255);
         ctx.fillText('FLOOR CLEANED: ' + score + ' / ' + currentLevel.totalSlimes, CANVAS_VIEWPORT_SIZE / 2, 280);
 
         const blink = Math.floor(gameTime * 2.5) % 2 === 0;
@@ -2601,7 +3274,7 @@
         ctx.fillStyle = '#ffffff';
         ctx.font = '8px "Press Start 2P", monospace';
         ctx.shadowBlur = 0;
-        ctx.fillText(`ALL ${currentLevel.totalSlimes} ECTOPLASM SPILLS REMOVED`, CANVAS_VIEWPORT_SIZE / 2, 245);
+        ctx.fillText(`ALL ECTOPLASM SPILLS REMOVED`, CANVAS_VIEWPORT_SIZE / 2, 245);
         ctx.fillText('PERFECT STEALTH SANITATION!', CANVAS_VIEWPORT_SIZE / 2, 270);
 
         const isLastLevel = currentLevelIndex >= LEVELS.length - 1;
@@ -2626,6 +3299,8 @@
       }
 
       drawMap();
+      drawWetTrails();
+      drawLureWaves();
       drawSlimes();
       furnitureList.forEach(furn => drawFurnitureItem(furn));
       drawGhostJanitor();
@@ -2725,7 +3400,7 @@
       updateJoystickVisuals(0, 0);
     }
 
-    // Pointer Events for modern devices (with multi-touch pointerId isolation)
+    // Pointer Events for modern devices
     if (window.PointerEvent) {
       joystickZone.addEventListener('pointerdown', (e) => {
         if (e.cancelable) e.preventDefault();
@@ -2758,7 +3433,7 @@
       window.addEventListener('pointerup', handlePointerEnd, { passive: false });
       window.addEventListener('pointercancel', handlePointerEnd, { passive: false });
     } else {
-      // Touch fallback for older browsers
+      // Touch fallback
       joystickZone.addEventListener('touchstart', (e) => {
         if (e.cancelable) e.preventDefault();
         audio.init();
@@ -2821,13 +3496,13 @@
       const worldX = canvasX + camera.x;
       const worldY = canvasY + camera.y;
 
-      // If possessing, tap ejects immediately
+      // If possessing, tap ejects / triggers action
       if (player.isPossessing) {
         togglePossession();
         return;
       }
 
-      // Check if tapped near a furniture item (within 40px of tap) or player is near furniture
+      // Check if tapped near an object
       let tappedFurn = null;
       let minTapDist = 40;
       furnitureList.forEach(furn => {
@@ -2846,7 +3521,7 @@
         }
       }
 
-      // If user tapped anywhere on screen while near furniture, trigger possess
+      // If user tapped anywhere on screen while near object, trigger possess
       if (closestFurniture) {
         togglePossession(closestFurniture);
       }
@@ -2941,7 +3616,7 @@
           e.stopPropagation();
         }
         const now = performance.now();
-        if (now - lastTrigger < 200) return; // Debounce duplicate pointer/touch events
+        if (now - lastTrigger < 200) return;
         lastTrigger = now;
 
         audio.init();

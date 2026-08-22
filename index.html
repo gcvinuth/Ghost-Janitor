@@ -1097,11 +1097,11 @@
           </div>
 
           <div class="lobby-section-header">
-            <span>🏰 MANSION FLOORS (1 - 6):</span>
+            <span>🏰 MANSION FLOORS (1 - 8):</span>
             <span style="font-size: 0.32rem; color: #f6c90e;">TAP TO SELECT</span>
           </div>
 
-          <!-- 6 Floors Grid -->
+          <!-- 8 Floors Grid -->
           <div class="floor-select-grid" id="floorSelectGrid">
             <!-- Dynamically populated by JS -->
           </div>
@@ -1129,18 +1129,20 @@
             </div>
             <div class="guide-card">
               <div class="guide-card-title">🧹 SPECIALIZED CLEANING GEAR:</div>
-              <div>• <b>Mop & Bucket</b>: Cleans standard dust and leaves slippery water trails that trip humans.</div>
-              <div>• <b>Ghost Vacuum</b>: Auto-sucks standard dust & ectoplasm.</div>
+              <div>• <b>Mop & Bucket</b>: Cleans dust & leaves slip trails that trip NPCs.</div>
+              <div>• <b>Ghost Vacuum</b>: Auto-sucks dust & ectoplasm.</div>
               <div>• <b>Candle / Fire Poker</b>: Burns haunted cobwebs.</div>
               <div>• <b>Feather Duster</b>: Silent, high-speed dusting on Floor 4.</div>
               <div>• <b>Exhaust Fan</b>: Clears kitchen grease & flour on Floor 6.</div>
+              <div>• <b>Magnet Sweeper & Bellows</b>: Cleans metallic scrap & steam on Floor 7.</div>
+              <div>• <b>Prism Reflector & Aerial Vacuum</b>: Shields light & clears stardust on Floor 8.</div>
             </div>
             <div class="guide-card">
               <div class="guide-card-title">🚨 AVOID DETECTION:</div>
-              <div>• Stay out of human yellow Vision Cones!</div>
-              <div>• Beware Dr. Egon's EMF radar & Librarian's flashlight beam.</div>
-              <div>• Don't run on Creaky Planks or hover over Sizzling Stoves.</div>
-              <div>• Place <b>Squeaky Shoe Traps [T]</b> or ring <b>Dinner Bells</b> to lure NPCs away!</div>
+              <div>• Stay out of human yellow & purple Vision Cones!</div>
+              <div>• Beware Dr. Egon's EMF radar & Inquisitor's spectral searchlight.</div>
+              <div>• Beware steam vents, gear tracks, and lightning storm flashes.</div>
+              <div>• Place <b>Squeaky Shoe Traps [T]</b>, ring <b>Bells</b>, or chime <b>Cuckoo Clocks</b> to lure NPCs away!</div>
             </div>
           </div>
         </div>
@@ -1740,6 +1742,133 @@
         gain.connect(this.ctx.destination);
         osc.start(now);
         osc.stop(now + 0.04);
+      }
+
+      playSteamHiss() {
+        if (!this.sfxEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(320 + Math.random() * 80, now);
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.23);
+      }
+
+      playClockChime() {
+        if (!this.sfxEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const freqs = [523.25, 659.25, 783.99, 1046.50];
+        freqs.forEach((f, i) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(f, now + i * 0.12);
+          gain.gain.setValueAtTime(0.24, now + i * 0.12);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.12 + 0.35);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + i * 0.12);
+          osc.stop(now + i * 0.12 + 0.36);
+        });
+      }
+
+      playMagnetClink() {
+        if (!this.sfxEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const freqs = [1200, 1600, 2100];
+        freqs.forEach((f, i) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(f, now + i * 0.04);
+          gain.gain.setValueAtTime(0.18, now + i * 0.04);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.04 + 0.1);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + i * 0.04);
+          osc.stop(now + i * 0.04 + 0.11);
+        });
+      }
+
+      playLightningThunder() {
+        if (!this.sfxEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        // Crackle
+        const zap = this.ctx.createOscillator();
+        const zapGain = this.ctx.createGain();
+        zap.type = 'sawtooth';
+        zap.frequency.setValueAtTime(2400, now);
+        zap.frequency.exponentialRampToValueAtTime(120, now + 0.15);
+        zapGain.gain.setValueAtTime(0.25, now);
+        zapGain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+        zap.connect(zapGain);
+        zapGain.connect(this.ctx.destination);
+        zap.start(now);
+        zap.stop(now + 0.15);
+
+        // Thunder Rumble
+        const rumble = this.ctx.createOscillator();
+        const rumbleGain = this.ctx.createGain();
+        rumble.type = 'sawtooth';
+        rumble.frequency.setValueAtTime(90, now + 0.08);
+        rumble.frequency.exponentialRampToValueAtTime(35, now + 0.55);
+        rumbleGain.gain.setValueAtTime(0.3, now + 0.08);
+        rumbleGain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+        rumble.connect(rumbleGain);
+        rumbleGain.connect(this.ctx.destination);
+        rumble.start(now + 0.08);
+        rumble.stop(now + 0.56);
+      }
+
+      playLaserPrism() {
+        if (!this.sfxEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(1400, now);
+        osc.frequency.linearRampToValueAtTime(2200, now + 0.08);
+        gain.gain.setValueAtTime(0.18, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.12);
+      }
+
+      playEMPBlast() {
+        if (!this.sfxEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const freqs = [1800, 1400, 900, 400];
+        freqs.forEach((f, i) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(f, now + i * 0.05);
+          gain.gain.setValueAtTime(0.2, now + i * 0.05);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.05 + 0.15);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + i * 0.05);
+          osc.stop(now + i * 0.05 + 0.16);
+        });
       }
     }
 

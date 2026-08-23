@@ -583,6 +583,76 @@
       line-height: 1.2;
     }
 
+    .floor-card-npc-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3px;
+      margin: 2px 0;
+    }
+
+    .npc-chip {
+      font-size: 0.28rem;
+      padding: 1px 4px;
+      border-radius: 3px;
+      background: rgba(30, 20, 50, 0.9);
+      border: 1px solid #4a3473;
+      color: #e2e8f0;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+    }
+    .npc-chip-librarian { border-color: #c084fc; color: #f3e8ff; background: rgba(88, 28, 135, 0.4); }
+    .npc-chip-gardener { border-color: #4ade80; color: #dcfce7; background: rgba(22, 101, 52, 0.4); }
+    .npc-chip-chef { border-color: #f87171; color: #fee2e2; background: rgba(153, 27, 27, 0.4); }
+    .npc-chip-clockmaker { border-color: #fbbf24; color: #fef3c7; background: rgba(146, 64, 14, 0.4); }
+    .npc-chip-inquisitor { border-color: #e879f9; color: #fae8ff; background: rgba(112, 26, 117, 0.4); }
+    .npc-chip-investigator { border-color: #00f0ff; color: #e0f2fe; background: rgba(3, 105, 161, 0.4); }
+    .npc-chip-butler { border-color: #94a3b8; color: #f8fafc; background: rgba(30, 41, 59, 0.4); }
+    .npc-chip-snooty_owner { border-color: #f472b6; color: #fdf2f8; background: rgba(157, 23, 77, 0.4); }
+    .npc-chip-homeowner { border-color: #a78bfa; color: #ede9fe; background: rgba(67, 56, 202, 0.4); }
+    .npc-chip-messy_kid { border-color: #fb923c; color: #ffedd5; background: rgba(154, 52, 18, 0.4); }
+
+    .guide-npc-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 5px;
+      margin-top: 4px;
+    }
+    .guide-npc-card {
+      background: rgba(20, 12, 38, 0.95);
+      border: 1px solid #4a3473;
+      border-radius: 4px;
+      padding: 5px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      font-size: 0.30rem;
+    }
+    .guide-npc-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+      font-weight: bold;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      padding-bottom: 3px;
+    }
+    .guide-npc-badge {
+      font-size: 0.28rem;
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+    .guide-npc-look {
+      color: #94a3b8;
+    }
+    .guide-npc-threat {
+      color: #ffaa00;
+    }
+    .guide-npc-counter {
+      color: #39ff14;
+    }
+
     .floor-card-meta {
       display: flex;
       justify-content: space-between;

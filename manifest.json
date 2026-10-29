@@ -1,0 +1,58 @@
+{
+  "id": "ghost-janitor-pwa",
+  "name": "Ghost Janitor: 8-Bit Arcade",
+  "short_name": "Ghost Janitor",
+  "description": "Retro 8-Bit Game Boy arcade puzzle game. Possess cleaning tools, tidy haunted rooms, and defeat rogue dust phantoms!",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "portrait-primary",
+  "background_color": "#0d0818",
+  "theme_color": "#231b38",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["games", "arcade", "entertainment"],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Play Game",
+      "short_name": "Play",
+      "description": "Jump straight into Ghost Janitor arcade action",
+      "url": "./index.html",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
